@@ -1,7 +1,7 @@
 {
-  "extends": ["airbnb"],
+  "extends": ["airbnb-typescript"],
   "parserOptions": {
-      "project": "./tsconfig.json"
+      "project": ["./tsconfig.json", "./package.json", "."]
     },
     "env": {
        "browser": true,
