@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb-typescript"],
+  "extends": ["airbnb"],
   "parserOptions": {
       "project": "./tsconfig.json"
     },
@@ -9,7 +9,6 @@
        "jasmine": true
    },
    "rules": {
-       "max-len": [2, 100],
-       "@typescript-eslint/no-unused-vars": 2
+       "max-len": [2, 100]
    }
 }
