@@ -14,9 +14,9 @@ git clone https://github.com/chicago-ya-praktikum/game.git
 npm install
 ```
 
-## Запуск
+## Запуск сервера разработки
 ```
-npm run start
+npm run dev-start
 ```
 
 ## Тесты и проверки
@@ -33,7 +33,12 @@ npm run lint
 ```
 npm run lint-fix
 ```
-## Сборка
+## Сборка пакета
 ```
 npm run build
+```
+
+## Запуск пакета
+```
+npm run build-run
 ```
