@@ -25,11 +25,9 @@
       "typeRoots": ["typings/**/*.d.ts", "node_modules/@types"],
     },
     "include": [
-      "./src",
+      "src",
       "typings/**/*.d.ts",
-      "./node_modules/@types"
-    ],
-    "exclude": [
-      "**/*.js"
+      "./node_modules/@types",
+      "tests/**/*.test.js"
     ]
   } 

@@ -1,12 +1,10 @@
 import React from 'react';
 
-class App extends React.Component {
-  render() {
+function App() {
   return (
     <div>
       <h1>SOKOBAN</h1>
     </div>
   );
-  }
 }
 export default App;
