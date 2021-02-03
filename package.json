@@ -50,6 +50,7 @@
   "dependencies": {
     "@types/react": "^17.0.1",
     "@types/react-dom": "^17.0.0",
+    "jest-enzyme": "^7.1.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
