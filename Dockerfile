@@ -6,4 +6,4 @@ RUN npm install
 
 EXPOSE 80
 
-CMD cd app && npm run build-run
+CMD cd app && npm run prod
