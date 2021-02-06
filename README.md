@@ -1,44 +1,48 @@
 # game
 
-## Описание
+## Description
 ```
-Яндекс-практикум. 2-ой модуль. Командная разработка браузерной игры Sokoban
-```
+Yandex-praktikum. 2-nd module. Sokoban - tеam development
 
-## Установка
+```
+## link:
+```
+https://chicago-sokoban.herokuapp.com/
+```
+## Install
 ```
 git clone https://github.com/chicago-ya-praktikum/game.git
 ```
-В корне проекта исполнить:
+
+Go to the project root directory and install all it's dependencies:
 ```
 npm install
 ```
 
-## Запуск сервера разработки
+## Start dev-server
 ```
-npm run dev-start
+npm run dev
 ```
 
-## Тесты и проверки
+## 
 
-### Тесты
+### Tests and linter
 ```
 npm run test
 ```
-### Анализ code-style
+### Check the code-style
 ```
 npm run lint
 ```
-### Исправление code-style
+### Fix the code-style
 ```
 npm run lint-fix
 ```
-## Сборка пакета
+## To build the package do the following in the root of the project:
 ```
 npm run build
 ```
-
-## Запуск пакета
+## To run the package do the following in the root of the project:
 ```
 npm run build-run
 ```

@@ -7,9 +7,10 @@
     "test": "jest",
     "lint": "node_modules/.bin/eslint .",
     "lint-fix": "node_modules/.bin/eslint . --fix",
-    "dev-start": "webpack serve",
+    "dev": "webpack serve",
     "build": "webpack --mode production",
-    "build-run": "node server.js"
+    "build-run": "node server.js",
+    "prod": "webpack --mode production && node server.js"
   },
   "jest": {
     "setupFilesAfterEnv": [
