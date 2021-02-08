@@ -1,5 +1,5 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   devServer: {
@@ -27,7 +27,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.s[a]ss$/i,
         use: [
           'style-loader',
           'css-loader',
@@ -41,4 +41,4 @@ module.exports = {
       template: './www/index.html',
     }),
   ],
-};
+}
