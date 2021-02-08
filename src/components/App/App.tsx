@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react'
+import { MainRouter } from '../routers/MainRouter/MainRouter'
 
-export function App() {
-  return (
-    <div>
-      <h1>SOKOBAN</h1>
-    </div>
-  );
+export const App: FC = () => {
+    return (
+        <MainRouter/>
+    )
 }
