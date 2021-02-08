@@ -5,5 +5,5 @@ export function App() {
     <div>
       <h1>SOKOBAN</h1>
     </div>
-  );
+  )
 }
