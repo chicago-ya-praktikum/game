@@ -3,24 +3,16 @@ import {LayerContent} from '../enums/LayerContent'
 import {XYCoordinate} from '../models/XYCoordinate'
 import {DynamicContent} from '../enums/DynamicContent'
 import {EventKey} from '../enums/EventKey'
+import {BoxSpaceDot} from '../models/dots/BoxSpaceDot'
+import {getDotConstructor} from './getDotConstructor'
+import {getDynamicConstructor} from './getDynamicConstructor'
+import {ClearDot} from '../models/dots/ClearDot'
 
 export class GameCore {
     private ctx: CanvasRenderingContext2D
     private level!: LevelStore
     private readonly canvasDiameter: number
     private step!: number
-
-    private get boxSpaceDiameter() {
-        return Math.floor(this.step / 2)
-    }
-
-    private get boxDiameter() {
-        return Math.floor(0.9 * this.step)
-    }
-
-    private draw(coordinate: XYCoordinate) {
-        return {x: coordinate.x * this.step, y: coordinate.y * this.step}
-    }
 
     constructor(canvas: HTMLCanvasElement) {
         const ctx = canvas.getContext('2d')
@@ -41,24 +33,13 @@ export class GameCore {
 
     drawLevel(level: LevelStore) {
         this.level = level
-        this.level.currentPosition = {...level.initialPosition}
+        this.level.currentPosition = JSON.parse(JSON.stringify(level.initialPosition))
         this.step = Math.floor(this.canvasDiameter / level.layerDots.length)
 
         level.layerDots.forEach((row, y) => {
             row.forEach((dot, x) => {
-                const c = this.draw({x, y})
-                switch (dot) {
-                    case LayerContent.Wall:
-                        this.ctx.fillRect(c.x, c.y, this.step, this.step)
-                        break
-                    case LayerContent.Space:
-                        break
-                    case LayerContent.BoxSpace:
-                        this.drawBoxSpace({x, y})
-                        break
-                    default:
-                        break
-                }
+                const constructor = getDotConstructor(dot)
+                new constructor(this.ctx, this.step, {x, y}).draw()
             })
         })
 
@@ -88,19 +69,19 @@ export class GameCore {
         const doubleNext = {...coordinate}
         switch (event.key) {
             case EventKey.Down:
-                next.y++
+                next.y += 1
                 doubleNext.y += 2
                 break
             case EventKey.Up:
-                next.y--
+                next.y -= 1
                 doubleNext.y -= 2
                 break
             case EventKey.Left:
-                next.x--
+                next.x -= 1
                 doubleNext.x -= 2
                 break
             case EventKey.Right:
-                next.x++
+                next.x += 1
                 doubleNext.x += 2
                 break
             default:
@@ -164,8 +145,7 @@ export class GameCore {
     private clearDynamicContent(coordinate: XYCoordinate) {
         this.checkDrawDot(coordinate)
 
-        const draw = this.draw(coordinate)
-        this.ctx.clearRect(draw.x, draw.y, this.step, this.step)
+        new ClearDot(this.ctx, this.step, coordinate).draw()
 
         if (this.isBoxSpace(coordinate)) {
             this.drawBoxSpace(coordinate)
@@ -174,28 +154,17 @@ export class GameCore {
 
     private drawDynamicContent(coordinate: XYCoordinate, type: DynamicContent) {
         this.checkDrawDot(coordinate)
-        const draw = this.draw(coordinate)
-        if (type === DynamicContent.Player) {
-            this.ctx.beginPath()
-            this.ctx.arc(draw.x + this.boxSpaceDiameter, draw.y + this.boxSpaceDiameter,
-                this.boxSpaceDiameter / 1.1, 0, 2 * Math.PI)
-            this.ctx.stroke()
-        } else {
-            const shift = (this.step - this.boxDiameter) / 2
-            this.ctx.strokeRect(draw.x + shift, draw.y + shift, this.boxDiameter, this.boxDiameter)
-        }
+        const constructor = getDynamicConstructor(type)
+        new constructor(this.ctx, this.step, coordinate).draw()
     }
 
     private drawBoxSpace(coordinate: XYCoordinate) {
-        const shift = (this.step - this.boxSpaceDiameter) / 2
-        const draw = this.draw(coordinate)
-        this.ctx.fillRect(draw.x + shift, draw.y + shift,
-            this.boxSpaceDiameter, this.boxSpaceDiameter)
+        new BoxSpaceDot(this.ctx, this.step, coordinate).draw()
     }
 
-    private getBox(coordinate: XYCoordinate) {
+    private getBox({x, y}: XYCoordinate) {
         return this.level.currentPosition?.boxesCoordinates
-            .find((c) => c.x === coordinate.x && c.y === coordinate.y)
+            .find((c) => c.x === x && c.y === y)
     }
 
     private isWall(coordinate: XYCoordinate) {
