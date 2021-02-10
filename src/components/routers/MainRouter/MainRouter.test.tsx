@@ -13,8 +13,6 @@ describe('MainRouter: snapshot', () => {
 
 })
 
-
-
 describe.skip('MainRouter: wrapper', () => {
     
     const getWrapper = (route: string): ReactElement => {
