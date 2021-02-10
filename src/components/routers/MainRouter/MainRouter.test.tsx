@@ -6,7 +6,16 @@ import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
 
 Enzyme.configure({ adapter: new Adapter() })
 
-describe('MainRouter: wrapper', () => {
+describe.skip('MainRouter: snapshot', () => {
+    
+    const component = mount(<MainRouter />)
+    expect(component).toMatchSnapshot()
+
+})
+
+
+
+describe.skip('MainRouter: wrapper', () => {
     
     const getWrapper = (route: string): ReactElement => {
         return <MemoryRouter initialEntries={[route]}>
