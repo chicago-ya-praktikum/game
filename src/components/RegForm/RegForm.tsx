@@ -3,6 +3,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import {Button} from '@material-ui/core'
 import {validateInput} from '../../utils/validateInput'
+import {Auth} from '../../API'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,8 +24,7 @@ export function RegForm() {
         email: {value: '', error: false},
         password: {value: '', error: false},
         confirm_password: {value: '', error: false},
-        phone: {value: '', error: false},
-        error: true
+        phone: {value: '', error: false}
     })
 
     const color = 'primary'
@@ -56,8 +56,16 @@ export function RegForm() {
 
     const submitForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        const currentData = state
-        console.log(currentData)
+        Auth.signUp(
+            state.first_name.value,
+            state.second_name.value,
+            state.login.value,
+            state.email.value,
+            state.password.value,
+            state.phone.value)
+            .then((data) => {
+                console.log(data)
+            })
     }
 
     const classes = useStyles()
