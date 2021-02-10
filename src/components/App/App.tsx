@@ -1,23 +1,11 @@
 import React from 'react'
-<<<<<<< HEAD
-import { RegForm } from '../RegForm/RegForm'
-
-export function App() {
-  return (
-    <div className="workspace__wrapper">
-      <h1>SOKOBAN</h1>
-      <RegForm />
-    </div>
-  )
-=======
-import {SokobanMain} from '../SokobanMain/SokobanMain'
+import {SignUpPage} from '../../pages/SignUp/SignUp'
 
 export function App() {
     return (
-        <div>
+        <div className="workspace__wrapper">
             <h1>SOKOBAN</h1>
-            <SokobanMain/>
+            <SignUpPage/>
         </div>
     )
->>>>>>> main
 }

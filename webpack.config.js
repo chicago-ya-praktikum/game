@@ -9,36 +9,36 @@ module.exports = {
         hot: true,
         overlay: true,
         open: true,
-        port: 9000,
+        port: 8000
     },
     entry: './src/index.tsx',
     output: {
         path: path.join(__dirname, '/dist'),
-        filename: 'bundle.js',
+        filename: 'bundle.js'
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.tsx', '.ts', '.js']
     },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
-                exclude: /node_modules/,
+                exclude: /node_modules/
             },
             {
                 test: /\.s[a]ss$/i,
                 use: [
                     'style-loader',
                     'css-loader',
-                    'sass-loader',
-                ],
-            },
-        ],
+                    'sass-loader'
+                ]
+            }
+        ]
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './www/index.html',
-        }),
-    ],
+            template: './www/index.html'
+        })
+    ]
 }

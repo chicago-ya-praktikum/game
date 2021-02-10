@@ -5,7 +5,6 @@ import {BoxDot} from '../models/dots/BoxDot'
 export function getDynamicConstructor(type: DynamicContent) {
     if (type === DynamicContent.Player) {
         return PlayerDot
-    } else {
-        return BoxDot
     }
+    return BoxDot
 }
