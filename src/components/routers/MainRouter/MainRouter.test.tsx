@@ -6,9 +6,9 @@ import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
 
 Enzyme.configure({ adapter: new Adapter() })
 
-describe.skip('MainRouter: snapshot', () => {
+describe('MainRouter: snapshot', () => {
     
-    const component = mount(<MainRouter />)
+    const component = shallow(<MainRouter />)
     expect(component).toMatchSnapshot()
 
 })
