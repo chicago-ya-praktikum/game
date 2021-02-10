@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 export const MainRouter: FC = () => {
+    
     return (
         <Router>
             <Switch>
