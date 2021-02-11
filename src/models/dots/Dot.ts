@@ -14,11 +14,11 @@ export abstract class Dot {
         return Math.floor(0.9 * this.step)
     }
 
-    constructor(ctx: CanvasRenderingContext2D, step: number, coordinate: XYCoordinate) {
+    constructor(ctx: CanvasRenderingContext2D, step: number, {x, y}: XYCoordinate) {
         this.ctx = ctx
         this.step = step
-        this.x = coordinate.x * this.step
-        this.y = coordinate.y * this.step
+        this.x = x * this.step
+        this.y = y * this.step
     }
 
     abstract draw(): void

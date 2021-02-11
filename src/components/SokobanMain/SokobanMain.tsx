@@ -1,10 +1,14 @@
-import React, {memo, useCallback} from 'react'
+import React, {memo, useEffect, useRef} from 'react'
 import './SokobanMain.sass'
 import {GameCore} from '../../utils/GameCore'
 import {exampleLevel} from '../../constants/exampleLevel'
 
 export const SokobanMain = memo(() => {
-    const ref = useCallback((canvas) => {
+    const ref = useRef<HTMLCanvasElement>(null)
+
+    useEffect(() => {
+        const canvas = ref.current
+
         if (canvas === null) {
             throw new Error('canvas is null')
         }
@@ -17,7 +21,7 @@ export const SokobanMain = memo(() => {
         return () => {
             window.removeEventListener('keydown', fn)
         }
-    }, [])
+    })
 
     return (
         <canvas
