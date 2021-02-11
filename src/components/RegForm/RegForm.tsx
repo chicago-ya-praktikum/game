@@ -31,9 +31,9 @@ export function RegForm() {
         const {value, name} = e.target
         const status = validateInput(name, value)
         if (status) {
-            setState[name](value, true)
-        } else {
             setState[name](value, false)
+        } else {
+            setState[name](value, true)
         }
     }
 
