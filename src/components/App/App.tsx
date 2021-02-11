@@ -1,11 +1,11 @@
 import React from 'react'
-import {SokobanMain} from '../SokobanMain/SokobanMain'
+import {SignUpPage} from '../../pages/SignUp/SignUp'
 
 export function App() {
     return (
-        <div>
+        <div className="workspace__wrapper">
             <h1>SOKOBAN</h1>
-            <SokobanMain/>
+            <SignUpPage/>
         </div>
     )
 }

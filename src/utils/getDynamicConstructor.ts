@@ -1,6 +1,10 @@
 import {DynamicContent} from '../enums/DynamicContent'
-import {dynamicContent} from '../constants/dynamicContent'
+import {PlayerDot} from '../models/dots/PlayerDot'
+import {BoxDot} from '../models/dots/BoxDot'
 
 export function getDynamicConstructor(type: DynamicContent) {
-    return dynamicContent[type]
+    if (type === DynamicContent.Player) {
+        return PlayerDot
+    }
+    return BoxDot
 }
