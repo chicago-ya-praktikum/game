@@ -7,6 +7,7 @@ import {BoxSpaceDot} from '../models/dots/BoxSpaceDot'
 import {getDotConstructor} from './getDotConstructor'
 import {getDynamicConstructor} from './getDynamicConstructor'
 import {ClearDot} from '../models/dots/ClearDot'
+import {deepClone} from './deepClone'
 
 export class GameCore {
     private ctx: CanvasRenderingContext2D
@@ -33,7 +34,8 @@ export class GameCore {
 
     drawLevel(level: LevelStore) {
         this.level = level
-        this.level.currentPosition = JSON.parse(JSON.stringify(level.initialPosition))
+        // @ts-ignore
+        this.level.currentPosition = deepClone(level.initialPosition)
         this.step = Math.floor(this.canvasDiameter / level.layerDots.length)
 
         level.layerDots.forEach((row, y) => {
