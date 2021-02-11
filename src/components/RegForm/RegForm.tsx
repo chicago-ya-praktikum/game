@@ -64,7 +64,7 @@ export function RegForm() {
             state.password.value,
             state.phone.value
         )
-            .then((data) => {
+            .then((data: any) => {
                 console.log(data)
             })
     }

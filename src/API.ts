@@ -1,45 +1,70 @@
-const API_ROOT = 'https://ya-praktikum.tech/api/v2';
+const API_ROOT = new URL('https://ya-praktikum.tech')
 
 const responseBody = (res: { body: any; }) => res.body;
 
 const requests = {
-    del: (url: string) => fetch(`${API_ROOT}${url}`,
-        {
-            method: 'DELETE'
-        })
-        .then(responseBody)
-        .catch(() => { }),
-    get: (url: any) => fetch(`${API_ROOT}${url}`,
-        {
-            method: 'GET'
-        })
-        .then(responseBody)
-        .catch(() => { }),
-    patch: (url: any, body: any) => fetch(`${API_ROOT}${url}`,
-        {
-            method: 'PATCH',
-            body
-        })
-        .then(responseBody)
-        .catch(() => { }),
-    post: (url: any, body: any) => fetch(`${API_ROOT}${url}`,
-        {
-            method: 'POST',
-            body
-        })
-        .then(responseBody)
-        .catch(() => { })
+    del: (path: string) => {
+        const url = new URL(path, API_ROOT)
+        return fetch(`${url}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(responseBody)
+            .catch((error) => { throw new Error(error) })
+    },
+    get: (path: string) => {
+        const url = new URL(path, API_ROOT)
+        return fetch(`${url}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(responseBody)
+            .catch((error) => { throw new Error(error) })
+    },
+    patch: (path: string, body: any) => {
+        const url = new URL(path, API_ROOT)
+        return fetch(`${url}`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body
+            })
+            .then(responseBody)
+            .catch((error) => { throw new Error(error) })
+    },
+    post: (path: string, body: any) => {
+        const url = new URL(path, API_ROOT)
+        return fetch(`${url}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body
+            })
+            .then(responseBody)
+            .catch((error) => { throw new Error(error) })
+    }
 };
 
 export const Auth = {
     signIn: (path = '/auth/signin') => requests.post(path, {}),
-    logout: (path = '/api/v1.0/auth/logout') => requests.post(path, {}),
-    signUp: (firstName: string, secondName: string, email: string, login: string, password: string, phone: string, path = '/auth/signup') => requests.post(path, {
-                first_name: firstName,
-                second_name: secondName,
-                email: email,
-                login: login,
-                password: password,
-                phone: phone
-    })
+    logout: (path = '/auth/logout') => requests.post(path, {}),
+    signUp: (first_name: string, second_name: string, email: string, login: string, password: string, phone: string, path = '/api/v2/auth/signup') => requests.post(path,
+        JSON.stringify({
+            first_name,
+            second_name,
+            email,
+            login,
+            password,
+            phone
+        }))
 };
