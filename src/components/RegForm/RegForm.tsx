@@ -1,88 +1,66 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, {useState} from 'react'
-import {makeStyles} from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import {Button} from '@material-ui/core'
 import {validateInput} from '../../utils/validateInput'
 import {Auth} from '../../API'
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        '& > *': {
-            margin: theme.spacing(3),
-            width: '50ch',
-            display: 'flex',
-            flexDirection: 'column'
-        }
-    }
-}));
-
 export function RegForm() {
-    const [state, setState] = useState({
-        first_name: {value: '', error: false},
-        second_name: {value: '', error: false},
-        login: {value: '', error: false},
-        email: {value: '', error: false},
-        password: {value: '', error: false},
-        confirm_password: {value: '', error: false},
-        phone: {value: '', error: false}
-    })
+    const [first_name_state, first_name_setState] = useState({value: '', error: false})
+    const [second_name_state, second_name_setState] = useState({value: '', error: false})
+    const [login_state, login_setState] = useState({value: '', error: false})
+    const [email_state, email_setState] = useState({value: '', error: false})
+    const [password_state, password_setState] = useState({value: '', error: false})
+    const [phone_state, phone_setState] = useState({value: '', error: false})
+
+    type SetStateRule = (...args: any) => void
+    type FieldName = string
+
+    const setState: Record<FieldName, SetStateRule> = {
+        first_name: (value: string, error: boolean) => first_name_setState({value, error}),
+        second_name: (value: string, error: boolean) => second_name_setState({value, error}),
+        login: (value: string, error: boolean) => login_setState({value, error}),
+        password: (value: string, error: boolean) => password_setState({value, error}),
+        email: (value: string, error: boolean) => email_setState({value, error}),
+        phone: (value: string, error: boolean) => phone_setState({value, error})
+    }
 
     const color = 'primary'
 
     const inputHandler = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        const inputValue = e.target.value as string
-        const inputName = e.target.name as string
-        const status = validateInput(e.target.name, inputValue)
-        console.log(status)
+        const {value, name} = e.target
+        const status = validateInput(name, value)
         if (status) {
-            setState({
-                ...state,
-                [`${inputName}`]: {
-                    value: inputValue,
-                    error: false
-                }
-            })
+            setState[name](value, true)
         } else {
-            setState({
-                ...state,
-                [`${inputName}`]: {
-                    value: '',
-                    error: !!inputValue
-                }
-            })
-            console.log('invalid')
+            setState[name](value, false)
         }
     }
 
     const submitForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         Auth.signUp(
-            state.first_name.value,
-            state.second_name.value,
-            state.login.value,
-            state.email.value,
-            state.password.value,
-            state.phone.value
+            first_name_state.value,
+            second_name_state.value,
+            login_state.value,
+            email_state.value,
+            password_state.value,
+            phone_state.value
         )
-            .then((data: any) => {
-                console.log(data)
-            })
+            .then((data: any) => data)
     }
-
-    const classes = useStyles()
 
     return (
         <div className="form-wrapper">
             <div className="container">
                 <div className="form-container">
-                    <form className={classes.root} noValidate autoComplete="off">
-                        <TextField error={state.first_name.error} color={color} id="outlined-basic" label="First name" name="first_name" variant="outlined" onChange={(e) => inputHandler(e)}/>
-                        <TextField error={state.second_name.error} color={color} id="outlined-basic" label="Second name" name="second_name" variant="outlined" onChange={(e) => inputHandler(e)}/>
-                        <TextField error={state.login.error} color={color} id="outlined-basic" label="Login" name="login" variant="outlined" onChange={(e) => inputHandler(e)}/>
-                        <TextField error={state.email.error} color={color} id="outlined-basic" label="E-mail" name="email" variant="outlined" onChange={(e) => inputHandler(e)}/>
-                        <TextField error={state.password.error} color={color} id="outlined-basic" label="Password" name="password" variant="outlined" type="password" onChange={(e) => inputHandler(e)}/>
-                        <TextField error={state.confirm_password.error} color={color} id="outlined-basic" label="Confirm password" name="confirm_password" variant="outlined" type="password" onChange={(e) => inputHandler(e)}/>
-                        <TextField error={state.phone.error} color={color} id="outlined-basic" label="Phone" variant="outlined" name="phone" onChange={(e) => inputHandler(e)}/>
+                    <form className="form" noValidate autoComplete="off">
+                        <TextField error={first_name_state.error} color={color} label="First name" name="first_name" variant="outlined" onChange={(e) => inputHandler(e)}/>
+                        <TextField error={second_name_state.error} color={color} label="Second name" name="second_name" variant="outlined" onChange={(e) => inputHandler(e)}/>
+                        <TextField error={login_state.error} color={color} label="Login" name="login" variant="outlined" onChange={(e) => inputHandler(e)}/>
+                        <TextField error={email_state.error} color={color} label="E-mail" name="email" variant="outlined" onChange={(e) => inputHandler(e)}/>
+                        <TextField error={password_state.error} color={color} label="Password" name="password" variant="outlined" type="password" onChange={(e) => inputHandler(e)}/>
+                        <TextField error={phone_state.error} color={color} label="Phone" variant="outlined" name="phone" onChange={(e) => inputHandler(e)}/>
                         <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignUp</Button>
                     </form>
                 </div>
