@@ -62,7 +62,8 @@ export function RegForm() {
             state.login.value,
             state.email.value,
             state.password.value,
-            state.phone.value)
+            state.phone.value
+        )
             .then((data) => {
                 console.log(data)
             })

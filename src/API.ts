@@ -32,28 +32,14 @@ const requests = {
 };
 
 export const Auth = {
-    signIn: (email: any, password: any, path = '/auth/signin') => requests.post(path, {
-        data: {
-            type: 'auth',
-            attributes: {
-                email,
-                password
-            }
-        }
-    }),
-    logout: (path = '/api/v1.0/auth/logout') => requests.post(path, {
-        data: {
-            type: 'auth'
-        }
-    }),
+    signIn: (path = '/auth/signin') => requests.post(path, {}),
+    logout: (path = '/api/v1.0/auth/logout') => requests.post(path, {}),
     signUp: (firstName: string, secondName: string, email: string, login: string, password: string, phone: string, path = '/auth/signup') => requests.post(path, {
-        data: {
                 first_name: firstName,
                 second_name: secondName,
                 email: email,
                 login: login,
                 password: password,
                 phone: phone
-        }
     })
 };
