@@ -1,32 +1,29 @@
+import { Err } from '../../pages/Err/Err'
 import React, { Component } from 'react'
 
 type Props = {
 }
 
 type State = {
-  hasError: boolean
+  hasError: boolean,
+  errorInfo?: string
 }
 
 export class ErrorBoundary extends Component<Props, State> {
   
     constructor(props: Props) {
         super(props)
-        this.state = { hasError: false }
+        this.state = { hasError: false, errorInfo:'' }
     }
 
-    static getDerivedStateFromError(error: any) {
-        // Обновить состояние с тем, чтобы следующий рендер показал запасной UI.
-        return { hasError: true }
-    }
-
-    componentDidCatch(error:any, errorInfo: any) {
-        // Можно также сохранить информацию об ошибке в соответствующую службу журнала ошибок
+    static getDerivedStateFromError(error: Error) {
+        return { hasError: true, errorInfo: error ? error.message : '' }
     }
 
     render() {
+        
         if (this.state.hasError) {
-            // Можно отрендерить запасной UI произвольного вида
-            return <h1>Что-то пошло не так.</h1>
+            return <Err errorInfo={this.state.errorInfo} hideBtn={true}/>
         }
 
         return this.props.children
