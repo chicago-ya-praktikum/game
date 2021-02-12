@@ -1,19 +1,32 @@
 import React, { FC } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
+//import { Hi } from './Hi'
+
+export const pageHome           = () => <h1>home</h1> 
+//export const pageHome           = Hi 
+export const pageLeaderboard    = () => <h1>leaderboard</h1> 
+export const pageForum          = () => <h1>forum</h1> 
+export const pageGame           = () => <h1>game</h1> 
+export const pageProfile        = () => <h1>profile</h1> 
+export const pageSignup         = () => <h1>signup</h1> 
+export const pageSignin         = () => <h1>signin</h1> 
+export const pageError          = () => <h1>error</h1> 
+export const a = 5
 
 export const MainRouter: FC = () => {
     
     return (
-        <Router>
+        <div >
             <Switch>
-                <Route path='/'             exact component={ () => <h1>/home</h1> } />
-                <Route path='/leaderboard'  exact component={ () => <h1>/leaderboard</h1> } />
-                <Route path='/forum'        exact component={ () => <h1>/forum</h1> } />
-                <Route path='/game'         exact component={ () => <h1>/game</h1> } />
-                <Route path='/profile'      exact component={ () => <h1>/profile</h1> } />
-                <Route path='/auth'         exact component={ () => <h1>/auth</h1> } />
-                <Route component={ () => <h1>error</h1> } />
+                <Route path='/'             exact component={ pageHome } />
+                <Route path='/leaderboard'  exact component={ pageLeaderboard } />
+                <Route path='/forum'        exact component={ pageForum } />
+                <Route path='/game'         exact component={ pageGame } />
+                <Route path='/profile'      exact component={ pageProfile } />
+                <Route path='/signup'       exact component={ pageSignup } />
+                <Route path='/signin'       exact component={ pageError } />
+                <Route component={ pageError } />
             </Switch>
-        </Router>  
+        </div>  
     )
 }
