@@ -2,14 +2,14 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
+    mode: 'development',
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         historyApiFallback: true,
         writeToDisk: true,
         hot: true,
         overlay: true,
-        open: true,
-        port: 8000
+        open: true
     },
     entry: './src/index.tsx',
     output: {

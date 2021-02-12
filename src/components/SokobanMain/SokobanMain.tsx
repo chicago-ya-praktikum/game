@@ -1,10 +1,24 @@
-import React, {memo, useEffect, useRef} from 'react'
+import React, {memo, useCallback, useEffect, useRef, useState} from 'react'
 import './SokobanMain.sass'
-import {GameCore} from '../../utils/GameCore'
-import {exampleLevel} from '../../constants/exampleLevel'
+import {Button} from '@material-ui/core'
+import {GameCore} from '../../GameCore/GameCore'
+import {exampleLevel} from '../../GameCore/constants/exampleLevel'
 
 export const SokobanMain = memo(() => {
     const ref = useRef<HTMLCanvasElement>(null)
+    let gameCore: GameCore
+    const [gameClass, setGameClass] = useState('block')
+    const [endClass, setEndClass] = useState('hide')
+
+    const end = () => {
+        setGameClass('hide')
+        setEndClass('block')
+    }
+
+    const game = () => {
+        setGameClass('block')
+        setEndClass('hide')
+    }
 
     useEffect(() => {
         const canvas = ref.current
@@ -13,21 +27,46 @@ export const SokobanMain = memo(() => {
             throw new Error('canvas is null')
         }
 
-        const gameCore = new GameCore(canvas).drawLevel(exampleLevel)
+        gameCore = new GameCore(canvas).drawLevel(exampleLevel)
 
         const fn = (event: KeyboardEvent) => gameCore.move(event)
+
+        gameCore.end.subscribe(end)
         window.addEventListener('keydown', fn)
 
         return () => {
             window.removeEventListener('keydown', fn)
+            gameCore.end.unsubscribe(end)
         }
-    })
+    }, [])
+
+    const restart = useCallback(() => {
+        gameCore.drawLevel(exampleLevel)
+    }, [])
+
+    const next = useCallback(() => {
+        game()
+        gameCore.drawLevel(exampleLevel)
+    }, [])
 
     return (
-        <canvas
-            height="400"
-            width="400"
-            ref={ref}
-        />
+        <>
+            <div className={gameClass}>
+                <div className="row">
+                    <Button onClick={restart}>Restart</Button>
+                    <Button onClick={next}>Next</Button>
+                </div>
+                <canvas
+                    height="400"
+                    width="400"
+                    ref={ref}
+                />
+            </div>
+
+            <div className={endClass}>
+                <h2>Success!</h2>
+                <Button onClick={next}>Next</Button>
+            </div>
+        </>
     )
 })
