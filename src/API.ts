@@ -7,6 +7,17 @@ const URLS = {
     USER_INFO: '/api/v2/auth/user'
 }
 
+type SignUpObj = {
+    first_name: string,
+    second_name: string,
+    login: string,
+    email: string,
+    password: string,
+    phone: string
+}
+
+type SignInObj = Partial<SignUpObj>
+
 const responseBody = (res: { body: any; }) => res.body;
 
 const requests = {
@@ -67,8 +78,8 @@ const requests = {
 };
 
 export const Auth = {
-    signIn: (obj: any, path = URLS.SIGNIN) => requests.post(path, JSON.stringify(obj)),
+    signIn: (obj: SignInObj, path = URLS.SIGNIN) => requests.post(path, JSON.stringify(obj)),
     logout: (path = URLS.LOGOUT) => requests.post(path),
-    signUp: (obj: any, path = URLS.SIGNUP) => requests.post(path, JSON.stringify(obj)),
+    signUp: (obj: SignUpObj, path = URLS.SIGNUP) => requests.post(path, JSON.stringify(obj)),
     user: (path = URLS.USER_INFO) => requests.get(path)
 };
