@@ -66,14 +66,7 @@ export const Auth = {
             password
         })),
     logout: (path = '/api/v2/auth/logout') => requests.post(path),
-    signUp: (first_name: string, second_name: string, email: string, login: string, password: string, phone: string, path = '/api/v2/auth/signup') => requests.post(path,
-        JSON.stringify({
-            first_name,
-            second_name,
-            email,
-            login,
-            password,
-            phone
-        })),
+    signUp: (obj: any, path = '/api/v2/auth/signup') => requests.post(path,
+        JSON.stringify(obj)),
     user: (path = '/api/v2/auth/user') => requests.get(path)
 };

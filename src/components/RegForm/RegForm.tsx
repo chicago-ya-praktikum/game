@@ -13,6 +13,19 @@ export function RegForm() {
     const [password_state, password_setState] = useState({value: '', error: false})
     const [phone_state, phone_setState] = useState({value: '', error: false})
 
+    const formIsValid = () => !first_name_state.error
+        && !second_name_state.error
+        && !login_state.error
+        && !email_state.error
+        && !password_state.error
+        && !phone_state.error
+        && first_name_state.value !== ''
+        && second_name_state.value !== ''
+        && login_state.value !== ''
+        && email_state.value !== ''
+        && password_state.value !== ''
+        && phone_state.value !== ''
+
     type SetStateRule = (...args: any) => void
     type FieldName = string
 
@@ -41,15 +54,19 @@ export function RegForm() {
 
     const submitForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        Auth.signUp(
-            first_name_state.value,
-            second_name_state.value,
-            login_state.value,
-            email_state.value,
-            password_state.value,
-            phone_state.value
-        )
-            .then((data: any) => data)
+        if (formIsValid()) {
+            Auth.signUp({
+                first_name: first_name_state.value,
+                second_name: second_name_state.value,
+                login: login_state.value,
+                email: email_state.value,
+                password: password_state.value,
+                phone: phone_state.value
+            })
+                .then((data: any) => data)
+        } else {
+            console.log('form is invalid')
+        }
     }
 
     return (
