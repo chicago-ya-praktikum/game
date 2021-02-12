@@ -49,25 +49,42 @@ export function RegForm() {
             } else {
                 setState[name](value, true)
             }
-        }, []
+        }, [
+            first_name_state,
+            second_name_state,
+            login_state,
+            email_state,
+            password_state,
+            phone_state
+        ]
     )
 
-    const submitForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault()
-        if (formIsValid()) {
-            Auth.signUp({
-                first_name: first_name_state.value,
-                second_name: second_name_state.value,
-                login: login_state.value,
-                email: email_state.value,
-                password: password_state.value,
-                phone: phone_state.value
-            })
-                .then((data: any) => data)
-        } else {
-            console.log('form is invalid')
-        }
-    }
+    const submitForm = React.useCallback(
+        (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            e.preventDefault()
+            if (formIsValid()) {
+                Auth.signUp({
+                    first_name: first_name_state.value,
+                    second_name: second_name_state.value,
+                    login: login_state.value,
+                    email: email_state.value,
+                    password: password_state.value,
+                    phone: phone_state.value
+                })
+                    .then((data: any) => data)
+            } else {
+                // нужно нормальное сообщение об ошибке
+                throw new Error('form is invalid')
+            }
+        }, [
+            first_name_state,
+            second_name_state,
+            login_state,
+            email_state,
+            password_state,
+            phone_state
+        ]
+    )
 
     return (
         <div className="container">

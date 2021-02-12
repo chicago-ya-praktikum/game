@@ -1,5 +1,12 @@
 const API_ROOT = new URL('https://ya-praktikum.tech')
 
+const URLS = {
+    SIGNIN: '/api/v2/auth/signin',
+    SIGNUP: '/api/v2/auth/signup',
+    LOGOUT: '/api/v2/auth/logout',
+    USER_INFO: '/api/v2/auth/user'
+}
+
 const responseBody = (res: { body: any; }) => res.body;
 
 const requests = {
@@ -60,13 +67,8 @@ const requests = {
 };
 
 export const Auth = {
-    signIn: (login: any, password: any, path = '/api/v2/auth/signin') => requests.post(path,
-        JSON.stringify({
-            login,
-            password
-        })),
-    logout: (path = '/api/v2/auth/logout') => requests.post(path),
-    signUp: (obj: any, path = '/api/v2/auth/signup') => requests.post(path,
-        JSON.stringify(obj)),
-    user: (path = '/api/v2/auth/user') => requests.get(path)
+    signIn: (obj: any, path = URLS.SIGNIN) => requests.post(path, JSON.stringify(obj)),
+    logout: (path = URLS.LOGOUT) => requests.post(path),
+    signUp: (obj: any, path = URLS.SIGNUP) => requests.post(path, JSON.stringify(obj)),
+    user: (path = URLS.USER_INFO) => requests.get(path)
 };
