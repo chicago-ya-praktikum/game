@@ -64,7 +64,7 @@ export function SignInForm() {
                 <form className="form" noValidate autoComplete="off">
                     <TextField fullWidth margin="normal" error={login_state.error} color={color} label="Login" name="login" variant="outlined" onChange={(e) => inputHandler(e)}/>
                     <TextField fullWidth margin="normal" error={password_state.error} color={color} label="Password" name="password" variant="outlined" type="password" onChange={(e) => inputHandler(e)}/>
-                    <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignUp</Button>
+                    <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignIn</Button>
                 </form>
             </div>
         </div>
