@@ -37,7 +37,6 @@ export class GameCore {
     }
 
     drawLevel(level: LevelStore) {
-        // @ts-ignore
         this.level = deepClone(level)
         this.step = Math.floor(this.canvasDiameter / this.level.layerDots.length)
 
@@ -49,7 +48,6 @@ export class GameCore {
             })
         })
 
-        // @ts-ignore
         this.level.currentPosition = deepClone(this.level.initialPosition)
         const position = this.level.currentPosition as GamePosition
 

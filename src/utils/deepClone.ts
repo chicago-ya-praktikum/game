@@ -1,10 +1,10 @@
 type ClonedObject = {
-    [name: string]: ClonedValue
+    [_: string]: ClonedValue
 }
 
 type ClonedValue = ClonedValue[] | ClonedObject | number | string | boolean | null
 
-export function deepClone(object: ClonedObject): ClonedObject {
+export function deepClone<T>(object: T): T {
     const clone: ClonedObject = {}
 
     for (const [key, v] of Object.entries(object)) {
@@ -12,7 +12,7 @@ export function deepClone(object: ClonedObject): ClonedObject {
         clone[key] = cloneValue(v)
     }
 
-    return clone
+    return clone as unknown as T
 }
 
 export function cloneValue(value: ClonedValue): ClonedValue {
