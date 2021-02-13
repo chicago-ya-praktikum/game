@@ -2,6 +2,11 @@
 
 Educational team project from [praktikum.yandex.ru](https://praktikum.yandex.ru/middle-frontend)
 
-## Game history
+```
+## History
+
+
+```
+## Rules
 
 Sokoban is 2D game-puzzle.
