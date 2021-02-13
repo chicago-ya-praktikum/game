@@ -5,9 +5,8 @@ import { ErrorBoundary } from './ErrorBoundary'
 
 Enzyme.configure({ adapter: new Adapter() })
 
-const ComponentWithError = (): JSX.Element => {
-    throw new Error('TestError')
-    return <div />  
+const TastComponent = (): JSX.Element => {
+    return <div>TastComponent</div>  
 }
 
 describe('ErrorBoundary: wrapper',()=> {
@@ -15,10 +14,13 @@ describe('ErrorBoundary: wrapper',()=> {
     test('Test error', () => {
         const wrapper = mount(
             <ErrorBoundary > 
-                <ComponentWithError />
+                <TastComponent />
             </ErrorBoundary> 
-      )
-      expect(wrapper.find('h3').text()).toEqual('TestError')
+        )
+      
+    const error = new Error('test')
+    wrapper.find(TastComponent).simulateError(error)
+      
   })
 
 })
