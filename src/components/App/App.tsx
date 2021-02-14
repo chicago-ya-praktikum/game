@@ -1,11 +1,10 @@
 import React from 'react'
-import {SignInPage} from '../../pages/SignIn/SignIn'
+import {LayOut} from '../LayOut/LayOut'
 
 export function App() {
     return (
         <div className="workspace__wrapper">
-            <h1>SOKOBAN</h1>
-            <SignInPage/>
+            <LayOut/>
         </div>
     )
 }
