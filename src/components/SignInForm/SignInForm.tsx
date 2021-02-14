@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, {useState} from 'react'
 import TextField from '@material-ui/core/TextField'
@@ -23,6 +24,21 @@ export function SignInForm() {
     }
 
     const color = 'primary'
+
+    const formElements = [
+        {
+            error: login_state.error,
+            label: 'Login',
+            name: 'login',
+            type: 'text'
+        },
+        {
+            error: password_state.error,
+            label: 'Password',
+            name: 'password',
+            type: 'password'
+        }
+    ]
 
     const inputHandler = React.useCallback(
         (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -62,8 +78,21 @@ export function SignInForm() {
         <div className="container">
             <div className="form-container">
                 <form className="form" noValidate autoComplete="off">
-                    <TextField fullWidth margin="normal" error={login_state.error} color={color} label="Login" name="login" variant="outlined" onChange={(e) => inputHandler(e)}/>
-                    <TextField fullWidth margin="normal" error={password_state.error} color={color} label="Password" name="password" variant="outlined" type="password" onChange={(e) => inputHandler(e)}/>
+                    {
+                        formElements.map((input) => {
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                error={input.error}
+                                color={color}
+                                label={input.label}
+                                name={input.name}
+                                variant="outlined"
+                                type={input.type}
+                                onChange={(e) => inputHandler(e)}
+                            />
+                        })
+                    }
                     <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignIn</Button>
                 </form>
             </div>

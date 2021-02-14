@@ -40,6 +40,45 @@ export function RegForm() {
 
     const color = 'primary'
 
+    const formElements = [
+        {
+            error: first_name_state.error,
+            label: 'First name',
+            name: 'first_name',
+            type: 'text'
+        },
+        {
+            error: second_name_state.error,
+            label: 'Second name',
+            name: 'second_name',
+            type: 'text'
+        },
+        {
+            error: login_state.error,
+            label: 'Login',
+            name: 'login',
+            type: 'text'
+        },
+        {
+            error: email_state.error,
+            label: 'Email',
+            name: 'email',
+            type: 'text'
+        },
+        {
+            error: password_state.error,
+            label: 'Password',
+            name: 'password',
+            type: 'password'
+        },
+        {
+            error: phone_state.error,
+            label: 'Phone',
+            name: 'phone',
+            type: 'text'
+        }
+    ]
+
     const inputHandler = React.useCallback(
         (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             const {value, name} = e.target
@@ -90,12 +129,21 @@ export function RegForm() {
         <div className="container">
             <div className="form-container">
                 <form className="form" noValidate autoComplete="off">
-                    <TextField fullWidth margin="normal" error={first_name_state.error} color={color} label="First name" name="first_name" variant="outlined" onChange={(e) => inputHandler(e)}/>
-                    <TextField fullWidth margin="normal" error={second_name_state.error} color={color} label="Second name" name="second_name" variant="outlined" onChange={(e) => inputHandler(e)}/>
-                    <TextField fullWidth margin="normal" error={login_state.error} color={color} label="Login" name="login" variant="outlined" onChange={(e) => inputHandler(e)}/>
-                    <TextField fullWidth margin="normal" error={email_state.error} color={color} label="E-mail" name="email" variant="outlined" onChange={(e) => inputHandler(e)}/>
-                    <TextField fullWidth margin="normal" error={password_state.error} color={color} label="Password" name="password" variant="outlined" type="password" onChange={(e) => inputHandler(e)}/>
-                    <TextField fullWidth margin="normal" error={phone_state.error} color={color} label="Phone" variant="outlined" name="phone" onChange={(e) => inputHandler(e)}/>
+                    {
+                        formElements.map((input) => (
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                error={input.error}
+                                color={color}
+                                label={input.label}
+                                name={input.name}
+                                variant="outlined"
+                                type={input.type}
+                                onChange={(e) => inputHandler(e)}
+                            />
+                        ))
+                    }
                     <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignUp</Button>
                 </form>
             </div>
