@@ -1,18 +1,34 @@
-import React from 'react'
-import { Button } from '@material-ui/core'
+import React, { FC } from 'react'
+import { Box, Button, Typography, withStyles } from '@material-ui/core'
+import { styles } from './styles'
+import { Props } from './types'
 
-type Props = {
-    error?: string,
-    errorInfo?: string  
-    hideBtn?: boolean  
-}
-
-export const Err = (props: Props) => {
+const Err: FC<Props> = (props: Props) => {
+    
     return (
-        <div className='page-error'>
-            <h1>{ props.error ? props.error : 'Sorry' }</h1>
-            <h3>{ props.errorInfo ? props.errorInfo : 'Something went wrong' }</h3>
-            { props.hideBtn ? null : <Button variant="contained" color="primary" type="submit" >Back</Button> }
-        </div>
+        <Box className={props.classes.content}>
+            <Typography 
+                className={props.classes.title}
+                align='center'
+                variant='h1'
+            >
+                { props.error ? props.error : 'Sorry' }
+            </Typography>
+            <Typography 
+                align='center'
+                variant='h3'
+            >
+                { props.errorInfo ? props.errorInfo : 'Something went wrong' }
+            </Typography>
+            { props.hideBtn ? null : 
+                <Button
+                    className={props.classes.buttonBack}
+                    color='primary'
+                >
+                    Back
+                </Button> }
+        </Box>
     )
 }
+
+export default withStyles(styles)(Err)

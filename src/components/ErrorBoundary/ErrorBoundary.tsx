@@ -1,13 +1,6 @@
-import { Err } from '../../pages/Err/Err'
+import Err from '../../pages/Err/index'
 import React, { Component } from 'react'
-
-type Props = {
-}
-
-type State = {
-  hasError: boolean,
-  errorInfo?: string
-}
+import { Props, State } from './types'
 
 export class ErrorBoundary extends Component<Props, State> {
   

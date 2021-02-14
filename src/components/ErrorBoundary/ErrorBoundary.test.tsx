@@ -6,14 +6,14 @@ import { ErrorBoundary } from './ErrorBoundary'
 Enzyme.configure({ adapter: new Adapter() })
 
 const TastComponent = (): JSX.Element => {
-    return <div>TastComponent</div>  
+    return <div>TestComponent</div>  
 }
 
 describe('ErrorBoundary: wrapper',()=> {
   
     test('Test error', () => {
         const wrapper = mount(
-            <ErrorBoundary > 
+            <ErrorBoundary> 
                 <TastComponent />
             </ErrorBoundary> 
         )

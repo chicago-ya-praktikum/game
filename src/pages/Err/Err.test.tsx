@@ -1,7 +1,7 @@
 import React from 'react'
 import Enzyme, { mount } from 'enzyme'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
-import { Err } from './Err'
+import Err from './index'
 
 Enzyme.configure({ adapter: new Adapter() })
 
