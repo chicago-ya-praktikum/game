@@ -1,4 +1,4 @@
 import { memo } from 'react'
-import Comp from './Err'
+import { ErrTSX }from './Err'
 
-export default memo(Comp)
+export const Err = memo(ErrTSX)

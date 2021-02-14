@@ -4,33 +4,33 @@ import { styles } from './styles'
 import { Props } from './types'
 
 const Err: FC<Props> = (props: Props) => {
-    
+
     const { classes } = props
 
     return (
         <Box className={classes.content}>
-            <Typography 
-                className={classes.title}
+            <Typography
                 align='center'
                 variant='h1'
-            >
+                color='error'
+              >
                 { props.error ? props.error : 'Sorry' }
             </Typography>
-            <Typography 
+            <Typography
                 align='center'
                 variant='h3'
-            >
+              >
                 { props.errorInfo ? props.errorInfo : 'Something went wrong' }
             </Typography>
-            { props.hideBtn ? null : 
+            { !props.hideBtn &&
                 <Button
                     className={classes.buttonBack}
                     color='primary'
-                >
+                  >
                     Back
                 </Button> }
         </Box>
     )
 }
 
-export default withStyles(styles)(Err)
+export const ErrTSX = withStyles(styles)(Err)

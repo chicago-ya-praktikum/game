@@ -10,9 +10,6 @@ export const styles = (theme: Theme) => createStyles({
         height: '100%',
         width: '100%'
     },
-    title: {
-        color: theme.palette.error.main
-    },
     buttonBack: {
       margin: '50px'
   }
