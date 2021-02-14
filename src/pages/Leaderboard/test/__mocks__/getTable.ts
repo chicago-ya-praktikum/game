@@ -1,4 +1,4 @@
-import { LBItem } from '../types'
+import { LBItem } from '../../types'
 
 export const getTable = (): LBItem[] => {
 

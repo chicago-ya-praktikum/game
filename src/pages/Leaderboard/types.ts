@@ -1,4 +1,3 @@
-//import { FC } from 'react'
 import { WithStyles } from '@material-ui/core'
 import { styles } from './styles'
 
@@ -11,7 +10,5 @@ export type LBItem = {
 }
 
 export type Props = {
-  
-} & WithStyles<typeof styles>
 
-//export type Props = FC<OwnProps>
+} & WithStyles<typeof styles>
