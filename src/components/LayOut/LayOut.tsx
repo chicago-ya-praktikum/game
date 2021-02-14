@@ -2,6 +2,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import Link from '@material-ui/core/Link'
+import {Typography} from '@material-ui/core'
 import {SokobanMain} from '../SokobanMain/SokobanMain'
 
 export function LayOut() {
@@ -10,17 +11,17 @@ export function LayOut() {
             <Grid container spacing={3}>
                 <Grid item xs={2}>
                     <div className="paper">
-                        <Link><h3>Меню</h3></Link>
+                        <Link><Typography variant="h4" color="primary" gutterBottom>Меню</Typography></Link>
                     </div>
                 </Grid>
                 <Grid item xs={8}>
                     <div className="paper">
-                        <h1>SOKOBAN</h1>
+                        <Typography variant="h2" color="primary" gutterBottom>SOKOBAN</Typography>
                     </div>
                 </Grid>
                 <Grid item xs={2}>
                     <div className="paper">
-                        <Link><h3>Профиль/выход</h3></Link>
+                        <Link><Typography variant="h4" color="primary" gutterBottom>Профиль/выход</Typography></Link>
                     </div>
                 </Grid>
             </Grid>
