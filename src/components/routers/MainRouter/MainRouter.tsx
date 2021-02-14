@@ -1,8 +1,9 @@
 import React, { FC } from 'react'
 import { Route, Switch } from 'react-router-dom'
+import Leaderboard from '../../../pages/Leaderboard/index'
 
 export const PageHome           = () => <h1>home</h1> 
-export const PageLeaderboard    = () => <h1>leaderboard</h1> 
+export const PageLeaderboard    = Leaderboard 
 export const PageForum          = () => <h1>forum</h1> 
 export const PageGame           = () => <h1>game</h1> 
 export const PageProfile        = () => <h1>profile</h1> 
