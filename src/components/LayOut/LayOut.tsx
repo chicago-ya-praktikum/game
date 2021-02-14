@@ -1,14 +1,16 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
+import Link from '@material-ui/core/Link'
 import {SokobanMain} from '../SokobanMain/SokobanMain'
 
 export function LayOut() {
     return (
-        <Grid container direction="column" className="root">
+        <div className="root">
             <Grid container spacing={3}>
-                <Grid item xs={2} className="root">
+                <Grid item xs={2}>
                     <div className="paper">
-                        <h3>Меню</h3>
+                        <Link><h3>Меню</h3></Link>
                     </div>
                 </Grid>
                 <Grid item xs={8}>
@@ -18,7 +20,7 @@ export function LayOut() {
                 </Grid>
                 <Grid item xs={2}>
                     <div className="paper">
-                        <h3>Профиль/выход</h3>
+                        <Link><h3>Профиль/выход</h3></Link>
                     </div>
                 </Grid>
             </Grid>
@@ -30,6 +32,6 @@ export function LayOut() {
                     </div>
                 </Grid>
             </Grid>
-        </Grid>
+        </div>
     );
 }
