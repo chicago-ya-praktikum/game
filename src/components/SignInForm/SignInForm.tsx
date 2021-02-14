@@ -79,7 +79,7 @@ export function SignInForm() {
             <div className="form-container">
                 <form className="form" noValidate autoComplete="off">
                     {
-                        formElements.map((input) => {
+                        formElements.map((input) => (
                             <TextField
                                 fullWidth
                                 margin="normal"
@@ -91,7 +91,7 @@ export function SignInForm() {
                                 type={input.type}
                                 onChange={(e) => inputHandler(e)}
                             />
-                        })
+                        ))
                     }
                     <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignIn</Button>
                 </form>
