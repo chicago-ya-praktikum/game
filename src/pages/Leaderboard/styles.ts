@@ -6,11 +6,6 @@ export const styles = (theme: Theme) => createStyles({
         justifyContent: 'center',
         flexDirection: 'column'
     },
-    title: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     tableContainer: {
         display: 'flex',
         justifyContent: 'center',
@@ -22,7 +17,7 @@ export const styles = (theme: Theme) => createStyles({
         backgroundColor: theme.palette.grey[100]
     },
     mark: {
-        backgroundColor: theme.palette.success.light    
+        backgroundColor: theme.palette.success.light
     }
 })
 

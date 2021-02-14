@@ -1,5 +1,5 @@
 
 import { memo } from 'react'
-import Leaderboard from './Leaderboard'
+import { LeaderboardTSX } from './Leaderboard'
 
-export default memo(Leaderboard)
+export const Leaderboard = memo(LeaderboardTSX)

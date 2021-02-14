@@ -13,7 +13,11 @@ const Leaderboard: FC<Props> = (props: Props) => {
 
     return (
       <Box className={classes.content}>
-          <Typography className={classes.title} variant='h5'>Leaderboard</Typography>
+          <Typography
+              align='center'
+              variant='h5'
+              display='inline'
+            >Leaderboard</Typography>
           <TableContainer className={classes.tableContainer} >
               <Table className={classes.table} aria-label='simple table'>
                   <TableHead className={classes.tableHead}>
@@ -24,7 +28,7 @@ const Leaderboard: FC<Props> = (props: Props) => {
                   </TableHead>
                   <TableBody>
                       {table.map((row) => (
-                          <TableRow 
+                          <TableRow
                               key={row.id}
                               className={row.id === userId ? classes.mark : undefined }
                             >
@@ -39,4 +43,4 @@ const Leaderboard: FC<Props> = (props: Props) => {
     )
 }
 
-export default withStyles(styles)(Leaderboard)
+export const LeaderboardTSX =  withStyles(styles)(Leaderboard)

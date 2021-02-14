@@ -1,7 +1,7 @@
 import React from 'react'
 import Enzyme, { mount } from 'enzyme'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
-import Leaderboard from '../index'
+import { Leaderboard } from '../index'
 
 Enzyme.configure({ adapter: new Adapter() })
 

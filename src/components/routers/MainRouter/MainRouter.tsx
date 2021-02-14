@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Leaderboard from '../../../pages/Leaderboard/index'
+import { Leaderboard } from '../../../pages/Leaderboard/index'
 
 export const PageHome           = () => <h1>home</h1> 
 export const PageLeaderboard    = Leaderboard 
