@@ -34,10 +34,8 @@ const requests = {
         return fetch(`${url}`,
             {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include'
+                headers: requestHeaders,
+                credentials: requestCredentials
             })
             .then(responseBody)
             .catch((error) => { throw new Error(error) })
