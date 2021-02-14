@@ -5,10 +5,12 @@ import { Props } from './types'
 
 const Err: FC<Props> = (props: Props) => {
     
+    const { classes } = props
+
     return (
-        <Box className={props.classes.content}>
+        <Box className={classes.content}>
             <Typography 
-                className={props.classes.title}
+                className={classes.title}
                 align='center'
                 variant='h1'
             >
@@ -22,7 +24,7 @@ const Err: FC<Props> = (props: Props) => {
             </Typography>
             { props.hideBtn ? null : 
                 <Button
-                    className={props.classes.buttonBack}
+                    className={classes.buttonBack}
                     color='primary'
                 >
                     Back
