@@ -70,7 +70,7 @@ const requests = {
                     'Content-Type': 'application/json'
                 },
                 credentials: 'include',
-                body
+                body: JSON.stringify(body)
             })
             .then(responseBody)
             .catch((error) => { throw new Error(error) })
@@ -78,8 +78,8 @@ const requests = {
 };
 
 export const Auth = {
-    signIn: (obj: SignInObj, path = URLS.SIGNIN) => requests.post(path, JSON.stringify(obj)),
+    signIn: (obj: SignInObj, path = URLS.SIGNIN) => requests.post(path, obj),
     logout: (path = URLS.LOGOUT) => requests.post(path),
-    signUp: (obj: SignUpObj, path = URLS.SIGNUP) => requests.post(path, JSON.stringify(obj)),
+    signUp: (obj: SignUpObj, path = URLS.SIGNUP) => requests.post(path, obj),
     user: (path = URLS.USER_INFO) => requests.get(path)
 };
