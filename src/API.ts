@@ -18,6 +18,14 @@ type SignUpObj = {
 
 type SignInObj = Partial<SignUpObj>
 
+type RequestObject = SignInObj | SignUpObj | null
+
+const requestHeaders = {
+    'Content-Type': 'application/json'
+}
+
+const requestCredentials = 'include'
+
 const responseBody = (res: { body: any; }) => res.body;
 
 const requests = {
@@ -39,37 +47,31 @@ const requests = {
         return fetch(`${url}`,
             {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include'
+                headers: requestHeaders,
+                credentials: requestCredentials
             })
             .then(responseBody)
             .catch((error) => { throw new Error(error) })
     },
-    patch: (path: string, body: any) => {
+    patch: (path: string, body: RequestObject) => {
         const url = new URL(path, API_ROOT)
         return fetch(`${url}`,
             {
                 method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body
+                headers: requestHeaders,
+                credentials: requestCredentials,
+                body: JSON.stringify(body)
             })
             .then(responseBody)
             .catch((error) => { throw new Error(error) })
     },
-    post: (path: string, body: any = null) => {
+    post: (path: string, body: RequestObject = null) => {
         const url = new URL(path, API_ROOT)
         return fetch(`${url}`,
             {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
+                headers: requestHeaders,
+                credentials: requestCredentials,
                 body: JSON.stringify(body)
             })
             .then(responseBody)
