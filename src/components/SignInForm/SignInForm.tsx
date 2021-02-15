@@ -82,9 +82,9 @@ const SignInForm: FC<Props> = (props: Props) => {
     return (
         <form className={classes.root} noValidate autoComplete="off">
             {
-                formElements.map((input, i) => (
+                formElements.map((input) => (
                     <TextField
-                        key={i}
+                        key={input.name}
                         fullWidth
                         margin="normal"
                         error={input.error}

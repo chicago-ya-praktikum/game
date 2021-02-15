@@ -134,6 +134,7 @@ const RegForm: FC<Props> = (props: Props) => {
             {
                 formElements.map((input) => (
                     <TextField
+                        key={input.name}
                         fullWidth
                         margin="normal"
                         error={input.error}

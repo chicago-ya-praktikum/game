@@ -1,10 +1,10 @@
 import React from 'react'
-import {LayOut} from '../LayOut/index'
+import {SignInPage} from '../../pages/SignIn/SignIn'
 
 export function App() {
     return (
         <div className="workspace__wrapper">
-            <LayOut/>
+            <SignInPage/>
         </div>
     )
 }
