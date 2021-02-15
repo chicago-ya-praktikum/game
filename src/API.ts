@@ -18,7 +18,7 @@ type SignUpObj = {
 
 type SignInObj = Partial<SignUpObj>
 
-type RequestObject = SignInObj | SignUpObj | null
+type RequestObject = SignInObj | SignUpObj
 
 const requestHeaders = {
     'Content-Type': 'application/json'
@@ -34,10 +34,8 @@ const requests = {
         return fetch(`${url}`,
             {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include'
+                headers: requestHeaders,
+                credentials: requestCredentials
             })
             .then(responseBody)
             .catch((error) => { throw new Error(error) })
@@ -53,7 +51,7 @@ const requests = {
             .then(responseBody)
             .catch((error) => { throw new Error(error) })
     },
-    patch: (path: string, body: RequestObject) => {
+    patch: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
         return fetch(`${url}`,
             {
@@ -65,7 +63,7 @@ const requests = {
             .then(responseBody)
             .catch((error) => { throw new Error(error) })
     },
-    post: (path: string, body: RequestObject = null) => {
+    post: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
         return fetch(`${url}`,
             {
