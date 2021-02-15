@@ -1,12 +1,17 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable array-callback-return */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, {useState} from 'react'
+import React, {FC, useState} from 'react'
+import {Button, withStyles} from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
-import {Button} from '@material-ui/core'
 import {validateInput} from '../../utils/validateInput'
 import {Auth} from '../../API'
+import {styles} from './styles'
+import {Props} from './types'
 
-export function SignInForm() {
+const SignInForm: FC<Props> = (props: Props) => {
+    const {classes} = props
+
     const [login_state, login_setState] = useState({value: '', error: false})
     const [password_state, password_setState] = useState({value: '', error: false})
 
@@ -19,8 +24,8 @@ export function SignInForm() {
     type FieldName = string
 
     const setState: Record<FieldName, SetStateRule> = {
-        login: (value: string, error: boolean) => login_setState({value, error}),
-        password: (value: string, error: boolean) => password_setState({value, error})
+        login: (obj) => login_setState(obj),
+        password: (obj) => password_setState(obj)
     }
 
     const color = 'primary'
@@ -44,10 +49,10 @@ export function SignInForm() {
         (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             const {value, name} = e.target
             const status = validateInput(name, value)
-            if (status) {
-                setState[name](value, false)
+            if (status || value === '') {
+                setState[name]({value, error: false})
             } else {
-                setState[name](value, true)
+                setState[name]({value, error: true})
             }
         }, [
             login_state,
@@ -75,27 +80,25 @@ export function SignInForm() {
     )
 
     return (
-        <div className="container">
-            <div className="form-container">
-                <form className="form" noValidate autoComplete="off">
-                    {
-                        formElements.map((input) => (
-                            <TextField
-                                fullWidth
-                                margin="normal"
-                                error={input.error}
-                                color={color}
-                                label={input.label}
-                                name={input.name}
-                                variant="outlined"
-                                type={input.type}
-                                onChange={(e) => inputHandler(e)}
-                            />
-                        ))
-                    }
-                    <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignIn</Button>
-                </form>
-            </div>
-        </div>
+        <form className={classes.root} noValidate autoComplete="off">
+            {
+                formElements.map((input, i) => (
+                    <TextField
+                        key={i}
+                        fullWidth
+                        margin="normal"
+                        error={input.error}
+                        color={color}
+                        label={input.label}
+                        name={input.name}
+                        variant="outlined"
+                        type={input.type}
+                        onChange={(e) => inputHandler(e)}
+                    />
+                ))
+            }
+            <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignIn</Button>
+        </form>
     )
 }
+export const SignInFormTSX = withStyles(styles)(SignInForm)

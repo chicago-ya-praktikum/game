@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, {useState} from 'react'
-import TextField from '@material-ui/core/TextField'
-import {Button} from '@material-ui/core'
+import React, {FC, useState} from 'react'
+import {Button, withStyles} from '@material-ui/core'
+import TextField from '@material-ui/core/TextField';
 import {validateInput} from '../../utils/validateInput'
 import {Auth} from '../../API'
+import {styles} from './styles'
+import {Props} from './types'
 
-export function RegForm() {
+const RegForm: FC<Props> = (props: Props) => {
+    const {classes} = props
+
     const [first_name_state, first_name_setState] = useState({value: '', error: false})
     const [second_name_state, second_name_setState] = useState({value: '', error: false})
     const [login_state, login_setState] = useState({value: '', error: false})
@@ -30,12 +34,12 @@ export function RegForm() {
     type FieldName = string
 
     const setState: Record<FieldName, SetStateRule> = {
-        first_name: (value: string, error: boolean) => first_name_setState({value, error}),
-        second_name: (value: string, error: boolean) => second_name_setState({value, error}),
-        login: (value: string, error: boolean) => login_setState({value, error}),
-        password: (value: string, error: boolean) => password_setState({value, error}),
-        email: (value: string, error: boolean) => email_setState({value, error}),
-        phone: (value: string, error: boolean) => phone_setState({value, error})
+        first_name: (obj) => first_name_setState(obj),
+        second_name: (obj) => second_name_setState(obj),
+        login: (obj) => login_setState(obj),
+        password: (obj) => password_setState(obj),
+        email: (obj) => email_setState(obj),
+        phone: (obj) => phone_setState(obj)
     }
 
     const color = 'primary'
@@ -83,10 +87,10 @@ export function RegForm() {
         (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             const {value, name} = e.target
             const status = validateInput(name, value)
-            if (status) {
-                setState[name](value, false)
+            if (status || value === '') {
+                setState[name]({value, error: false})
             } else {
-                setState[name](value, true)
+                setState[name]({value, error: true})
             }
         }, [
             first_name_state,
@@ -126,27 +130,24 @@ export function RegForm() {
     )
 
     return (
-        <div className="container">
-            <div className="form-container">
-                <form className="form" noValidate autoComplete="off">
-                    {
-                        formElements.map((input) => (
-                            <TextField
-                                fullWidth
-                                margin="normal"
-                                error={input.error}
-                                color={color}
-                                label={input.label}
-                                name={input.name}
-                                variant="outlined"
-                                type={input.type}
-                                onChange={(e) => inputHandler(e)}
-                            />
-                        ))
-                    }
-                    <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignUp</Button>
-                </form>
-            </div>
-        </div>
+        <form className={classes.root} noValidate autoComplete="off">
+            {
+                formElements.map((input) => (
+                    <TextField
+                        fullWidth
+                        margin="normal"
+                        error={input.error}
+                        color={color}
+                        label={input.label}
+                        name={input.name}
+                        variant="outlined"
+                        type={input.type}
+                        onChange={(e) => inputHandler(e)}
+                    />
+                ))
+            }
+            <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignUp</Button>
+        </form>
     )
 }
+export const RegFormTSX = withStyles(styles)(RegForm)
