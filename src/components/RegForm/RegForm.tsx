@@ -34,12 +34,12 @@ const RegForm: FC<Props> = (props: Props) => {
     type FieldName = string
 
     const setState: Record<FieldName, SetStateRule> = {
-        first_name: (obj) => first_name_setState(obj),
-        second_name: (obj) => second_name_setState(obj),
-        login: (obj) => login_setState(obj),
-        password: (obj) => password_setState(obj),
-        email: (obj) => email_setState(obj),
-        phone: (obj) => phone_setState(obj)
+        first_name: first_name_setState,
+        second_name: second_name_setState,
+        login: login_setState,
+        password: password_setState,
+        email: email_setState,
+        phone: phone_setState
     }
 
     const color = 'primary'

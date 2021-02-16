@@ -24,8 +24,8 @@ const SignInForm: FC<Props> = (props: Props) => {
     type FieldName = string
 
     const setState: Record<FieldName, SetStateRule> = {
-        login: (obj) => login_setState(obj),
-        password: (obj) => password_setState(obj)
+        login: login_setState,
+        password: password_setState
     }
 
     const color = 'primary'
