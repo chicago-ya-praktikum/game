@@ -1,10 +1,14 @@
 import React from 'react'
-import {SignInPage} from '../../pages/SignIn/SignIn'
+import { BrowserRouter } from 'react-router-dom'
+import { MainRouter } from '../routers/MainRouter/MainRouter'
+import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary'
 
 export function App() {
     return (
-        <div className="workspace__wrapper">
-            <SignInPage/>
-        </div>
+        <ErrorBoundary>
+            <BrowserRouter>
+                <MainRouter/>
+            </BrowserRouter>
+        </ErrorBoundary>
     )
 }
