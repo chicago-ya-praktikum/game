@@ -13,8 +13,17 @@ export const styles = () => createStyles({
     head: {
 
     },
-    body: {
-
+    data: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexDirection: 'column'
+    },
+    password: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexDirection: 'column'
     }
 
 })

@@ -22,7 +22,8 @@ export function validateInput(inputName: string | number, inputValue: any) {
 	    password: (value) => value.length > 6,
 	    oldPassword: (value) => value.length > 6,
 	    newPassword: (value) => value.length > 6,
-	    email: (value) => {
+	    nickname: (value) => value.length > 4,
+        email: (value) => {
 	        const regexpEmail = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm;
 	        return regexpEmail.test(value);
 	    },
@@ -31,7 +32,10 @@ export function validateInput(inputName: string | number, inputValue: any) {
 	        return regexpPhone.test(value)
 	    }
 	}
-	status = validationRules[inputName](inputValue)
+
+    if (!validationRules[inputName]) return true
+
+    status = validationRules[inputName](inputValue)
 
 	return status;
 }

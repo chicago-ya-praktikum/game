@@ -1,7 +1,7 @@
 import React from 'react'
 import Enzyme, { mount } from 'enzyme'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
-import { UIInput } from './index'
+import { InputUI } from './index'
 
 Enzyme.configure({ adapter: new Adapter() })
 
@@ -10,7 +10,7 @@ describe('Err: wrapper',()=> {
     test('All props', () => {
 
         const wrapper = mount(
-            <UIInput error={true} id='id' name='name' label='label' />
+            <InputUI error={true} id='id' name='name' label='label' />
         )
 
         expect(wrapper.find('h1').text()).toEqual('TestTitle')

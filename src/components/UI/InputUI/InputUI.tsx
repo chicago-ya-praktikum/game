@@ -3,7 +3,7 @@ import { TextField, withStyles } from '@material-ui/core'
 import { styles } from './styles'
 import { Props, FunctionOnBlur } from './types'
 
-const UIInput: FC<Props> = (props: Props) => {
+const InputUI: FC<Props> = (props: Props) => {
 
     return (
 
@@ -20,4 +20,4 @@ const UIInput: FC<Props> = (props: Props) => {
     )
 }
 
-export const UIInputTSX = withStyles(styles)(UIInput)
+export const InputUITSX = withStyles(styles)(InputUI)

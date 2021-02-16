@@ -8,3 +8,7 @@ export type Props = {
     // hideBtn?: boolean
 
 } & WithStyles<typeof styles>
+
+export type State = {
+    nickname: string
+}
