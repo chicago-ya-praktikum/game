@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { PageError, PageForum, PageGame, PageHome, PageLeaderboard, PageProfile, PageSignin, PageSignup, 
+import { PageError, PageForum, PageGame, PageHome, PageLeaderboard, PageProfile, PageSignin, PageSignup,
     routeForum, routeGame, routeHome, routeLeaderboard, routeProfile, routeSignin, routeSignup } from './constants'
 
 export const MainRouter: FC = () => {
-    
+
     return (
         <Switch>
             <Route path={ routeHome }         exact component={ PageHome } />

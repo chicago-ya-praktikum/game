@@ -1,6 +1,6 @@
-import { createStyles, Theme } from "@material-ui/core";
+import { createStyles } from "@material-ui/core";
 
-export const styles = (theme: Theme) => createStyles({
+export const styles = () => createStyles({
     content: {
         display: 'flex',
         justifyContent: 'center',
