@@ -6,6 +6,10 @@ declare global {
     }
 }
 
+function minLength(value: string, length: number) {
+    return value.length > length
+}
+
 export function validateInput(inputName: string | number, inputValue: any) {
     let status = false;
 
@@ -13,15 +17,15 @@ export function validateInput(inputName: string | number, inputValue: any) {
 	type FieldName = string;
 
 	const validationRules: Record<FieldName, ValidationRule> = {
-	    first_name: (value) => value.length > 4,
-	    second_name: (value) => value.length > 4,
-	    display_name: (value) => value.length > 4,
-	    login: (value) => value.length > 4,
-	    message: (value) => value.length > 4,
-	    title: (value) => value.length > 4,
-	    password: (value) => value.length > 6,
-	    oldPassword: (value) => value.length > 6,
-	    newPassword: (value) => value.length > 6,
+	    first_name: (value) => minLength(value, 4),
+	    second_name: (value) => minLength(value, 4),
+	    display_name: (value) => minLength(value, 4),
+	    login: (value) => minLength(value, 4),
+	    message: (value) => minLength(value, 4),
+	    title: (value) => minLength(value, 4),
+	    password: (value) => minLength(value, 6),
+	    oldPassword: (value) => minLength(value, 6),
+	    newPassword: (value) => minLength(value, 6),
 	    email: (value) => {
 	        const regexpEmail = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm;
 	        return regexpEmail.test(value);

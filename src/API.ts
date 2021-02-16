@@ -1,45 +1,85 @@
-const API_ROOT = 'https://ya-praktikum.tech/api/v2';
+const API_ROOT = new URL('https://ya-praktikum.tech')
+
+const URLS = {
+    SIGNIN: '/api/v2/auth/signin',
+    SIGNUP: '/api/v2/auth/signup',
+    LOGOUT: '/api/v2/auth/logout',
+    USER_INFO: '/api/v2/auth/user'
+}
+
+type SignUpObj = {
+    first_name: string,
+    second_name: string,
+    login: string,
+    email: string,
+    password: string,
+    phone: string
+}
+
+type SignInObj = Partial<SignUpObj>
+
+type RequestObject = SignInObj | SignUpObj
+
+const requestHeaders = {
+    'Content-Type': 'application/json'
+}
+
+const requestCredentials = 'include'
 
 const responseBody = (res: { body: any; }) => res.body;
 
 const requests = {
-    del: (url: string) => fetch(`${API_ROOT}${url}`,
-        {
-            method: 'DELETE'
-        })
-        .then(responseBody)
-        .catch(() => { }),
-    get: (url: any) => fetch(`${API_ROOT}${url}`,
-        {
-            method: 'GET'
-        })
-        .then(responseBody)
-        .catch(() => { }),
-    patch: (url: any, body: any) => fetch(`${API_ROOT}${url}`,
-        {
-            method: 'PATCH',
-            body
-        })
-        .then(responseBody)
-        .catch(() => { }),
-    post: (url: any, body: any) => fetch(`${API_ROOT}${url}`,
-        {
-            method: 'POST',
-            body
-        })
-        .then(responseBody)
-        .catch(() => { })
+    del: (path: string) => {
+        const url = new URL(path, API_ROOT)
+        return fetch(`${url}`,
+            {
+                method: 'DELETE',
+                headers: requestHeaders,
+                credentials: requestCredentials
+            })
+            .then(responseBody)
+            .catch((error) => { throw new Error(error) })
+    },
+    get: (path: string) => {
+        const url = new URL(path, API_ROOT)
+        return fetch(`${url}`,
+            {
+                method: 'GET',
+                headers: requestHeaders,
+                credentials: requestCredentials
+            })
+            .then(responseBody)
+            .catch((error) => { throw new Error(error) })
+    },
+    patch: (path: string, body?: RequestObject) => {
+        const url = new URL(path, API_ROOT)
+        return fetch(`${url}`,
+            {
+                method: 'PATCH',
+                headers: requestHeaders,
+                credentials: requestCredentials,
+                body: JSON.stringify(body)
+            })
+            .then(responseBody)
+            .catch((error) => { throw new Error(error) })
+    },
+    post: (path: string, body?: RequestObject) => {
+        const url = new URL(path, API_ROOT)
+        return fetch(`${url}`,
+            {
+                method: 'POST',
+                headers: requestHeaders,
+                credentials: requestCredentials,
+                body: JSON.stringify(body)
+            })
+            .then(responseBody)
+            .catch((error) => { throw new Error(error) })
+    }
 };
 
 export const Auth = {
-    signIn: (path = '/auth/signin') => requests.post(path, {}),
-    logout: (path = '/api/v1.0/auth/logout') => requests.post(path, {}),
-    signUp: (firstName: string, secondName: string, email: string, login: string, password: string, phone: string, path = '/auth/signup') => requests.post(path, {
-                first_name: firstName,
-                second_name: secondName,
-                email: email,
-                login: login,
-                password: password,
-                phone: phone
-    })
+    signIn: (obj: SignInObj, path = URLS.SIGNIN) => requests.post(path, obj),
+    logout: (path = URLS.LOGOUT) => requests.post(path),
+    signUp: (obj: SignUpObj, path = URLS.SIGNUP) => requests.post(path, obj),
+    user: (path = URLS.USER_INFO) => requests.get(path)
 };

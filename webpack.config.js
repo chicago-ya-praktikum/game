@@ -8,8 +8,7 @@ module.exports = {
         writeToDisk: true,
         hot: true,
         overlay: true,
-        open: true,
-        port: 8000
+        open: true
     },
     entry: './src/index.tsx',
     output: {
