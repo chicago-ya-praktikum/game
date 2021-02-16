@@ -1,11 +1,14 @@
 import React from 'react'
-import {SignUpPage} from '../../pages/SignUp/SignUp'
+import { BrowserRouter } from 'react-router-dom'
+import { MainRouter } from '../routers/MainRouter/MainRouter'
+import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary'
 
 export function App() {
     return (
-        <div className="workspace__wrapper">
-            <h1>SOKOBAN</h1>
-            <SignUpPage/>
-        </div>
+        <ErrorBoundary>
+            <BrowserRouter>
+                <MainRouter/>
+            </BrowserRouter>
+        </ErrorBoundary>
     )
 }
