@@ -2,7 +2,7 @@
 
 Educational team project from [praktikum.yandex.ru](https://praktikum.yandex.ru/middle-frontend)
 
-[Deploy: https://chicago-sokoban.herokuapp.com](https://chicago-sokoban.herokuapp.com/)
+[https://chicago-sokoban.herokuapp.com](https://chicago-sokoban.herokuapp.com/)
 
 ## Rules
 
