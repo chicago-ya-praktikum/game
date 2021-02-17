@@ -82,7 +82,7 @@ const Profile: FC<Props> = (props: Props) => {
                     id='nickname'
                     name='nickname'
                     label='Nickname (required)'
-                    variant     ='outlined'
+                    variant='outlined'
                     error={nicknameErr}
                     onBlur={(e) => onBlurHandler(e)}/>
                 {/* <TextField id='gender' label='Gender' error={genderErr} onBlur={onBlurHandler}/>
