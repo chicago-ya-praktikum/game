@@ -10,6 +10,9 @@ export const styles = () => createStyles({
         height: '100%',
         width: '100%'
     },
+    inputFile: {
+        display: 'none'
+    },
     head: {
 
     },

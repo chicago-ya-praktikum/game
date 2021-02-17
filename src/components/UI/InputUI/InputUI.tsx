@@ -9,7 +9,7 @@ const InputUI: FC<Props> = (props: Props) => {
 
         <TextField
             error       ={props.error}
-            color       ={props.color || 'primary'}
+            //color       ={props.color || 'primary'}
             id          ={props.id}
             name        ={props.name || props.id}
             label       ={props.label}
