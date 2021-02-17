@@ -130,7 +130,7 @@ export class GameCore {
     }
 
     private invalidDynamicCoordinate(coordinate: XYCoordinate) {
-        const fn = (c: number) => c < 1 || c > this.level.layerDots.length - 2
+        const fn = (c: number) => c < 0 || c > this.level.layerDots.length - 1
 
         return fn(coordinate.x) || fn(coordinate.y)
     }
@@ -171,11 +171,11 @@ export class GameCore {
             .find((c) => c.x === x && c.y === y)
     }
 
-    private isWall(coordinate: XYCoordinate) {
-        return this.level.layerDots[coordinate.y][coordinate.x] === LayerContent.Wall
+    private isWall({x, y}: XYCoordinate) {
+        return this.invalidDynamicCoordinate({x, y}) || this.level.layerDots[y][x] === LayerContent.Wall
     }
 
-    private isBoxSpace(coordinate: XYCoordinate) {
-        return this.level.layerDots[coordinate.y][coordinate.x] === LayerContent.BoxSpace
+    private isBoxSpace({x, y}: XYCoordinate) {
+        return this.level.layerDots[y][x] === LayerContent.BoxSpace
     }
 }

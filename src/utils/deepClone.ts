@@ -4,7 +4,7 @@ type ClonedObject = {
 
 type ClonedValue = ClonedValue[] | ClonedObject | number | string | boolean | null
 
-export function deepClone<T>(object: T): T {
+export function deepClone<T>(object: T) {
     const clone: ClonedObject = {}
 
     for (const [key, v] of Object.entries(object)) {

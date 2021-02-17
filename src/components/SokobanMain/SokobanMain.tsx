@@ -2,11 +2,13 @@ import React, {memo, useCallback, useEffect, useRef, useState} from 'react'
 import './SokobanMain.sass'
 import {Button} from '@material-ui/core'
 import {GameCore} from '../../GameCore/GameCore'
-import {exampleLevel} from '../../GameCore/constants/exampleLevel'
+import {SokobanGenerator} from '../../SokobanGenerator/SokobanGenerator'
+import {LevelStore} from '../../GameCore/models/LevelStore'
 
 export const SokobanMain = memo(() => {
     const ref = useRef<HTMLCanvasElement>(null)
     let gameCore: GameCore
+    let level: LevelStore
     const [gameClass, setGameClass] = useState('block')
     const [endClass, setEndClass] = useState('hide')
 
@@ -27,7 +29,8 @@ export const SokobanMain = memo(() => {
             throw new Error('canvas is null')
         }
 
-        gameCore = new GameCore(canvas).drawLevel(exampleLevel)
+        level = SokobanGenerator()
+        gameCore = new GameCore(canvas).drawLevel(level)
 
         const fn = (event: KeyboardEvent) => gameCore.move(event)
 
@@ -41,12 +44,13 @@ export const SokobanMain = memo(() => {
     }, [])
 
     const restart = useCallback(() => {
-        gameCore.drawLevel(exampleLevel)
+        gameCore.drawLevel(level)
     }, [])
 
     const next = useCallback(() => {
         game()
-        gameCore.drawLevel(exampleLevel)
+        level = SokobanGenerator()
+        gameCore.drawLevel(level)
     }, [])
 
     return (
@@ -57,6 +61,7 @@ export const SokobanMain = memo(() => {
                     <Button onClick={next}>Next</Button>
                 </div>
                 <canvas
+                    className="bordered"
                     height="400"
                     width="400"
                     ref={ref}
