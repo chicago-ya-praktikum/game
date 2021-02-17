@@ -1,61 +1,36 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable array-callback-return */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, {FC, useState} from 'react'
 import {Button, withStyles} from '@material-ui/core'
-import TextField from '@material-ui/core/TextField';
+import TextField from '@material-ui/core/TextField'
 import {validateInput} from '../../utils/validateInput'
 import {Auth} from '../../API'
 import {styles} from './styles'
 import {Props} from './types'
 
-const RegForm: FC<Props> = (props: Props) => {
+const SignInForm: FC<Props> = (props: Props) => {
     const {classes} = props
 
-    const [firstNameState, firstNameSetState] = useState({value: '', error: false})
-    const [secondNameState, secondNameSetState] = useState({value: '', error: false})
     const [loginState, loginSetState] = useState({value: '', error: false})
-    const [emailState, emailSetState] = useState({value: '', error: false})
     const [passwordState, passwordSetState] = useState({value: '', error: false})
-    const [phoneState, phoneSetState] = useState({value: '', error: false})
 
-    const formIsValid = () => !firstNameState.error
-        && !secondNameState.error
-        && !loginState.error
-        && !emailState.error
+    const formIsValid = () => !loginState.error
         && !passwordState.error
-        && !phoneState.error
-        && firstNameState.value !== ''
-        && secondNameState.value !== ''
         && loginState.value !== ''
-        && emailState.value !== ''
         && passwordState.value !== ''
-        && phoneState.value !== ''
 
     type SetStateRule = (...args: any) => void
     type FieldName = string
 
     const setState: Record<FieldName, SetStateRule> = {
-        first_name: firstNameSetState,
-        second_name: secondNameSetState,
         login: loginSetState,
-        password: passwordSetState,
-        email: emailSetState,
-        phone: phoneSetState
+        password: passwordSetState
     }
 
     const color = 'primary'
 
     const formElements = [
-        {
-            error: firstNameState.error,
-            label: 'First name',
-            name: 'first_name',
-            type: 'text'
-        },
-        {
-            error: secondNameState.error,
-            label: 'Second name',
-            name: 'second_name',
-            type: 'text'
-        },
         {
             error: loginState.error,
             label: 'Login',
@@ -63,22 +38,10 @@ const RegForm: FC<Props> = (props: Props) => {
             type: 'text'
         },
         {
-            error: emailState.error,
-            label: 'Email',
-            name: 'email',
-            type: 'text'
-        },
-        {
             error: passwordState.error,
             label: 'Password',
             name: 'password',
             type: 'password'
-        },
-        {
-            error: phoneState.error,
-            label: 'Phone',
-            name: 'phone',
-            type: 'text'
         }
     ]
 
@@ -92,12 +55,8 @@ const RegForm: FC<Props> = (props: Props) => {
                 setState[name]({value, error: true})
             }
         }, [
-            firstNameState,
-            secondNameState,
             loginState,
-            emailState,
-            passwordState,
-            phoneState
+            passwordState
         ]
     )
 
@@ -105,26 +64,18 @@ const RegForm: FC<Props> = (props: Props) => {
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
             if (formIsValid()) {
-                Auth.signUp({
-                    first_name: firstNameState.value,
-                    second_name: secondNameState.value,
+                Auth.signIn({
                     login: loginState.value,
-                    email: emailState.value,
-                    password: passwordState.value,
-                    phone: phoneState.value
+                    password: passwordState.value
                 })
                     .then((data: any) => data)
             } else {
-                // нужно нормальное сообщение об ошибке
+            // нужно нормальное сообщение об ошибке
                 throw new Error('form is invalid')
             }
         }, [
-            firstNameState,
-            secondNameState,
             loginState,
-            emailState,
-            passwordState,
-            phoneState
+            passwordState
         ]
     )
 
@@ -147,9 +98,9 @@ const RegForm: FC<Props> = (props: Props) => {
                         />
                     ))
                 }
-                <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignUp</Button>
+                <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignIn</Button>
             </form>
         </div>
     )
 }
-export const RegFormTSX = withStyles(styles)(RegForm)
+export const SignInFormTSX = withStyles(styles)(SignInForm)

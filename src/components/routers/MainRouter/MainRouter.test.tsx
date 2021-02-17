@@ -1,24 +1,22 @@
-import { MemoryRouter } from 'react-router-dom'
+import {MemoryRouter} from 'react-router-dom'
 import React from 'react'
-import { PageHome, PageForum, PageLeaderboard, PageGame, PageProfile, PageSignin, PageSignup, PageError,
-        routeHome, routeLeaderboard, routeForum, routeGame, routeProfile, routeSignup, routeSignin,
-} from './constants'
-import { MainRouter } from './MainRouter'
-import Enzyme, { mount } from 'enzyme'
+import Enzyme, {mount} from 'enzyme'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
+import {
+    PageHome, PageForum, PageLeaderboard, PageGame, PageProfile, PageSignin, PageSignup, PageError,
+    routeHome, routeLeaderboard, routeForum, routeGame, routeProfile, routeSignup, routeSignin
+} from './constants'
+import {MainRouter} from './MainRouter'
 
-Enzyme.configure({ adapter: new Adapter() })
+Enzyme.configure({adapter: new Adapter()})
 
 describe('MainRouter: wrapper', () => {
+    const getWrapper = (route: string) => mount(
+        <MemoryRouter initialEntries={[route]} >
+            <div><MainRouter/></div>
+        </MemoryRouter>
+    )
 
-    const getWrapper = (route: string) => {
-        return mount(
-            <MemoryRouter initialEntries={ [route]} >
-                <div><MainRouter /></div>
-            </MemoryRouter>
-        )
-    }
-    
     test('should render the home page', () => {
         expect(getWrapper(routeHome).find(PageHome)).toHaveLength(1)
     })
@@ -50,5 +48,4 @@ describe('MainRouter: wrapper', () => {
     test('should render the error page', () => {
         expect(getWrapper('/random').find(PageError)).toHaveLength(1)
     })
-
 })

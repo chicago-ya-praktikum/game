@@ -1,4 +1,4 @@
-import { createStyles } from "@material-ui/core";
+import {createStyles} from '@material-ui/core';
 
 export const styles = () => createStyles({
     content: {
@@ -11,6 +11,6 @@ export const styles = () => createStyles({
         width: '100%'
     },
     buttonBack: {
-      margin: '50px'
-  }
+        margin: '50px'
+    }
 })

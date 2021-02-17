@@ -1,19 +1,23 @@
-import {LevelStore} from '../models/LevelStore'
-import {LayerContent} from '../enums/LayerContent'
-import {XYCoordinate} from '../models/XYCoordinate'
-import {DynamicContent} from '../enums/DynamicContent'
-import {EventKey} from '../enums/EventKey'
-import {BoxSpaceDot} from '../models/dots/BoxSpaceDot'
-import {getDotConstructor} from './getDotConstructor'
-import {getDynamicConstructor} from './getDynamicConstructor'
-import {ClearDot} from '../models/dots/ClearDot'
-import {deepClone} from './deepClone'
+import {LevelStore} from './models/LevelStore'
+import {LayerContent} from './enums/LayerContent'
+import {XYCoordinate} from './models/XYCoordinate'
+import {DynamicContent} from './enums/DynamicContent'
+import {EventKey} from './enums/EventKey'
+import {BoxSpaceDot} from './models/dots/BoxSpaceDot'
+import {getDotConstructor} from './helpers/getDotConstructor'
+import {getDynamicConstructor} from './helpers/getDynamicConstructor'
+import {ClearDot} from './models/dots/ClearDot'
+import {deepClone} from '../utils/deepClone'
+import {UpdateListener} from '../models/UpdateListener'
+import {GamePosition} from './models/GamePosition'
 
 export class GameCore {
     private ctx: CanvasRenderingContext2D
     private level!: LevelStore
     private readonly canvasDiameter: number
     private step!: number
+
+    end = new UpdateListener<boolean>()
 
     constructor(canvas: HTMLCanvasElement) {
         const ctx = canvas.getContext('2d')
@@ -33,23 +37,22 @@ export class GameCore {
     }
 
     drawLevel(level: LevelStore) {
-        this.level = level
-        // @ts-ignore
-        this.level.currentPosition = deepClone(level.initialPosition)
-        this.step = Math.floor(this.canvasDiameter / level.layerDots.length)
+        this.level = deepClone(level)
+        this.step = Math.floor(this.canvasDiameter / this.level.layerDots.length)
 
-        level.layerDots.forEach((row, y) => {
+        this.level.layerDots.forEach((row, y) => {
             row.forEach((dot, x) => {
+                new ClearDot(this.ctx, this.step, {x, y}).draw()
                 const constructor = getDotConstructor(dot)
                 new constructor(this.ctx, this.step, {x, y}).draw()
             })
         })
 
-        const {initialPosition} = level
+        this.level.currentPosition = deepClone(this.level.initialPosition)
+        const position = this.level.currentPosition as GamePosition
 
-        this.drawDynamicContent(initialPosition.playerCoordinate, DynamicContent.Player)
-
-        initialPosition.boxesCoordinates
+        this.drawDynamicContent(position.playerCoordinate, DynamicContent.Player)
+        position.boxesCoordinates
             .forEach((coordinate) => this.drawDynamicContent(coordinate, DynamicContent.Box))
 
         return this
@@ -123,8 +126,7 @@ export class GameCore {
             }
         }
 
-        // eslint-disable-next-line no-console
-        console.log('all boxes on places')
+        this.end.value = true
     }
 
     private invalidDynamicCoordinate(coordinate: XYCoordinate) {
