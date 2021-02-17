@@ -1,9 +1,10 @@
-FROM node:13 
+FROM node:13
 
-COPY . /app
+WORKDIR app
+COPY . .
 
-RUN npm install
+RUN npm install && npm run build
 
 EXPOSE 80
 
-CMD cd app && npm run prod
+CMD npm run build-run
