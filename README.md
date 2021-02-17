@@ -2,6 +2,8 @@
 
 Educational team project from [praktikum.yandex.ru](https://praktikum.yandex.ru/middle-frontend)
 
+[Deploy](https://chicago-sokoban.herokuapp.com/)
+
 ## Rules
 
 Sokoban (Soko-Ban, [jpn](https://ru.wikipedia.org/wiki/%D0%AF%D0%BF%D0%BE%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_%D1%8F%D0%B7%D1%8B%D0%BA). 倉庫番, sokoban — storekeeper) is 2D game-puzzle, in which the player must place the boxes in the designated places of the maze. The storekeeper can only move one box at a time by pushing it forward.
