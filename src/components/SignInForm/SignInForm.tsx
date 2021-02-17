@@ -12,33 +12,33 @@ import {Props} from './types'
 const SignInForm: FC<Props> = (props: Props) => {
     const {classes} = props
 
-    const [login_state, login_setState] = useState({value: '', error: false})
-    const [password_state, password_setState] = useState({value: '', error: false})
+    const [loginState, loginSetState] = useState({value: '', error: false})
+    const [passwordState, passwordSetState] = useState({value: '', error: false})
 
-    const formIsValid = () => !login_state.error
-        && !password_state.error
-        && login_state.value !== ''
-        && password_state.value !== ''
+    const formIsValid = () => !loginState.error
+        && !passwordState.error
+        && loginState.value !== ''
+        && passwordState.value !== ''
 
     type SetStateRule = (...args: any) => void
     type FieldName = string
 
     const setState: Record<FieldName, SetStateRule> = {
-        login: login_setState,
-        password: password_setState
+        login: loginSetState,
+        password: passwordSetState
     }
 
     const color = 'primary'
 
     const formElements = [
         {
-            error: login_state.error,
+            error: loginState.error,
             label: 'Login',
             name: 'login',
             type: 'text'
         },
         {
-            error: password_state.error,
+            error: passwordState.error,
             label: 'Password',
             name: 'password',
             type: 'password'
@@ -55,8 +55,8 @@ const SignInForm: FC<Props> = (props: Props) => {
                 setState[name]({value, error: true})
             }
         }, [
-            login_state,
-            password_state
+            loginState,
+            passwordState
         ]
     )
 
@@ -65,8 +65,8 @@ const SignInForm: FC<Props> = (props: Props) => {
             e.preventDefault()
             if (formIsValid()) {
                 Auth.signIn({
-                    login: login_state.value,
-                    password: password_state.value
+                    login: loginState.value,
+                    password: passwordState.value
                 })
                     .then((data: any) => data)
             } else {
@@ -74,31 +74,33 @@ const SignInForm: FC<Props> = (props: Props) => {
                 throw new Error('form is invalid')
             }
         }, [
-            login_state,
-            password_state
+            loginState,
+            passwordState
         ]
     )
 
     return (
-        <form className={classes.root} noValidate autoComplete="off">
-            {
-                formElements.map((input) => (
-                    <TextField
-                        key={input.name}
-                        fullWidth
-                        margin="normal"
-                        error={input.error}
-                        color={color}
-                        label={input.label}
-                        name={input.name}
-                        variant="outlined"
-                        type={input.type}
-                        onChange={(e) => inputHandler(e)}
-                    />
-                ))
-            }
-            <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignIn</Button>
-        </form>
+        <div className={classes.root}>
+            <form className={classes.form} noValidate autoComplete="off">
+                {
+                    formElements.map((input) => (
+                        <TextField
+                            key={input.name}
+                            fullWidth
+                            margin="normal"
+                            error={input.error}
+                            color={color}
+                            label={input.label}
+                            name={input.name}
+                            variant="outlined"
+                            type={input.type}
+                            onChange={(e) => inputHandler(e)}
+                        />
+                    ))
+                }
+                <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignIn</Button>
+            </form>
+        </div>
     )
 }
 export const SignInFormTSX = withStyles(styles)(SignInForm)

@@ -1,4 +1,4 @@
-import { createStyles, Theme } from "@material-ui/core";
+import {createStyles, Theme} from '@material-ui/core';
 
 export const styles = (theme: Theme) => createStyles({
     content: {
@@ -8,7 +8,7 @@ export const styles = (theme: Theme) => createStyles({
     },
     tableContainer: {
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     table: {
         maxWidth: '300px'
@@ -20,4 +20,3 @@ export const styles = (theme: Theme) => createStyles({
         backgroundColor: theme.palette.success.light
     }
 })
-

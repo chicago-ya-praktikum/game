@@ -1,4 +1,1 @@
-export const getUserId = (): string => {
-
-    return '3'
-}
+export const getUserId = (): string => '3'

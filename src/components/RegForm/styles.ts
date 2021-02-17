@@ -4,6 +4,13 @@ export const styles = (theme: Theme) => createStyles({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '10%'
+    },
+    form: {
         width: '30%'
     },
     margin: {

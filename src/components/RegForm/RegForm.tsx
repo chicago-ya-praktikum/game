@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import React, {FC, useState} from 'react'
 import {Button, withStyles} from '@material-ui/core'
 import TextField from '@material-ui/core/TextField';
@@ -10,73 +9,73 @@ import {Props} from './types'
 const RegForm: FC<Props> = (props: Props) => {
     const {classes} = props
 
-    const [first_name_state, first_name_setState] = useState({value: '', error: false})
-    const [second_name_state, second_name_setState] = useState({value: '', error: false})
-    const [login_state, login_setState] = useState({value: '', error: false})
-    const [email_state, email_setState] = useState({value: '', error: false})
-    const [password_state, password_setState] = useState({value: '', error: false})
-    const [phone_state, phone_setState] = useState({value: '', error: false})
+    const [firstNameState, firstNameSetState] = useState({value: '', error: false})
+    const [secondNameState, secondNameSetState] = useState({value: '', error: false})
+    const [loginState, loginSetState] = useState({value: '', error: false})
+    const [emailState, emailSetState] = useState({value: '', error: false})
+    const [passwordState, passwordSetState] = useState({value: '', error: false})
+    const [phoneState, phoneSetState] = useState({value: '', error: false})
 
-    const formIsValid = () => !first_name_state.error
-        && !second_name_state.error
-        && !login_state.error
-        && !email_state.error
-        && !password_state.error
-        && !phone_state.error
-        && first_name_state.value !== ''
-        && second_name_state.value !== ''
-        && login_state.value !== ''
-        && email_state.value !== ''
-        && password_state.value !== ''
-        && phone_state.value !== ''
+    const formIsValid = () => !firstNameState.error
+        && !secondNameState.error
+        && !loginState.error
+        && !emailState.error
+        && !passwordState.error
+        && !phoneState.error
+        && firstNameState.value !== ''
+        && secondNameState.value !== ''
+        && loginState.value !== ''
+        && emailState.value !== ''
+        && passwordState.value !== ''
+        && phoneState.value !== ''
 
     type SetStateRule = (...args: any) => void
     type FieldName = string
 
     const setState: Record<FieldName, SetStateRule> = {
-        first_name: first_name_setState,
-        second_name: second_name_setState,
-        login: login_setState,
-        password: password_setState,
-        email: email_setState,
-        phone: phone_setState
+        first_name: firstNameSetState,
+        second_name: secondNameSetState,
+        login: loginSetState,
+        password: passwordSetState,
+        email: emailSetState,
+        phone: phoneSetState
     }
 
     const color = 'primary'
 
     const formElements = [
         {
-            error: first_name_state.error,
+            error: firstNameState.error,
             label: 'First name',
             name: 'first_name',
             type: 'text'
         },
         {
-            error: second_name_state.error,
+            error: secondNameState.error,
             label: 'Second name',
             name: 'second_name',
             type: 'text'
         },
         {
-            error: login_state.error,
+            error: loginState.error,
             label: 'Login',
             name: 'login',
             type: 'text'
         },
         {
-            error: email_state.error,
+            error: emailState.error,
             label: 'Email',
             name: 'email',
             type: 'text'
         },
         {
-            error: password_state.error,
+            error: passwordState.error,
             label: 'Password',
             name: 'password',
             type: 'password'
         },
         {
-            error: phone_state.error,
+            error: phoneState.error,
             label: 'Phone',
             name: 'phone',
             type: 'text'
@@ -93,12 +92,12 @@ const RegForm: FC<Props> = (props: Props) => {
                 setState[name]({value, error: true})
             }
         }, [
-            first_name_state,
-            second_name_state,
-            login_state,
-            email_state,
-            password_state,
-            phone_state
+            firstNameState,
+            secondNameState,
+            loginState,
+            emailState,
+            passwordState,
+            phoneState
         ]
     )
 
@@ -107,12 +106,12 @@ const RegForm: FC<Props> = (props: Props) => {
             e.preventDefault()
             if (formIsValid()) {
                 Auth.signUp({
-                    first_name: first_name_state.value,
-                    second_name: second_name_state.value,
-                    login: login_state.value,
-                    email: email_state.value,
-                    password: password_state.value,
-                    phone: phone_state.value
+                    first_name: firstNameState.value,
+                    second_name: secondNameState.value,
+                    login: loginState.value,
+                    email: emailState.value,
+                    password: passwordState.value,
+                    phone: phoneState.value
                 })
                     .then((data: any) => data)
             } else {
@@ -120,35 +119,37 @@ const RegForm: FC<Props> = (props: Props) => {
                 throw new Error('form is invalid')
             }
         }, [
-            first_name_state,
-            second_name_state,
-            login_state,
-            email_state,
-            password_state,
-            phone_state
+            firstNameState,
+            secondNameState,
+            loginState,
+            emailState,
+            passwordState,
+            phoneState
         ]
     )
 
     return (
-        <form className={classes.root} noValidate autoComplete="off">
-            {
-                formElements.map((input) => (
-                    <TextField
-                        key={input.name}
-                        fullWidth
-                        margin="normal"
-                        error={input.error}
-                        color={color}
-                        label={input.label}
-                        name={input.name}
-                        variant="outlined"
-                        type={input.type}
-                        onChange={(e) => inputHandler(e)}
-                    />
-                ))
-            }
-            <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignUp</Button>
-        </form>
+        <div className={classes.root}>
+            <form className={classes.form} noValidate autoComplete="off">
+                {
+                    formElements.map((input) => (
+                        <TextField
+                            key={input.name}
+                            fullWidth
+                            margin="normal"
+                            error={input.error}
+                            color={color}
+                            label={input.label}
+                            name={input.name}
+                            variant="outlined"
+                            type={input.type}
+                            onChange={(e) => inputHandler(e)}
+                        />
+                    ))
+                }
+                <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignUp</Button>
+            </form>
+        </div>
     )
 }
 export const RegFormTSX = withStyles(styles)(RegForm)
