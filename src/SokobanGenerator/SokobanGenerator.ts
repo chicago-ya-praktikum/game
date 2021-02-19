@@ -10,8 +10,6 @@ export function SokobanGenerator() {
 
     const stringLevel = generateSokobanLevel(options) as string
 
-    console.log(stringLevel)
-
     const level: LevelStore = {
         layerDots: [],
         initialPosition: {
