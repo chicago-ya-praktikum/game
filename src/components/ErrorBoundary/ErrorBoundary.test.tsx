@@ -1,26 +1,23 @@
 import React from 'react'
-import Enzyme, { mount } from 'enzyme'
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
+import { mount } from 'enzyme'
 import { ErrorBoundary } from './ErrorBoundary'
 
-Enzyme.configure({ adapter: new Adapter() })
-
 const TastComponent = (): JSX.Element => {
-    return <div>TestComponent</div>  
+    return <div>TestComponent</div>
 }
 
 describe('ErrorBoundary: wrapper',()=> {
-  
+
     test('Test error', () => {
         const wrapper = mount(
-            <ErrorBoundary> 
+            <ErrorBoundary>
                 <TastComponent />
-            </ErrorBoundary> 
+            </ErrorBoundary>
         )
-      
+
     const error = new Error('test')
     wrapper.find(TastComponent).simulateError(error)
-      
+
   })
 
 })

@@ -4,10 +4,7 @@ import { PageHome, PageForum, PageLeaderboard, PageGame, PageProfile, PageSignin
         routeHome, routeLeaderboard, routeForum, routeGame, routeProfile, routeSignup, routeSignin,
 } from './constants'
 import { MainRouter } from './MainRouter'
-import Enzyme, { mount } from 'enzyme'
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
-
-Enzyme.configure({ adapter: new Adapter() })
+import { mount } from 'enzyme'
 
 describe('MainRouter: wrapper', () => {
 
@@ -18,7 +15,7 @@ describe('MainRouter: wrapper', () => {
             </MemoryRouter>
         )
     }
-    
+
     test('should render the home page', () => {
         expect(getWrapper(routeHome).find(PageHome)).toHaveLength(1)
     })

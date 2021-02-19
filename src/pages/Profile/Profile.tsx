@@ -1,106 +1,143 @@
-import React, { FC, useState } from 'react'
-import { Avatar, Box, Button, TextField, Typography, withStyles } from '@material-ui/core'
-import { styles } from './styles'
-import { Props } from './types'
-import { validateInput } from '../../utils/validateInput'
+import React, {FC, useCallback, useState} from 'react'
+import {Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography, withStyles} from '@material-ui/core'
+import {styles} from './styles'
+import {Field, Props, Setter} from './types'
+import {validateInput} from '../../utils/validateInput'
+import {AvatarUI} from '../../components/UI/AvatarUI/index'
+import { ChangePasswordForm } from '../../components/UI/ChangePasswordForm/index'
+import ReactInputMask from 'react-input-mask'
+import { Alert } from '@material-ui/lab'
 
 const Profile: FC<Props> = (props: Props) => {
 
-    const { classes } = props
+    const [nickname, setNickname] = useState({val: '', err: true, required: true} as Field)
+    const [avatarSrc, setAvatarSrc] = useState({val: '', err: true, required: true} as Field)
+    const [gender, setGender] = useState({val: '', err: false} as Field)
+    const [age, setAge] = useState({val: '18', err: false} as Field)
+    const [showAlert, setShowAlert] = useState(false)
 
-    const [nickname,        setNickname]        = useState('')
-    const [nicknameErr,     setNicknameErr]     = useState(false)
-    const [gender,          setGender]          = useState('')
-    const [genderErr,       setGenderErr]       = useState(false)
-    const [age,             setAge]             = useState('')
-    const [ageErr,          setAgeErr]          = useState(false)
-    const [oldPassword,     setOldPassword]     = useState('')
-    const [oldPasswordErr,  setOldPasswordErr]  = useState(false)
-    const [newPassword,     setNewPassword]     = useState('')
-    const [newPasswordErr,  setNewPasswordErr]  = useState(true)
+    const {classes} = props
 
-    //const ava = useRef('')
+    const inputBlurHandler = useCallback((e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, field: Field, setter: Setter) => {
 
-    const onClickAvatar = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const curr = e.target.value as string
+        if (curr === field.val) return
+        const err = !validateInput(e.target.name as string, curr, field.required)
+        if (err !== field.err) field.err = err
+        field.val = curr
+        setter({...field})
+
+    }, [])
+
+    const selectChangeHandler = useCallback((e: React.ChangeEvent<{ name?: string; value: unknown }>, field:Field, setter: Setter) => {
+
+        const curr = e.target.value as string
+        if (curr === field.val) return
+        field.val = curr
+        setter({...field})
+
+    }, [])
+
+    const avatarCallback = useCallback((src: string) => {
+        if (src && src !== avatarSrc.val) {
+            avatarSrc.val = src
+            avatarSrc.err = false
+            setAvatarSrc({...avatarSrc})
+        }
+    }, [])
+
+
+    const formIsValid = () => {
+
+        let res = true
+        const fields = [nickname, avatarSrc, gender, age]
+        fields.forEach((field: Field) => (
+            res = res && !field.err
+        ))
+
+        return res
+
+    }
+
+    const submitForm = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
 
-    }
-
-    const onBlurHandler = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-
-        const inputValue = e.target.value as string
-        const inputName = e.target.name as string
-
-        const err = !validateInput(inputName, inputValue)
-
-        switch (inputName) {
-            case 'nickname':
-                if (nicknameErr !== err) setNicknameErr(err)
-                if (nickname !== inputValue) setNickname(nickname)
-                break
-            case 'gender':
-                if (genderErr !== err) setGenderErr(err)
-                if (gender !== inputValue) setGender(gender)
-                break
-            case 'age':
-                if (ageErr !== err) setAgeErr(err)
-                if (age !== inputValue) setAge(age)
-                break
-            case 'oldPassword':
-                if (oldPasswordErr !== err) setOldPasswordErr(err)
-                if (oldPassword !== inputValue) setOldPassword(oldPassword)
-                break
-            case 'newPassword':
-                if (newPasswordErr !== err) setNewPasswordErr(err)
-                if (newPassword !== inputValue) setNewPassword(newPassword)
-                break
+        if (!formIsValid()) {
+            setShowAlert(true)
+            return
         }
 
-    }
+        setShowAlert(false)
+
+        // TODO: save data
+
+    }, [])
+
+    const handleAlertClose = useCallback(() => {
+        setShowAlert(false)
+    }, [])
+
 
     return (
-        <Box className={classes.content}>
-            <Box className={classes.head}>
+        <Box className={classes.root}>
+            {showAlert && <Alert className={classes.alert} severity="error" onClose={handleAlertClose}>Fields are not filled in correctly!</Alert>}
+            <Box>
                 <Typography align='center' variant='h5'>
                     Profile
                 </Typography>
             </Box>
-
-            <form className={classes.data}>
-                <Box >
-                    <Avatar ></Avatar>
-                    <Button
-                        variant='outlined'
-                        color='primary'
-                        type='submit'
-                        size='small'
-                        onClick={(e) => onClickAvatar(e)}
-                    >Upload a photo</Button>
-                    <input className={classes.inputFile} type='file' />
-                </Box>
+            <form className={classes.content}>
+                <AvatarUI cb={avatarCallback} showBtn={true}/>
                 <TextField
                     id='nickname'
                     name='nickname'
                     label='Nickname (required)'
+                    fullWidth
                     variant='outlined'
-                    error={nicknameErr}
-                    onBlur={(e) => onBlurHandler(e)}/>
-                {/* <TextField id='gender' label='Gender' error={genderErr} onBlur={onBlurHandler}/>
-                <TextField id='age' label='Age' error={ageErr} onBlur={onBlurHandler}/> */}
-            </form>
-
-            <form className={classes.password}>
-                {/* <TextField id='oldPassword' label='Old password (required)' error={oldPasswordErr} onBlur={onBlurHandler}/>
-                <TextField id='newPassword' label='New password (required)' error={newPasswordErr} onBlur={onBlurHandler}/>
-
+                    error={nickname.err}
+                    onBlur={(e) => inputBlurHandler(e, nickname, setNickname)}
+                />
+                <FormControl
+                    variant='outlined'
+                    fullWidth
+                >
+                    <InputLabel id='gender-select-label'>Gender</InputLabel>
+                    <Select
+                        labelId='gender-select-label'
+                        id='gender-select'
+                        defaultValue=''
+                        onChange={(e) => selectChangeHandler(e, gender, setGender)}
+                        label='Gender'
+                    >
+                        <MenuItem value=''><em>None</em></MenuItem>
+                        <MenuItem value='Male'>Male</MenuItem>
+                        <MenuItem value='Female'>Female</MenuItem>
+                    </Select>
+                </FormControl>
+                <ReactInputMask
+                    mask='99'
+                    defaultValue='18'
+                    maskPlaceholder={null}
+                    onBlur={(e) => inputBlurHandler(e, age, setAge)}
+                >
+                    {() => <TextField
+                                id='age'
+                                label='age'
+                                fullWidth
+                                name='age'
+                                variant='outlined'
+                            />}
+                </ReactInputMask>
                 <Button
-                    variant='text'
-                    color='primary'
-                    type='submit'
-                >SignUp</Button> */}
+                    variant='contained'
+                    color='primary' type='submit'
+                    onClick={(e) => submitForm(e)}
+                >Save</Button>
 
             </form>
-
+            <Box className={classes.changePasswordForm}>
+                <ChangePasswordForm />
+            </Box>
 
         </Box>
     )

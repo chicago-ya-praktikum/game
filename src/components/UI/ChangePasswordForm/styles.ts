@@ -1,16 +1,14 @@
 import { createStyles } from '@material-ui/core'
 
 export const styles = () => createStyles({
-    content: {
+    dialogContent: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        alignContent: 'stretch',
         flexDirection: 'column',
-        position: 'absolute',
-        height: '100%',
-        width: '100%'
-    },
-    buttonBack: {
-      margin: '50px'
+        padding: '10px',
+        minWidth: '300px'
     }
 })
+

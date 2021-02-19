@@ -1,9 +1,6 @@
 import React from 'react'
-import Enzyme, { mount } from 'enzyme'
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
+import { mount } from 'enzyme'
 import { Err } from './index'
-
-Enzyme.configure({ adapter: new Adapter() })
 
 describe('Err: wrapper',()=> {
 

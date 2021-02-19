@@ -1,13 +1,9 @@
-import {WithStyles} from '@material-ui/core'
-import {styles} from './styles'
+import { WithStyles } from '@material-ui/core'
+import { styles } from './styles'
 
 export type Props = {
 
 } & WithStyles<typeof styles>
-
-export type State = {
-    nickname: string
-}
 
 export type Field = {
     val: string,

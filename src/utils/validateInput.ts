@@ -6,7 +6,10 @@ declare global {
     }
 }
 
-export function validateInput(inputName: string | number, inputValue: any) {
+export function validateInput(inputName: string | number, inputValue: any, required: boolean = false) {
+
+    if (required && !inputValue) return false
+
     let status = false;
 
 	type ValidationRule = (...args: any) => boolean;
