@@ -1,3 +1,5 @@
+import {Actions} from '../actions'
+
 type LoadStatus = 'success' | 'pending' | 'failed'
 type Nullable<T> = T | null
 
@@ -5,34 +7,27 @@ interface User {
     name: string
 }
 type UserReducer = {
-    item: Nullable<User>
+    user: Nullable<User>
     status: LoadStatus
-}
-
-enum Actions {
-    PENDING = 'PENDING',
-    SUCCESS = 'SUCCESS',
-    FAILED = 'FAILED',
-    SET_USER_ITEM = 'SET_USER_ITEM'
 }
 
 const defaultReducer: UserReducer = {
     status: 'failed',
-    item: null
+    user: null
 }
 
-interface BaseActionType {
-    type: Actions
-}
+// interface BaseActionType {
+//     type: Actions
+// }
 
 // Может совпадать иногда с Reducer-типом
-interface ItemActionType extends BaseActionType {
-    item: User
-}
+// interface ItemActionType extends BaseActionType {
+//     payload: User
+// }
 
 export function userReducer(state: UserReducer = defaultReducer,
-    {type, item}: ItemActionType): UserReducer {
-    switch (type) {
+    action: {type: Actions, payload: User}): UserReducer {
+    switch (action.type) {
         case Actions.PENDING:
             return {
                 ...state,
@@ -48,10 +43,10 @@ export function userReducer(state: UserReducer = defaultReducer,
                 ...state,
                 status: 'failed'
             }
-        case Actions.SET_USER_ITEM:
+        case Actions.SIGNIN:
             return {
                 ...state,
-                item
+                user: action.payload
             }
         default:
             return state

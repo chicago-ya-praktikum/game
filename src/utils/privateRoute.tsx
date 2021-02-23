@@ -1,17 +1,21 @@
-import React from 'react'
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
 import {SignInPage} from '../pages/SignIn/SignIn'
 
-export function privateRoute(WrappedComponent: React.ComponentType) {
-    class PrivateComponent extends React.Component {
-        private isUser = false;
+type StateProps = {
+    user: any
+};
+type Props = StateProps;
 
-        constructor(props: {} | Readonly<{}>) {
-            super(props);
-        }
-
+export function privateRoute(this: any, WrappedComponent: React.ComponentType) {
+    class PrivateComponent extends PureComponent<Props> {
         render() {
-            return this.isUser ? <WrappedComponent/> : <SignInPage/>
+            const {user} = this.props
+            return user.user ? <WrappedComponent/> : <SignInPage/>
         }
     }
-    return PrivateComponent;
+    const mapStateToProps = (state: { user: any; }): StateProps => ({
+        user: state.user
+    });
+    return connect(mapStateToProps)(PrivateComponent)
 }
