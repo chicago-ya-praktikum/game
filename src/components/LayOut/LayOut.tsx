@@ -6,6 +6,7 @@ import {Typography, withStyles} from '@material-ui/core'
 import {SokobanMain} from '../SokobanMain/SokobanMain'
 import {styles} from './styles'
 import {Props} from './types'
+import {LogoutButton} from '../LogoutButton/LogOutButton'
 
 const LayOut: FC<Props> = (props: Props) => {
     const {classes} = props
@@ -25,7 +26,8 @@ const LayOut: FC<Props> = (props: Props) => {
                 </Grid>
                 <Grid item xs={2}>
                     <div className={classes.paper}>
-                        <Link><Typography variant="h4" color="primary" gutterBottom>Профиль/выход</Typography></Link>
+                        <LogoutButton/>
+                        {/* <Link><Typography variant="h4" color="primary" gutterBottom>Выход</Typography></Link> */}
                     </div>
                 </Grid>
             </Grid>

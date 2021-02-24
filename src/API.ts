@@ -26,8 +26,6 @@ const requestHeaders = {
 
 const requestCredentials = 'include'
 
-const responseBody = (res: { body: any; }) => res.body;
-
 const requests = {
     del: (path: string) => {
         const url = new URL(path, API_ROOT)
@@ -37,7 +35,7 @@ const requests = {
                 headers: requestHeaders,
                 credentials: requestCredentials
             })
-            .then(responseBody)
+            .then(response => response.json())
             .catch((error) => { throw new Error(error) })
     },
     get: (path: string) => {
@@ -48,7 +46,7 @@ const requests = {
                 headers: requestHeaders,
                 credentials: requestCredentials
             })
-            .then(responseBody)
+            .then(response => response.json())
             .catch((error) => { throw new Error(error) })
     },
     patch: (path: string, body?: RequestObject) => {
@@ -60,7 +58,7 @@ const requests = {
                 credentials: requestCredentials,
                 body: JSON.stringify(body)
             })
-            .then(responseBody)
+            .then(response => response.json())
             .catch((error) => { throw new Error(error) })
     },
     post: (path: string, body?: RequestObject) => {
@@ -72,7 +70,7 @@ const requests = {
                 credentials: requestCredentials,
                 body: JSON.stringify(body)
             })
-            .then(responseBody)
+            .then(response => response.json())
             .catch((error) => { throw new Error(error) })
     }
 };
