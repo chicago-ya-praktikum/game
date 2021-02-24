@@ -10,7 +10,10 @@ function minLength(value: string, length: number) {
     return value.length > length
 }
 
-export function validateInput(inputName: string | number, inputValue: any) {
+export function validateInput(inputName: string | number, inputValue: any, required: boolean = false) {
+
+    if (required && !inputValue) return false
+
     let status = false;
 
 	type ValidationRule = (...args: any) => boolean;
@@ -24,6 +27,7 @@ export function validateInput(inputName: string | number, inputValue: any) {
 	    message: (value) => minLength(value, 4),
 	    title: (value) => minLength(value, 4),
 	    password: (value) => minLength(value, 6),
+	    nickname: (value) => minLength(value, 6),
 	    oldPassword: (value) => minLength(value, 6),
 	    newPassword: (value) => minLength(value, 6),
 	    email: (value) => {
@@ -35,7 +39,10 @@ export function validateInput(inputName: string | number, inputValue: any) {
 	        return regexpPhone.test(value)
 	    }
 	}
-	status = validationRules[inputName](inputValue)
+
+    if (!validationRules[inputName]) return true
+
+    status = validationRules[inputName](inputValue)
 
 	return status;
 }
