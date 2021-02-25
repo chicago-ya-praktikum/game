@@ -3,18 +3,13 @@ import React, {FC} from 'react'
 import {useDispatch} from 'react-redux'
 import {Actions} from '../../actions'
 import {Auth} from '../../API'
+import {actionCreator} from '../../utils/actionCreator'
 
 export const LogoutButton: FC = () => {
     const dispatch = useDispatch()
 
-    function createLogoutAction() {
-        return {
-            type: Actions.LOGOUT
-        }
-    }
-
     const userLogout = () => {
-        const getResponse = () => Auth.logout().then(() => dispatch(createLogoutAction()))
+        const getResponse = () => Auth.logout().then(() => dispatch(actionCreator(Actions.LOGOUT)))
         return getResponse()
     }
 

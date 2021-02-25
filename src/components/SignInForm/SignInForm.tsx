@@ -10,7 +10,6 @@ import {Auth} from '../../API'
 import {styles} from './styles'
 import {Props} from './types'
 import {Actions} from '../../actions'
-import {actionCreator} from '../../utils/actionCreator'
 
 const mapDispatchToProps = (dispatch: (arg0: { type: any; payload: any }) => void) => ({
     onSignIn: (payload: any) => {

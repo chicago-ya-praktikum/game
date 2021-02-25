@@ -7,19 +7,15 @@ import {
 } from './constants'
 import {Actions} from '../../../actions'
 import {Auth} from '../../../API'
+import {actionCreator} from '../../../utils/actionCreator'
 
 export const MainRouter: FC = () => {
     const dispatch = useDispatch()
 
-    function createCheckStatusAction(data: any) {
-        return {
-            type: Actions.APPLOAD,
-            payload: data
-        }
-    }
-
     const userLogIn = () => {
-        const getResponse = () => Auth.user().then(data => dispatch(createCheckStatusAction(data)))
+        const getResponse = () => {
+            Auth.user().then(data => dispatch(actionCreator(Actions.APPLOAD, data)))
+        }
         return getResponse()
     }
     useEffect(() => {
