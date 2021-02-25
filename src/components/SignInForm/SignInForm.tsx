@@ -4,12 +4,13 @@
 import React, {FC, useState} from 'react'
 import {Button, withStyles} from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
-import {connect} from 'react-redux'
+import {connect, useDispatch} from 'react-redux'
 import {validateInput} from '../../utils/validateInput'
 import {Auth} from '../../API'
 import {styles} from './styles'
 import {Props} from './types'
 import {Actions} from '../../actions'
+import {actionCreator} from '../../utils/actionCreator'
 
 const mapDispatchToProps = (dispatch: (arg0: { type: any; payload: any }) => void) => ({
     onSignIn: (payload: any) => {
@@ -68,15 +69,25 @@ const SignInForm: FC<Props> = (props: Props) => {
         ]
     )
 
+    const dispatch = useDispatch()
+
+    const userSignIn = (
+        data: Partial<{
+            login: string;
+            password: string;
+        }>
+    ) => {
+        Auth.signIn(data).then(response => dispatch(actionCreator(Actions.SIGNIN, response)))
+    }
+
     const submitForm = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
             if (formIsValid()) {
-                Auth.signIn({
+                userSignIn({
                     login: loginState.value,
                     password: passwordState.value
                 })
-                    .then((data: any) => data)
             } else {
             // нужно нормальное сообщение об ошибке
                 throw new Error('form is invalid')

@@ -17,14 +17,11 @@ export function userReducer(state: UserReducer = defaultReducer,
     action: {type: Actions, payload: any}): UserReducer {
     switch (action.type) {
         case Actions.SIGNIN:
-            return {
-                ...state,
-                user: action.payload
-            }
+        case Actions.SIGNUP:
         case Actions.APPLOAD:
             return {
                 ...state,
-                user: action.payload
+                user: action.payload.reason ? null : action.payload
             }
         case Actions.LOGOUT:
             return {

@@ -1,6 +1,9 @@
 import React, {FC, useState} from 'react'
 import {Button, withStyles} from '@material-ui/core'
-import TextField from '@material-ui/core/TextField';
+import TextField from '@material-ui/core/TextField'
+import {useDispatch} from 'react-redux'
+import {Actions} from '../../actions'
+import {actionCreator} from '../../utils/actionCreator'
 import {validateInput} from '../../utils/validateInput'
 import {Auth} from '../../API'
 import {styles} from './styles'
@@ -101,11 +104,26 @@ const RegForm: FC<Props> = (props: Props) => {
         ]
     )
 
+    const dispatch = useDispatch()
+
+    const userSignUp = (
+        data: {
+            first_name: string,
+            second_name: string,
+            login: string,
+            email: string,
+            password: string,
+            phone: string
+        }
+    ) => {
+        Auth.signUp(data).then(response => dispatch(actionCreator(Actions.SIGNIN, response)))
+    }
+
     const submitForm = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
             if (formIsValid()) {
-                Auth.signUp({
+                userSignUp({
                     first_name: firstNameState.value,
                     second_name: secondNameState.value,
                     login: loginState.value,
@@ -113,7 +131,6 @@ const RegForm: FC<Props> = (props: Props) => {
                     password: passwordState.value,
                     phone: phoneState.value
                 })
-                    .then((data: any) => data)
             } else {
                 // нужно нормальное сообщение об ошибке
                 throw new Error('form is invalid')
