@@ -4,19 +4,13 @@
 import React, {FC, useState} from 'react'
 import {Button, withStyles} from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
-import {connect, useDispatch} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {validateInput} from '../../utils/validateInput'
 import {Auth} from '../../API'
 import {styles} from './styles'
 import {Props} from './types'
 import {Actions} from '../../actions'
 import {actionCreator} from '../../utils/actionCreator'
-
-const mapDispatchToProps = (dispatch: (arg0: { type: any; payload: any }) => void) => ({
-    onSignIn: (payload: any) => {
-        dispatch({type: Actions.SIGNIN, payload})
-    }
-})
 
 const SignInForm: FC<Props> = (props: Props) => {
     const {classes} = props
@@ -122,4 +116,4 @@ const SignInForm: FC<Props> = (props: Props) => {
         </div>
     )
 }
-export const SignInFormTSX = withStyles(styles)(connect(mapDispatchToProps)(SignInForm))
+export const SignInFormTSX = withStyles(styles)(SignInForm)
