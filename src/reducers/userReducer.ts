@@ -6,11 +6,13 @@ type Nullable<T> = T | null
 type UserReducer = {
     user: Nullable<any>
     status: LoadStatus
+    authStatus: boolean
 }
 
 const defaultReducer: UserReducer = {
     status: 'failed',
-    user: null
+    user: null,
+    authStatus: false
 }
 
 export function userReducer(state: UserReducer = defaultReducer,
@@ -18,19 +20,22 @@ export function userReducer(state: UserReducer = defaultReducer,
     switch (action.type) {
         case Actions.SIGNUP:
         case Actions.SIGNIN:
+            console.log(action.payload, state)
             return {
                 ...state,
-                user: action.payload.status === 200
+                authStatus: action.payload.status === 200
             }
         case Actions.APPLOAD:
+            console.log(action.payload, state)
             return {
                 ...state,
-                user: action.payload.reason ? false : action.payload
+                user: action.payload.reason ? false : action.payload,
+                authStatus: !action.payload.reason
             }
         case Actions.LOGOUT:
             return {
                 ...state,
-                user: false
+                authStatus: false
             }
         default:
             return state
