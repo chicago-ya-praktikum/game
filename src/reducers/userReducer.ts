@@ -20,13 +20,11 @@ export function userReducer(state: UserReducer = defaultReducer,
     switch (action.type) {
         case Actions.SIGNUP:
         case Actions.SIGNIN:
-            console.log(action.payload, state)
             return {
                 ...state,
                 authStatus: action.payload.status === 200
             }
         case Actions.APPLOAD:
-            console.log(action.payload, state)
             return {
                 ...state,
                 user: action.payload.reason ? false : action.payload,
