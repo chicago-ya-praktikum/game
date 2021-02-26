@@ -16,17 +16,21 @@ const defaultReducer: UserReducer = {
 export function userReducer(state: UserReducer = defaultReducer,
     action: {type: Actions, payload: any}): UserReducer {
     switch (action.type) {
-        case Actions.SIGNIN:
         case Actions.SIGNUP:
+        case Actions.SIGNIN:
+            return {
+                ...state,
+                user: action.payload.status === 200
+            }
         case Actions.APPLOAD:
             return {
                 ...state,
-                user: action.payload.reason ? null : action.payload
+                user: action.payload.reason ? false : action.payload
             }
         case Actions.LOGOUT:
             return {
                 ...state,
-                user: null
+                user: false
             }
         default:
             return state

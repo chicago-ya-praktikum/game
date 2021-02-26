@@ -27,7 +27,6 @@ const LayOut: FC<Props> = (props: Props) => {
                 <Grid item xs={2}>
                     <div className={classes.paper}>
                         <LogoutButton/>
-                        {/* <Link><Typography variant="h4" color="primary" gutterBottom>Выход</Typography></Link> */}
                     </div>
                 </Grid>
             </Grid>

@@ -70,7 +70,7 @@ const requests = {
                 credentials: requestCredentials,
                 body: JSON.stringify(body)
             })
-            .then(response => response.json())
+            .then(response => response)
             .catch((error) => { throw new Error(error) })
     }
 };
