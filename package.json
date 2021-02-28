@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "jest",
+        "test:single": "jest -t 'ChangePasswordForm: wrapper'",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage",
         "lint": "node_modules/.bin/eslint .",
@@ -15,8 +16,13 @@
         "prod": "webpack --mode production && node server.js"
     },
     "jest": {
-        "setupFilesAfterEnv": [
-            "./jest.setup.js"
+        "setupFiles": [
+            "<rootDir>/jest.setup.js"
+        ],
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js"
         ],
         "testEnvironment": "enzyme",
         "snapshotSerializers": [
@@ -42,9 +48,11 @@
         "@types/jest": "^26.0.20",
         "@types/react": "^17.0.1",
         "@types/react-dom": "^17.0.0",
+        "@types/react-input-mask": "^3.0.0",
         "@types/react-redux": "^7.1.16",
         "@types/react-router-dom": "^5.1.7",
         "@types/react-test-renderer": "^17.0.0",
+        "@types/react-text-mask": "^5.4.6",
         "@types/redux": "^3.6.0",
         "@typescript-eslint/eslint-plugin": "^4.14.2",
         "@typescript-eslint/parser": "^4.14.2",
@@ -75,11 +83,15 @@
     },
     "dependencies": {
         "@material-ui/core": "^4.11.3",
+        "@material-ui/lab": "^4.0.0-alpha.57",
         "express": "^4.17.1",
+        "material-ui-number-input": "^5.0.24",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "react-redux": "^7.2.2",
         "react-router-dom": "^5.2.0",
+        "react-input-mask": "^2.0.4",
+        "react-text-mask": "^5.4.3",
         "redux": "^4.0.5",
         "redux-thunk": "^2.3.0",
         "sokoban-generator": "^1.1.5"

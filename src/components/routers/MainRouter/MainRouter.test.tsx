@@ -1,14 +1,10 @@
 import {MemoryRouter} from 'react-router-dom'
 import React from 'react'
-import Enzyme, {mount} from 'enzyme'
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
-import {
-    PageHome, PageForum, PageLeaderboard, PageGame, PageProfile, PageSignin, PageSignup, PageError,
-    routeHome, routeLeaderboard, routeForum, routeGame, routeProfile, routeSignup, routeSignin
+import { PageHome, PageForum, PageLeaderboard, PageGame, PageProfile, PageSignin, PageSignup, PageError,
+        routeHome, routeLeaderboard, routeForum, routeGame, routeProfile, routeSignup, routeSignin,
 } from './constants'
-import {MainRouter} from './MainRouter'
-
-Enzyme.configure({adapter: new Adapter()})
+import { MainRouter } from './MainRouter'
+import { mount } from 'enzyme'
 
 describe('MainRouter: wrapper', () => {
     const getWrapper = (route: string) => mount(
