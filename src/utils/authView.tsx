@@ -4,7 +4,7 @@ import {LayOutTSX} from '../components/LayOut/LayOut'
 
 export function authView(this: any, WrappedComponent: React.ComponentType) {
     const LoggedInComponent: FC = () => {
-        const authStatus = useSelector(state => state.user.authStatus)
+        const authStatus = useSelector((state: {user: any}) => state.user.authStatus)
         return (
             <>
                 {!authStatus ? <WrappedComponent/> : <LayOutTSX/>}
