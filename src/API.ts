@@ -26,7 +26,7 @@ const requestHeaders = {
 
 const requestCredentials = 'include'
 
-const responseBody = (res: { body: any; }) => res.body;
+const responseBody = (res: { json: () => any }) => res.json()
 
 const requests = {
     del: (path: string) => {
@@ -72,7 +72,7 @@ const requests = {
                 credentials: requestCredentials,
                 body: JSON.stringify(body)
             })
-            .then(responseBody)
+            .then(response => response)
             .catch((error) => { throw new Error(error) })
     }
 };

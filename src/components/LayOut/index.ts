@@ -1,4 +1,4 @@
-import {memo} from 'react'
 import {LayOutTSX} from './LayOut'
+import {privateRoute} from '../../utils/privateRoute'
 
-export const LayOut = memo(LayOutTSX)
+export const LayOut = privateRoute(LayOutTSX)
