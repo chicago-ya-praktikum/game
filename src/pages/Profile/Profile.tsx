@@ -1,132 +1,113 @@
-import React, {FC, useCallback, useState} from 'react'
+import React, {FC, useCallback, useReducer} from 'react'
 import {
-    Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography, withStyles
+    Box, Button, TextField, Typography, withStyles
 } from '@material-ui/core'
-import ReactInputMask from 'react-input-mask'
-import {Alert} from '@material-ui/lab'
 import {styles} from './styles'
-import {Field, Props, Setter} from './types'
-import {validateInput} from '../../utils/validateInput'
+import {
+    InputOnBlur, Props
+} from './types'
 import {AvatarUI} from '../../components/UI/AvatarUI/index'
 import {ChangePasswordForm} from '../../components/UI/ChangePasswordForm/index'
+import {reducer} from './reducer/reducer'
+import {initialState} from './reducer/state'
+import {fieldSet, fieldUpdateErr} from './reducer/actions'
+import {checkFields} from '../../utils/checkFields'
 
 const Profile: FC<Props> = (props: Props) => {
-    const [nickname, setNickname] = useState({val: '', err: true, required: true} as Field)
-    const [avatarSrc, setAvatarSrc] = useState({val: '', err: true, required: true} as Field)
-    const [gender, setGender] = useState({val: '', err: false} as Field)
-    const [age, setAge] = useState({val: '18', err: false} as Field)
-    const [showAlert, setShowAlert] = useState(false)
-
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const {fields} = state
+    const {
+        firstName, secondName, displayName, login, email, phone
+    } = fields
     const {classes} = props
 
-    const inputBlurHandler = useCallback((e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, field: Field, setter: Setter) => {
-        const curr = e.target.value as string
-        if (curr === field.val) return
-        const err = !validateInput(e.target.name as string, curr, field.required)
-        if (err !== field.err) field.err = err
-        field.val = curr
-        setter({...field})
-    }, [])
-
-    const selectChangeHandler = useCallback((e: React.ChangeEvent<{ name?: string; value: unknown }>, field:Field, setter: Setter) => {
-        const curr = e.target.value as string
-        if (curr === field.val) return
-        field.val = curr
-        setter({...field})
-    }, [])
-
-    const avatarCallback = useCallback((src: string) => {
-        if (src && src !== avatarSrc.val) {
-            avatarSrc.val = src
-            avatarSrc.err = false
-            setAvatarSrc({...avatarSrc})
-        }
-    }, [])
-
-
-    const formIsValid = () => {
-        let res = true
-        const fields = [nickname, avatarSrc, gender, age]
-        fields.forEach((field) => (
-            res = res && !field.err
-        ))
-
-        return res
-    }
+    const inputBlurHandler = useCallback((e: InputOnBlur) => {
+        e.preventDefault()
+        dispatch(fieldSet(fields, String(e.target.name), String(e.target.value)))
+    }, [fields])
 
     const submitForm = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-
-        if (!formIsValid()) {
-            setShowAlert(true)
-            return
+        const check = checkFields(state.fields)
+        const {err, updateErr} = check
+        if (err) {
+            window.alertShow('error', 'Form is filled in incorrectly.')
+            updateErr.forEach((name) => dispatch(fieldUpdateErr(fields, name)))
+            // return
         }
-
-        setShowAlert(false)
-
-        // TODO: save data
-    }, [])
-
-    const handleAlertClose = useCallback(() => {
-        setShowAlert(false)
-    }, [])
-
+    }, [fields])
 
     return (
         <Box className={classes.root}>
-            {showAlert && <Alert className={classes.alert} severity='error' onClose={handleAlertClose}>Fields are not filled in correctly!</Alert>}
             <Box>
                 <Typography align='center' variant='h5'>
                     Profile
                 </Typography>
             </Box>
             <form className={classes.content}>
-                <AvatarUI cb={avatarCallback} showBtn={true}/>
+                <AvatarUI showBtn/>
                 <TextField
-                    id='nickname'
-                    name='nickname'
-                    label='Nickname (required)'
+                    id='firstName'
+                    name='firstName'
+                    label='First name (required)'
                     fullWidth
                     variant='outlined'
-                    error={nickname.err}
-                    onBlur={(e) => inputBlurHandler(e, nickname, setNickname)}
+                    error={firstName.err}
+                    onBlur={inputBlurHandler}
                 />
-                <FormControl
-                    variant='outlined'
+                <TextField
+                    id='secondName'
+                    name='secondName'
+                    label='Second name (required)'
                     fullWidth
-                >
-                    <InputLabel id='gender-select-label'>Gender</InputLabel>
-                    <Select
-                        labelId='gender-select-label'
-                        id='gender-select'
-                        defaultValue=''
-                        onChange={(e) => selectChangeHandler(e, gender, setGender)}
-                        label='Gender'
-                    >
-                        <MenuItem value=''><em>None</em></MenuItem>
-                        <MenuItem value='Male'>Male</MenuItem>
-                        <MenuItem value='Female'>Female</MenuItem>
-                    </Select>
-                </FormControl>
-                <ReactInputMask
-                    mask='99'
-                    defaultValue='18'
-                    maskPlaceholder={null}
-                    onBlur={(e) => inputBlurHandler(e, age, setAge)}
-                >
-                    {() => <TextField
-                                id='age'
-                                label='age'
-                                fullWidth
-                                name='age'
-                                variant='outlined'
-                            />}
-                </ReactInputMask>
+                    variant='outlined'
+                    error={secondName.err}
+                    onBlur={inputBlurHandler}
+                />
+                <TextField
+                    id='displayName'
+                    name='displayName'
+                    label='Display name (required)'
+                    fullWidth
+                    variant='outlined'
+                    error={displayName.err}
+                    onBlur={inputBlurHandler}
+                />
+                <TextField
+                    id='login'
+                    name='login'
+                    label='Login (required)'
+                    fullWidth
+                    variant='outlined'
+                    error={login.err}
+                    onBlur={inputBlurHandler}
+                />
+                <TextField
+                    id='email'
+                    name='email'
+                    label='email (required)'
+                    fullWidth
+                    variant='outlined'
+                    error={email.err}
+                    onBlur={inputBlurHandler}
+                />
+                <TextField
+                    id='phone'
+                    name='phone'
+                    label='phone'
+                    fullWidth
+                    variant='outlined'
+                    error={phone.err}
+                    onBlur={inputBlurHandler}
+                />
                 <Button
                     variant='contained'
-                    color='primary' type='submit'
-                    onClick={(e) => submitForm(e)}
-                >Save</Button>
+                    color='primary'
+                    type='submit'
+                    onClick={submitForm}
+                >
+                    Save
+                </Button>
 
             </form>
             <Box className={classes.changePasswordForm}>

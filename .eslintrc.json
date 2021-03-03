@@ -48,6 +48,14 @@
             "error",
             "never"
         ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "jsx-quotes": [
+            "error",
+            "prefer-single"
+        ],
         "no-plusplus": "off",
         "no-underscore-dangle": "off",
         "arrow-parens": "off",

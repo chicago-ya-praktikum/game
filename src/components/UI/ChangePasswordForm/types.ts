@@ -1,8 +1,7 @@
-import { WithStyles } from '@material-ui/core'
-import { styles } from './styles'
+import {WithStyles} from '@material-ui/core'
+import {styles} from './styles'
 
 export type Props = {
-
 } & WithStyles<typeof styles>
 
 export type Field = {
@@ -11,4 +10,4 @@ export type Field = {
     required?: boolean
 }
 
-export type Setter = React.Dispatch<React.SetStateAction<Field>>
+export type InputOnBlur = React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>

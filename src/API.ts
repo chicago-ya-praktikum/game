@@ -1,10 +1,15 @@
 const API_ROOT = new URL('https://ya-praktikum.tech')
 
-const URLS = {
+const URL_AUTH = {
     SIGNIN: '/api/v2/auth/signin',
     SIGNUP: '/api/v2/auth/signup',
     LOGOUT: '/api/v2/auth/logout',
     USER_INFO: '/api/v2/auth/user'
+}
+
+const URL_USERS = {
+    CHANGE_PASSWORD: '/api/v2/user/password',
+    SAVE_AVATAR: '/api/v2/user/profile/avatar'
 }
 
 type SignUpObj = {
@@ -18,7 +23,12 @@ type SignUpObj = {
 
 type SignInObj = Partial<SignUpObj>
 
-type RequestObject = SignInObj | SignUpObj
+type ChangePasswordObj = {
+    oldPassword: string,
+    newPassword: string
+}
+
+type RequestObject = SignInObj | SignUpObj | ChangePasswordObj | FormData | File
 
 const requestHeaders = {
     'Content-Type': 'application/json'
@@ -48,7 +58,7 @@ const requests = {
                 headers: requestHeaders,
                 credentials: requestCredentials
             })
-            .then(responseBody)
+            .then(response => response)
             .catch((error) => { throw new Error(error) })
     },
     patch: (path: string, body?: RequestObject) => {
@@ -74,12 +84,44 @@ const requests = {
             })
             .then(responseBody)
             .catch((error) => { throw new Error(error) })
+    },
+    put: (path: string, body?: RequestObject) => {
+        const url = new URL(path, API_ROOT)
+        return fetch(`${url}`,
+            {
+                method: 'PUT',
+                headers: requestHeaders,
+                credentials: requestCredentials,
+                body: JSON.stringify(body)
+            })
+            .then(response => response)
+            .catch((error) => { throw new Error(error) })
+    },
+    putFormData: (path: string, body?: RequestObject) => {
+        const url = new URL(path, API_ROOT)
+        return fetch(`${url}`,
+            {
+                method: 'PUT',
+                headers: requestHeaders,
+                // credentials: requestCredentials,
+                body: <FormData>body
+            })
+            .then(response => response)
+            .catch((error) => { throw new Error(error) })
     }
 };
 
 export const Auth = {
-    signIn: (obj: SignInObj, path = URLS.SIGNIN) => requests.post(path, obj),
-    logout: (path = URLS.LOGOUT) => requests.post(path),
-    signUp: (obj: SignUpObj, path = URLS.SIGNUP) => requests.post(path, obj),
-    user: (path = URLS.USER_INFO) => requests.get(path)
+    signIn: (obj: SignInObj, path = URL_AUTH.SIGNIN) => requests.post(path, obj),
+    logout: (path = URL_AUTH.LOGOUT) => requests.post(path),
+    signUp: (obj: SignUpObj, path = URL_AUTH.SIGNUP) => requests.post(path, obj),
+    userInfo: (path = URL_AUTH.USER_INFO) => requests.get(path)
 };
+
+export const Users = {
+    changePassword: (
+        obj: ChangePasswordObj,
+        path = URL_USERS.CHANGE_PASSWORD
+    ) => requests.put(path, obj),
+    saveAvatar: (obj: FormData, path = URL_USERS.SAVE_AVATAR) => requests.putFormData(path, obj)
+}
