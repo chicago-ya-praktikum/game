@@ -6,7 +6,13 @@ export class BoxDot extends Dot {
         img.src = './assets/gameElements/box/box.png'
         img.onload = () => {
             const shift = (this.step - this.boxDiameter) / 2
-            this.ctx.strokeRect(this.x + shift, this.y + shift, this.boxDiameter, this.boxDiameter)
+            this.ctx.drawImage(
+                img,
+                this.x + shift,
+                this.y + shift,
+                this.boxDiameter,
+                this.boxDiameter
+            )
         }
     }
 }
