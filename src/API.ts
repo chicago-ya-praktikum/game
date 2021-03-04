@@ -36,7 +36,8 @@ const requestHeaders = {
 
 const requestCredentials = 'include'
 
-const responseBody = (res: { json: () => any }) => res.json()
+const responseBody = (res: {json: () => any}) => res.json()
+const onResponse = async (response: Response) => response
 
 const requests = {
     del: (path: string) => {
@@ -48,7 +49,7 @@ const requests = {
                 credentials: requestCredentials
             })
             .then(responseBody)
-            .catch((error) => { throw new Error(error) })
+            .catch((error) => {throw new Error(error)})
     },
     get: (path: string) => {
         const url = new URL(path, API_ROOT)
@@ -58,8 +59,8 @@ const requests = {
                 headers: requestHeaders,
                 credentials: requestCredentials
             })
-            .then(response => response)
-            .catch((error) => { throw new Error(error) })
+            .then(onResponse)
+            .catch((error) => {throw new Error(error)})
     },
     patch: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
@@ -71,7 +72,7 @@ const requests = {
                 body: JSON.stringify(body)
             })
             .then(responseBody)
-            .catch((error) => { throw new Error(error) })
+            .catch((error) => {throw new Error(error)})
     },
     post: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
@@ -83,7 +84,7 @@ const requests = {
                 body: JSON.stringify(body)
             })
             .then(response => response)
-            .catch((error) => { throw new Error(error) })
+            .catch((error) => {throw new Error(error)})
     },
     put: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
@@ -94,8 +95,8 @@ const requests = {
                 credentials: requestCredentials,
                 body: JSON.stringify(body)
             })
-            .then(response => response)
-            .catch((error) => { throw new Error(error) })
+            .then(responseBody)
+            .catch((error) => {throw new Error(error)})
     },
     putFormData: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
@@ -107,7 +108,7 @@ const requests = {
                 body: <FormData>body
             })
             .then(response => response)
-            .catch((error) => { throw new Error(error) })
+            .catch((error) => {throw new Error(error)})
     }
 };
 
@@ -115,7 +116,7 @@ export const Auth = {
     signIn: (obj: SignInObj, path = URL_AUTH.SIGNIN) => requests.post(path, obj),
     logout: (path = URL_AUTH.LOGOUT) => requests.post(path),
     signUp: (obj: SignUpObj, path = URL_AUTH.SIGNUP) => requests.post(path, obj),
-    userInfo: (path = URL_AUTH.USER_INFO) => requests.get(path)
+    user: (path = URL_AUTH.USER_INFO) => requests.get(path)
 };
 
 export const Users = {

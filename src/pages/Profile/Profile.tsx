@@ -28,7 +28,7 @@ const Profile: FC<Props> = (props: Props) => {
 
     const submitForm = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        const check = checkFields(state.fields)
+        const check = checkFields(fields)
         const {err, updateErr} = check
         if (err) {
             window.alertShow('error', 'Form is filled in incorrectly.')

@@ -5,22 +5,11 @@ import {
     PageError, PageForum, PageGame, PageHome, PageLeaderboard, PageProfile, PageSignin, PageSignup,
     routeForum, routeGame, routeHome, routeLeaderboard, routeProfile, routeSignin, routeSignup
 } from './constants'
-import {Actions} from '../../../actions'
-import {Auth} from '../../../API'
-import {actionCreator} from '../../../utils/actionCreator'
+import {userLogIn} from '../../../store/reducers/user/actions'
 
 export const MainRouter: FC = () => {
     const dispatch = useDispatch()
-
-    const userLogIn = () => {
-        const getResponse = () => {
-            Auth.userInfo().then(data => dispatch(actionCreator(Actions.APPLOAD, data)))
-        }
-        return getResponse()
-    }
-    useEffect(() => {
-        userLogIn()
-    })
+    useEffect(() => {dispatch(userLogIn())})
 
     return (
         <Switch>

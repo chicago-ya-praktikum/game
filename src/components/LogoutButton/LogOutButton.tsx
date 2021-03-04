@@ -1,7 +1,7 @@
 import {Button, Typography} from '@material-ui/core';
 import React, {FC} from 'react'
 import {useDispatch} from 'react-redux'
-import {Actions} from '../../actions'
+import {Actions} from '../../store/actions'
 import {Auth} from '../../API'
 import {actionCreator} from '../../utils/actionCreator'
 

@@ -9,7 +9,7 @@ import {validateInput} from '../../utils/validateInput'
 import {Auth} from '../../API'
 import {styles} from './styles'
 import {Props} from './types'
-import {Actions} from '../../actions'
+import {Actions} from '../../store/actions'
 import {actionCreator} from '../../utils/actionCreator'
 
 const SignInForm: FC<Props> = (props: Props) => {

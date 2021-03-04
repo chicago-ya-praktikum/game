@@ -1,8 +1,8 @@
 import {FormField} from '../types/formTypes'
 import {validateInput} from './validateInput'
 
-export const checkFields = (fields: { [key: string]: FormField }):
-{ err: boolean, updateErr: string[]
+export const checkFields = (fields: {[key: string]: FormField}):
+{err: boolean, updateErr: string[]
 } => {
     const keys = Object.keys(fields)
     const updateErr: string[] = []
