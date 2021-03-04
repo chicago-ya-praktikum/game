@@ -16,12 +16,12 @@ const LayOut: FC<Props> = (props: Props) => {
             <Grid container spacing={3}>
                 <Grid item xs={2}>
                     <div className={classes.paper}>
-                        <Link><Typography variant="h4" color="primary" gutterBottom>Меню</Typography></Link>
+                        <Link><Typography variant='h4' color='primary' gutterBottom>Меню</Typography></Link>
                     </div>
                 </Grid>
                 <Grid item xs={8}>
                     <div className={classes.paper}>
-                        <Typography variant="h2" color="primary" gutterBottom>SOKOBAN</Typography>
+                        <Typography variant='h2' color='primary' gutterBottom>SOKOBAN</Typography>
                     </div>
                 </Grid>
                 <Grid item xs={2}>

@@ -43,7 +43,10 @@ export const SokobanMain = memo(() => {
             }
 
             levels.push(data)
-            setLevels([...levels])
+            // eslint-disable-next-line max-len
+            // ERROR TS2343: This syntax requires an imported helper named '__spreadArray' which does not exist in 'tslib'. Consider upgrading your version of 'tslib'.
+            // setLevels([...levels])
+            setLevels(levels)
 
             if (levels.length < 11) {
                 levelGenerator.postMessage(true)
@@ -66,7 +69,9 @@ export const SokobanMain = memo(() => {
         game()
 
         levels.shift()
-        setLevels([...levels])
+        // eslint-disable-next-line max-len
+        // TS2343: This syntax requires an imported helper named '__spreadArray' which does not exist in 'tslib'. Consider upgrading your version of 'tslib'.
+        // setLevels([...levels])
 
         levelGenerator.postMessage(true)
         gameCore.drawLevel(levels[0])
@@ -75,14 +80,14 @@ export const SokobanMain = memo(() => {
     return (
         <>
             <div className={gameClass}>
-                <div className="row">
+                <div className='row'>
                     <Button disabled={levels.length < 1} onClick={restart}>Restart</Button>
                     <Button disabled={levels.length < 2} onClick={next}>Next</Button>
                 </div>
                 <canvas
-                    className="bordered"
-                    height="400"
-                    width="400"
+                    className='bordered'
+                    height='400'
+                    width='400'
                     ref={ref}
                 />
             </div>

@@ -5,7 +5,7 @@ import {Err} from './index'
 describe('Err: wrapper', () => {
     test('All props', () => {
         const wrapper = mount(
-            <Err error="TestTitle" errorInfo="TestInfo" hideBtn/>
+            <Err error='TestTitle' errorInfo='TestInfo"' hideBtn/>
         )
 
         expect(wrapper.find('h1').text()).toEqual('TestTitle')

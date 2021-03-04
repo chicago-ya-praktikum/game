@@ -16,3 +16,5 @@ export type Field = {
 }
 
 export type Setter = React.Dispatch<React.SetStateAction<Field>>
+export type InputOnBlur = React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+export type SelectOnChange = React.ChangeEvent<{ name?: string; value: unknown }>

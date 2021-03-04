@@ -94,24 +94,24 @@ const SignInForm: FC<Props> = (props: Props) => {
 
     return (
         <div className={classes.root}>
-            <form className={classes.form} noValidate autoComplete="off">
+            <form className={classes.form} noValidate autoComplete='off'>
                 {
                     formElements.map((input) => (
                         <TextField
                             key={input.name}
                             fullWidth
-                            margin="normal"
+                            margin='normal'
                             error={input.error}
                             color={color}
                             label={input.label}
                             name={input.name}
-                            variant="outlined"
+                            variant='outlined'
                             type={input.type}
                             onChange={(e) => inputHandler(e)}
                         />
                     ))
                 }
-                <Button variant="contained" color="primary" type="submit" onClick={(e) => submitForm(e)}>SignIn</Button>
+                <Button variant='contained' color='primary' type='submit' onClick={(e) => submitForm(e)}>SignIn</Button>
             </form>
         </div>
     )

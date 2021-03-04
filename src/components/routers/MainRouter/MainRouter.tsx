@@ -14,7 +14,7 @@ export const MainRouter: FC = () => {
 
     const userLogIn = () => {
         const getResponse = () => {
-            Auth.user().then(data => dispatch(actionCreator(Actions.APPLOAD, data)))
+            Auth.userInfo().then(data => dispatch(actionCreator(Actions.APPLOAD, data)))
         }
         return getResponse()
     }

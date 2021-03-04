@@ -1,64 +1,51 @@
-import React, {FC, useCallback, useState} from 'react'
+import React, {
+    FC, MouseEvent, useCallback, useReducer
+} from 'react'
 import {
     Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, withStyles
 } from '@material-ui/core'
-import {Alert} from '@material-ui/lab'
 import {styles} from './styles'
-import {Props, Field, Setter} from './types'
-import {validateInput} from '../../../utils/validateInput'
+import {
+    InputOnBlur,
+    Props
+} from './types'
+import {reducer} from './reducer/reducer'
+import {initialState} from './reducer/state'
+import {
+    fieldSet, fieldUpdateErr, formClose, formOpen
+} from './reducer/actions'
+import {checkForm} from './utils/checkForm'
 
 const ChangePasswordForm: FC<Props> = (props: Props) => {
-    const [oldPassword, setOldPassword] = useState({val: '', err: true, required: true} as Field)
-    const [newPassword, setNewPassword] = useState({val: '', err: true, required: true} as Field)
-    const [newPasswordConfirm, setNewPasswordConfirm] = useState({val: '', err: true, required: true} as Field)
-    const [showAlert, setShowAlert] = useState(false)
-    const [open, setOpen] = useState(false);
-
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const {open, fields} = state
+    const {oldPassword, newPassword, confirmPassword} = fields
     const {classes} = props
 
-    const inputBlurHandler = useCallback((e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, field: Field, setter: Setter) => {
-        const curr = e.target.value as string
-        if (curr === field.val) return
-        const err = !validateInput(e.target.name as string, curr, field.required)
-        if (err !== field.err) field.err = err
-        field.val = curr
-        setter({...field})
+    const inputBlurHandler = useCallback((e: InputOnBlur) => {
+        e.preventDefault()
+        dispatch(fieldSet(fields, String(e.target.name), String(e.target.value)))
+    }, [fields])
 
+    const handleClickOpen = useCallback(() => dispatch(formOpen()), [])
+
+    const handleCancel = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        dispatch(formClose())
+        window.alertHide()
     }, [])
 
-    const handleClickOpen = useCallback(() => {
-        setOpen(true)
-    }, [])
-
-    const handleClose = useCallback(() => {
-        setOpen(false)
-    }, [])
-
-    const handleAlertClose = useCallback(() => {
-        setShowAlert(false)
-    }, [])
-
-    const formIsValid = () => {
-
-        let res = true
-        const fields = [oldPassword, newPassword, newPasswordConfirm]
-        fields.forEach((field: Field) => (
-            res = res && !field.err
-        ))
-        return res
-
-    }
-
-    const handleSave = useCallback(() => {
-        if (!formIsValid()) {
-            setShowAlert(true)
-            return
+    const handleSave = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        const check = checkForm(state.fields)
+        const {err, message, updateErr} = check
+        if (err) {
+            if (message) window.alertShow('error', 'Form is filled in incorrectly.'.concat(message))
+            updateErr.forEach((name) => dispatch(fieldUpdateErr(fields, name)))
+            // return
         }
-
-        // TODO: save new password
-
-        setOpen(false)
-    }, [])
+        // dispatch(asyncSavePassword(fields))
+    }, [fields])
 
     return (
         <Box>
@@ -69,7 +56,6 @@ const ChangePasswordForm: FC<Props> = (props: Props) => {
                 open={open}
                 aria-labelledby='change-password-dialog-title'
             >
-                {showAlert && <Alert severity='error' onClose={handleAlertClose}>Fields are not filled in correctly!</Alert>}
                 <DialogTitle id='change-password-dialog-title'>Change password</DialogTitle>
                 <DialogContent className={classes.dialogContent}>
                     <TextField
@@ -78,7 +64,8 @@ const ChangePasswordForm: FC<Props> = (props: Props) => {
                         fullWidth
                         label='Old password (required)'
                         error={oldPassword.err}
-                        onBlur={(e) => inputBlurHandler(e, oldPassword, setOldPassword)}
+                        defaultValue={oldPassword.val}
+                        onBlur={inputBlurHandler}
                     />
                     <TextField
                         id='newPassword'
@@ -86,25 +73,25 @@ const ChangePasswordForm: FC<Props> = (props: Props) => {
                         fullWidth
                         label='New password (required)'
                         error={newPassword.err}
-                        onBlur={(e) => inputBlurHandler(e, newPassword, setNewPassword)}
+                        defaultValue={newPassword.val}
+                        onBlur={inputBlurHandler}
                     />
                     <TextField
-                        id='newPasswordConfirm'
-                        name='newPasswordConfirm'
+                        id='confirmPassword'
+                        name='confirmPassword'
                         fullWidth
-                        label='New password confirm (required)'
-                        error={newPasswordConfirm.err}
-                        onBlur={
-                            (e) => inputBlurHandler(e, newPasswordConfirm, setNewPasswordConfirm)
-                        }
+                        label='Confirm password (required)'
+                        error={confirmPassword.err}
+                        defaultValue={confirmPassword.val}
+                        onBlur={inputBlurHandler}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button id='change-password_save' autoFocus onClick={handleSave} color='primary'>
                         Save
                     </Button>
-                    <Button id='change-password_cancel' onClick={handleClose} color='primary' autoFocus>
-                        Cancel
+                    <Button id='change-password_cancel' onClick={handleCancel} color='primary' autoFocus>
+                        Close
                     </Button>
                 </DialogActions>
             </Dialog>

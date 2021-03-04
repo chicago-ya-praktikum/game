@@ -13,10 +13,13 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     render() {
-        if (this.state.hasError) {
-            return <Err errorInfo={this.state.errorInfo} hideBtn/>
+        const {hasError, errorInfo} = this.state
+        const {children} = this.props
+
+        if (hasError) {
+            return <Err errorInfo={errorInfo} hideBtn/>
         }
 
-        return this.props.children
+        return children
     }
 }

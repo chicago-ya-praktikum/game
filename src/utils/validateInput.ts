@@ -11,7 +11,6 @@ function minLength(value: string, length: number) {
 }
 
 export function validateInput(inputName: string | number, inputValue: any, required: boolean = false) {
-
     if (required && !inputValue) return false
 
     let status = false;
@@ -23,6 +22,9 @@ export function validateInput(inputName: string | number, inputValue: any, requi
 	    first_name: (value) => minLength(value, 4),
 	    second_name: (value) => minLength(value, 4),
 	    display_name: (value) => minLength(value, 4),
+	    firstName: (value) => minLength(value, 4),
+	    secondName: (value) => minLength(value, 4),
+	    displayName: (value) => minLength(value, 4),
 	    login: (value) => minLength(value, 4),
 	    message: (value) => minLength(value, 4),
 	    title: (value) => minLength(value, 4),
@@ -40,9 +42,9 @@ export function validateInput(inputName: string | number, inputValue: any, requi
 	    }
 	}
 
-    if (!validationRules[inputName]) return true
+	if (!validationRules[inputName]) return true
 
-    status = validationRules[inputName](inputValue)
+	status = validationRules[inputName](inputValue)
 
 	return status;
 }

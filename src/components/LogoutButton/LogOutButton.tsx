@@ -17,6 +17,6 @@ export const LogoutButton: FC = () => {
         []
     )
     return (
-        <Button onClick={() => userLogout()}><Typography variant="h4" color="primary" gutterBottom>Выход</Typography></Button>
+        <Button onClick={() => userLogout()}><Typography variant='h4' color='primary' gutterBottom>Выход</Typography></Button>
     )
 }

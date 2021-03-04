@@ -4,7 +4,7 @@ import {SignInPage} from '../pages/SignIn/SignIn'
 
 export function privateRoute(this: any, WrappedComponent: React.ComponentType) {
     const PrivateComponent: FC = () => {
-        const authStatus = useSelector((state: {user: any}) => state.user.authStatus)
+        const authStatus = useSelector((state: { user: any }) => state.user.authStatus)
         return (
             <>
                 {authStatus ? <WrappedComponent/> : <SignInPage/>}

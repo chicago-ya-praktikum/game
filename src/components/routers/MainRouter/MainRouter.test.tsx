@@ -1,10 +1,11 @@
 import {MemoryRouter} from 'react-router-dom'
 import React from 'react'
-import { PageHome, PageForum, PageLeaderboard, PageGame, PageProfile, PageSignin, PageSignup, PageError,
-        routeHome, routeLeaderboard, routeForum, routeGame, routeProfile, routeSignup, routeSignin,
+import {mount} from 'enzyme'
+import {
+    PageHome, PageForum, PageLeaderboard, PageGame, PageProfile, PageSignin, PageSignup, PageError,
+    routeHome, routeLeaderboard, routeForum, routeGame, routeProfile, routeSignup, routeSignin
 } from './constants'
-import { MainRouter } from './MainRouter'
-import { mount } from 'enzyme'
+import {MainRouter} from './MainRouter'
 
 describe('MainRouter: wrapper', () => {
     const getWrapper = (route: string) => mount(

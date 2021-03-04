@@ -15,18 +15,18 @@ const Leaderboard: FC<Props> = (props: Props) => {
     return (
         <Box className={classes.content}>
             <Typography
-                align="center"
-                variant="h5"
-                display="inline"
+                align='center'
+                variant='h5'
+                display='inline'
             >
                 Leaderboard
             </Typography>
             <TableContainer className={classes.tableContainer} >
-                <Table className={classes.table} aria-label="simple table">
+                <Table className={classes.table} aria-label='simple table'>
                     <TableHead className={classes.tableHead}>
                         <TableRow>
                             <TableCell>Login</TableCell>
-                            <TableCell align="right">Points</TableCell>
+                            <TableCell align='right'>Points</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -35,8 +35,8 @@ const Leaderboard: FC<Props> = (props: Props) => {
                                 key={row.id}
                                 className={row.id === userId ? classes.mark : undefined}
                             >
-                                <TableCell scope="row">{row.login}</TableCell>
-                                <TableCell align="right">{row.points}</TableCell>
+                                <TableCell scope='row'>{row.login}</TableCell>
+                                <TableCell align='right'>{row.points}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

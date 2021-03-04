@@ -1,14 +1,14 @@
 import React, {FC, useRef, useState} from 'react'
-import {Avatar, Box, Button, withStyles} from '@material-ui/core'
+import {
+    Avatar, Box, Button, withStyles
+} from '@material-ui/core'
 import {styles} from './styles'
 import {Props} from './types'
+import {saveAvatar} from './utils/saveAvatar'
 
 const AvatarUI: FC<Props> = (props: Props) => {
-
-    const { classes } = props
-
     const [avatarSrc, setAvatarSrc] = useState('')
-
+    const {classes, showBtn} = props
     const refAvatar = useRef(null)
 
     const onClickAvatar = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -16,7 +16,6 @@ const AvatarUI: FC<Props> = (props: Props) => {
 
         const input = refAvatar.current as unknown as HTMLInputElement
         input.click()
-
     }
 
     const onChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,12 +26,11 @@ const AvatarUI: FC<Props> = (props: Props) => {
         if (!file.type.match('image')) return
         const reader = new FileReader()
         reader.onload = ev => {
-            setAvatarSrc(ev.target?.result as string)
-            if (props.cb) props.cb(ev.target?.result as string)
+            setAvatarSrc(String(ev.target?.result))
+            saveAvatar(file)
         }
         reader.readAsDataURL(file)
     }
-
 
     return (
         <Box className={classes.root}>
@@ -40,7 +38,7 @@ const AvatarUI: FC<Props> = (props: Props) => {
                 className={classes.avatarSize}
                 src={avatarSrc}
             />
-            {props.showBtn &&
+            {showBtn && (
                 <Button
                     variant='contained'
                     color='primary'
@@ -48,7 +46,10 @@ const AvatarUI: FC<Props> = (props: Props) => {
                     size='small'
                     id='upload-a-photo'
                     onClick={(e) => onClickAvatar(e)}
-                >Upload a photo</Button>}
+                >
+                    Upload a photo
+                </Button>
+            )}
             <input
                 className={classes.inputFile}
                 type='file'

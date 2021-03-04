@@ -8,3 +8,5 @@ export const reducers = combineReducers({
     user: userReducer,
     count: countReducer
 })
+
+export type RootState = ReturnType<typeof reducers>
