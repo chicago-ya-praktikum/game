@@ -18,8 +18,9 @@ export class GameCore {
     private step!: number
 
     end = new UpdateListener<boolean>()
+    theme: string | null
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement, theme: string | null = null) {
         const ctx = canvas.getContext('2d')
 
         if (ctx === null) {
@@ -33,6 +34,8 @@ export class GameCore {
         this.canvasDiameter = canvas.width
         this.ctx = ctx
 
+        this.theme = theme
+
         return this
     }
 
@@ -42,7 +45,7 @@ export class GameCore {
 
         this.level.layerDots.forEach((row, y) => {
             row.forEach((dot, x) => {
-                new ClearDot(this.ctx, this.step, {x, y}).draw()
+                new ClearDot(this.ctx, this.step, {x, y}).draw(this.theme)
                 const constructor = getDotConstructor(dot)
                 new constructor(this.ctx, this.step, {x, y}).draw()
             })
@@ -148,8 +151,7 @@ export class GameCore {
 
     private clearDynamicContent(coordinate: XYCoordinate) {
         this.checkDrawDot(coordinate)
-
-        new ClearDot(this.ctx, this.step, coordinate).draw()
+        new ClearDot(this.ctx, this.step, coordinate).draw(this.theme)
 
         if (this.isBoxSpace(coordinate)) {
             this.drawBoxSpace(coordinate)
@@ -172,7 +174,8 @@ export class GameCore {
     }
 
     private isWall({x, y}: XYCoordinate) {
-        return this.invalidDynamicCoordinate({x, y}) || this.level.layerDots[y][x] === LayerContent.Wall
+        return this.invalidDynamicCoordinate({x, y})
+        || this.level.layerDots[y][x] === LayerContent.Wall
     }
 
     private isBoxSpace({x, y}: XYCoordinate) {

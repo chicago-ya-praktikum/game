@@ -3,9 +3,10 @@ import React, {
 } from 'react'
 import './SokobanMain.sass'
 import {Button} from '@material-ui/core'
-import {GameCore} from '../../GameCore/GameCore'
-import {LevelStore} from '../../GameCore/models/LevelStore'
-import {levelGenerator} from '../../webWorkers/levelGenerator'
+import {useSelector} from 'react-redux'
+import { GameCore } from '../../GameCore/GameCore'
+import { LevelStore } from '../../GameCore/models/LevelStore'
+import { levelGenerator } from '../../webWorkers/levelGenerator'
 
 export const SokobanMain = memo(() => {
     const ref = useRef<HTMLCanvasElement>(null)
@@ -24,6 +25,8 @@ export const SokobanMain = memo(() => {
         setEndClass('hide')
     }
 
+    const theme = useSelector((state: { theme: any }) => state.theme.ground)
+
     useEffect(() => {
         const canvas = ref.current
 
@@ -31,7 +34,7 @@ export const SokobanMain = memo(() => {
             throw new Error('canvas is null')
         }
 
-        gameCore = new GameCore(canvas)
+        gameCore = new GameCore(canvas, theme)
         gameCore.end.subscribe(end)
         const fn = (event: KeyboardEvent) => gameCore.move(event)
         window.addEventListener('keydown', fn)
@@ -55,6 +58,7 @@ export const SokobanMain = memo(() => {
         levelGenerator.addEventListener('message', generatorCallback)
 
         return () => {
+            console.log(theme)
             window.removeEventListener('keydown', fn)
             gameCore.end.unsubscribe(end)
             levelGenerator.removeEventListener('message', generatorCallback)
