@@ -20,6 +20,7 @@ export const fieldSet = (fields: Fields, name: string, val: string): FormAction 
         }
     }
 }
+
 export const fieldUpdateErr = (fields: Fields, name: string): FormAction => {
     const stateField = fields[<FieldsKeys>name]
     return {

@@ -8,8 +8,9 @@ const URL_AUTH = {
 }
 
 const URL_USERS = {
-    CHANGE_PASSWORD: '/api/v2/user/password',
-    SAVE_AVATAR: '/api/v2/user/profile/avatar'
+    PUT_PASSWORD: '/api/v2/user/password',
+    PUT_AVATAR: '/api/v2/user/profile/avatar',
+    PUT_PROFILE: '/api/v2/user/profile'
 }
 
 type SignUpObj = {
@@ -18,6 +19,15 @@ type SignUpObj = {
     login: string,
     email: string,
     password: string,
+    phone: string
+}
+
+type UserPutData = {
+    first_name: string,
+    second_name: string,
+    display_name: string,
+    login: string,
+    email: string,
     phone: string
 }
 
@@ -95,7 +105,7 @@ const requests = {
                 credentials: requestCredentials,
                 body: JSON.stringify(body)
             })
-            .then(responseBody)
+            .then(onResponse)
             .catch((error) => {throw new Error(error)})
     },
     putFormData: (path: string, body?: RequestObject) => {
@@ -103,11 +113,11 @@ const requests = {
         return fetch(`${url}`,
             {
                 method: 'PUT',
-                headers: requestHeaders,
-                // credentials: requestCredentials,
+                // headers: requestHeaders,
+                credentials: requestCredentials,
                 body: <FormData>body
             })
-            .then(response => response)
+            .then(onResponse)
             .catch((error) => {throw new Error(error)})
     }
 };
@@ -120,9 +130,10 @@ export const Auth = {
 };
 
 export const Users = {
-    changePassword: (
+    putPassword: (
         obj: ChangePasswordObj,
-        path = URL_USERS.CHANGE_PASSWORD
+        path = URL_USERS.PUT_PASSWORD
     ) => requests.put(path, obj),
-    saveAvatar: (obj: FormData, path = URL_USERS.SAVE_AVATAR) => requests.putFormData(path, obj)
+    putAvatar: (obj: FormData, path = URL_USERS.PUT_AVATAR) => requests.putFormData(path, obj),
+    putProfile: (obj: UserPutData, path = URL_USERS.PUT_PROFILE) => requests.put(path, obj)
 }

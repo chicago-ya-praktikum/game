@@ -5,11 +5,11 @@ import {
     PageError, PageForum, PageGame, PageHome, PageLeaderboard, PageProfile, PageSignin, PageSignup,
     routeForum, routeGame, routeHome, routeLeaderboard, routeProfile, routeSignin, routeSignup
 } from './constants'
-import {userLogIn} from '../../../store/reducers/user/actions'
+import {getUserData} from '../../../store/reducers/user/actions'
 
 export const MainRouter: FC = () => {
     const dispatch = useDispatch()
-    useEffect(() => {dispatch(userLogIn())})
+    useEffect(() => {dispatch(getUserData())})
 
     return (
         <Switch>

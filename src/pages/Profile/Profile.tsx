@@ -1,7 +1,10 @@
-import React, {FC, useCallback, useReducer} from 'react'
+import React, {
+    FC, useCallback, useEffect, useReducer
+} from 'react'
 import {
-    Box, Button, TextField, Typography, withStyles
+    Box, Button, TextField, withStyles
 } from '@material-ui/core'
+import {useDispatch} from 'react-redux'
 import {styles} from './styles'
 import {
     InputOnBlur, Props
@@ -12,6 +15,8 @@ import {reducer} from './reducer/reducer'
 import {initialState} from './reducer/state'
 import {fieldSet, fieldUpdateErr} from './reducer/actions'
 import {checkFields} from '../../utils/checkFields'
+import {getUserData, putUserData} from '../../store/reducers/user/actions'
+// import {useTypedSelector} from '../../hooks/useTypedSelector'
 
 const Profile: FC<Props> = (props: Props) => {
     const [state, dispatch] = useReducer(reducer, initialState)
@@ -20,6 +25,13 @@ const Profile: FC<Props> = (props: Props) => {
         firstName, secondName, displayName, login, email, phone
     } = fields
     const {classes} = props
+    const dispatchStore = useDispatch()
+    // const user = useTypedSelector(store => store.user)
+    // console.log(user)
+
+    useEffect(() => {
+        dispatchStore(getUserData())
+    })
 
     const inputBlurHandler = useCallback((e: InputOnBlur) => {
         e.preventDefault()
@@ -33,17 +45,13 @@ const Profile: FC<Props> = (props: Props) => {
         if (err) {
             window.alertShow('error', 'Form is filled in incorrectly.')
             updateErr.forEach((name) => dispatch(fieldUpdateErr(fields, name)))
-            // return
+            return
         }
+        dispatchStore(putUserData(fields))
     }, [fields])
 
     return (
         <Box className={classes.root}>
-            <Box>
-                <Typography align='center' variant='h5'>
-                    Profile
-                </Typography>
-            </Box>
             <form className={classes.content}>
                 <AvatarUI showBtn/>
                 <TextField

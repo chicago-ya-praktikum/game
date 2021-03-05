@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core'
 import {styles} from './styles'
 import {Props} from './types'
-import {saveAvatar} from './utils/saveAvatar'
+import {putAvatar} from './utils/putAvatar'
 
 const AvatarUI: FC<Props> = (props: Props) => {
     const [avatarSrc, setAvatarSrc] = useState('')
@@ -27,7 +27,7 @@ const AvatarUI: FC<Props> = (props: Props) => {
         const reader = new FileReader()
         reader.onload = ev => {
             setAvatarSrc(String(ev.target?.result))
-            saveAvatar(file)
+            putAvatar(file)
         }
         reader.readAsDataURL(file)
     }

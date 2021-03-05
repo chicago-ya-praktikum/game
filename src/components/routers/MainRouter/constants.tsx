@@ -1,15 +1,16 @@
-import React from 'react'
 import {Leaderboard} from '../../../pages/Leaderboard/index'
 import {SignInPage} from '../../../pages/SignIn/SignIn'
-import {LayOut} from '../../LayOut/index'
 import {SignUpPage} from '../../../pages/SignUp/SignUp'
 import {Profile} from '../../../pages/Profile/index'
 import {Err} from '../../../pages/Err/index'
+import {Home} from '../../../pages/Home/index'
+import {Forum} from '../../../pages/Forum/index'
+import {Game} from '../../../pages/Game/index'
 
-export const PageHome = () => <h1>home</h1>
+export const PageHome = Home
 export const PageLeaderboard = Leaderboard
-export const PageForum = () => <h1>forum</h1>
-export const PageGame = LayOut
+export const PageForum = Forum
+export const PageGame = Game
 export const PageProfile = Profile
 export const PageSignup = SignUpPage
 export const PageSignin = SignInPage

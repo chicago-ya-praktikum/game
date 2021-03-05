@@ -6,6 +6,7 @@ import {ErrorBoundary} from '../ErrorBoundary/ErrorBoundary'
 import {configureStore} from '../../store/store'
 import {AlertProvider} from '../UI/Alert/AlertProvider/AlertProvider'
 import {AlertUI} from '../UI/Alert/AlertUI'
+import {Layout} from '../Layout/index'
 
 const store = configureStore({})
 
@@ -15,9 +16,11 @@ export function App() {
             <Provider store={store}>
                 <AlertProvider>
                     <AlertUI/>
-                    <BrowserRouter>
-                        <MainRouter/>
-                    </BrowserRouter>
+                    <Layout>
+                        <BrowserRouter>
+                            <MainRouter/>
+                        </BrowserRouter>
+                    </Layout>
                 </AlertProvider>
             </Provider>
         </ErrorBoundary>
