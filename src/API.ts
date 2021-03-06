@@ -59,7 +59,6 @@ const requests = {
                 credentials: requestCredentials
             })
             .then(responseBody)
-            .catch((error) => {throw new Error(error)})
     },
     get: (path: string) => {
         const url = new URL(path, API_ROOT)
@@ -70,7 +69,6 @@ const requests = {
                 credentials: requestCredentials
             })
             .then(onResponse)
-            .catch((error) => {throw new Error(error)})
     },
     patch: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
@@ -82,7 +80,6 @@ const requests = {
                 body: JSON.stringify(body)
             })
             .then(responseBody)
-            .catch((error) => {throw new Error(error)})
     },
     post: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
@@ -94,7 +91,6 @@ const requests = {
                 body: JSON.stringify(body)
             })
             .then(response => response)
-            .catch((error) => {throw new Error(error)})
     },
     put: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
@@ -106,19 +102,16 @@ const requests = {
                 body: JSON.stringify(body)
             })
             .then(onResponse)
-            .catch((error) => {throw new Error(error)})
     },
     putFormData: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
         return fetch(`${url}`,
             {
                 method: 'PUT',
-                // headers: requestHeaders,
                 credentials: requestCredentials,
                 body: <FormData>body
             })
             .then(onResponse)
-            .catch((error) => {throw new Error(error)})
     }
 };
 
