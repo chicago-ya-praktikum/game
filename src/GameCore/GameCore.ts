@@ -18,11 +18,9 @@ export class GameCore {
     private step!: number
 
     end = new UpdateListener<boolean>()
-    theme: string | null
 
-    constructor(canvas: HTMLCanvasElement, theme: string | null = null) {
+    constructor(canvas: HTMLCanvasElement) {
         const ctx = canvas.getContext('2d')
-        console.log(theme)
 
         if (ctx === null) {
             throw new Error('ctx is null')
@@ -35,8 +33,6 @@ export class GameCore {
         this.canvasDiameter = canvas.width
         this.ctx = ctx
 
-        this.theme = theme
-
         return this
     }
 
@@ -46,7 +42,7 @@ export class GameCore {
 
         this.level.layerDots.forEach((row, y) => {
             row.forEach((dot, x) => {
-                new ClearDot(this.ctx, this.step, {x, y}).draw(this.theme)
+                new ClearDot(this.ctx, this.step, {x, y}).draw()
                 const constructor = getDotConstructor(dot)
                 new constructor(this.ctx, this.step, {x, y}).draw()
             })
@@ -152,7 +148,7 @@ export class GameCore {
 
     private clearDynamicContent(coordinate: XYCoordinate) {
         this.checkDrawDot(coordinate)
-        new ClearDot(this.ctx, this.step, coordinate).draw(this.theme)
+        new ClearDot(this.ctx, this.step, coordinate).draw()
 
         if (this.isBoxSpace(coordinate)) {
             this.drawBoxSpace(coordinate)
