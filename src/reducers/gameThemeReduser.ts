@@ -26,6 +26,5 @@ export function themeReducer(state: ThemeReducer = defaultReducer,
             }
         default:
             return state
-            break;
     }
 }

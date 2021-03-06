@@ -22,6 +22,7 @@ export class GameCore {
 
     constructor(canvas: HTMLCanvasElement, theme: string | null = null) {
         const ctx = canvas.getContext('2d')
+        console.log(theme)
 
         if (ctx === null) {
             throw new Error('ctx is null')

@@ -4,9 +4,12 @@ import React, {
 import './SokobanMain.sass'
 import {Button} from '@material-ui/core'
 import {useSelector} from 'react-redux'
-import { GameCore } from '../../GameCore/GameCore'
-import { LevelStore } from '../../GameCore/models/LevelStore'
-import { levelGenerator } from '../../webWorkers/levelGenerator'
+import { useDispatch } from 'react-redux'
+import {GameCore} from '../../GameCore/GameCore'
+import {LevelStore} from '../../GameCore/models/LevelStore'
+import {levelGenerator} from '../../webWorkers/levelGenerator'
+import { Actions } from '../../actions'
+import { actionCreator } from '../../utils/actionCreator'
 
 export const SokobanMain = memo(() => {
     const ref = useRef<HTMLCanvasElement>(null)
@@ -26,6 +29,12 @@ export const SokobanMain = memo(() => {
     }
 
     const theme = useSelector((state: { theme: any }) => state.theme.ground)
+
+    const dispatch = useDispatch()
+
+    const changeTheme = () => {
+        dispatch(actionCreator(Actions.SWITCH_TO_SAND_THEME))
+    }
 
     useEffect(() => {
         const canvas = ref.current
@@ -58,7 +67,6 @@ export const SokobanMain = memo(() => {
         levelGenerator.addEventListener('message', generatorCallback)
 
         return () => {
-            console.log(theme)
             window.removeEventListener('keydown', fn)
             gameCore.end.unsubscribe(end)
             levelGenerator.removeEventListener('message', generatorCallback)
@@ -79,7 +87,7 @@ export const SokobanMain = memo(() => {
 
         levelGenerator.postMessage(true)
         gameCore.drawLevel(levels[0])
-    }, [])
+    }, [theme])
 
     return (
         <>
@@ -87,6 +95,7 @@ export const SokobanMain = memo(() => {
                 <div className='row'>
                     <Button disabled={levels.length < 1} onClick={restart}>Restart</Button>
                     <Button disabled={levels.length < 2} onClick={next}>Next</Button>
+                    <Button onClick={changeTheme}>Change ground</Button>
                 </div>
                 <canvas
                     className='bordered'

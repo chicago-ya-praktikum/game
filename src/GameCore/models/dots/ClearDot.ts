@@ -7,7 +7,6 @@ enum Theme {
 export class ClearDot extends Dot {
     draw(theme: string | null = null) {
         const img = new Image()
-        console.log(theme)
         switch (theme) {
             case 'sand':
                 img.src = Theme.sand
