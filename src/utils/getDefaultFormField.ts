@@ -1,7 +1,13 @@
 import {FormField} from '../types/formTypes'
 
 export const getDefaultFormField = (
-    required = true, err = false, val = '', tip = ''
+    id: string,
+    label: string,
+    type: string = '',
+    required = true,
+    err = false,
+    val = '',
+    tip = ''
 ): FormField => ({
-    err, required, val, tip
+    id, label, type, required, err, val, tip
 })

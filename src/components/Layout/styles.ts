@@ -1,7 +1,7 @@
 import {createStyles} from '@material-ui/core/styles'
 
 export const styles = () => createStyles({
-    gridRight: {
-        justifyContent: 'flex-end'
+    title: {
+        textTransform: 'capitalize'
     }
 })

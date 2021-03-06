@@ -1,6 +1,6 @@
 import React from 'react'
 import {authView} from '../../utils/authView'
-import {SignInForm} from '../../components/SignInForm/index'
+import {SignInForm} from '../../components/forms/SignInForm/index'
 
 function SignIn() {
     return (

@@ -15,7 +15,8 @@ export function userReducer(state: State = initialState, action: DispatchAction)
                 ...state,
                 status: 'success',
                 authStatus: true,
-                info: action.payload
+                info: action.payload,
+                id: action.payload.id
             }
         default:
             return state

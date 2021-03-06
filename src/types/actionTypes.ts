@@ -6,5 +6,5 @@ export type FormAction = {
 } & Action
 
 export type FormFieldPayload = {
-    [key: string]: FormField | string | boolean
+    [key: string]: FormField | string | number | boolean
 }

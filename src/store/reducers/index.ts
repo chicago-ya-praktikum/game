@@ -1,11 +1,9 @@
 import {combineReducers} from 'redux'
 import {userReducer} from './user/reducer'
-import {countReducer} from './countReduser'
 
 // В этом файле будем объединять все редьюсеры в один
 export const reducers = combineReducers({
-    user: userReducer,
-    count: countReducer
+    user: userReducer
 })
 
 export type RootState = ReturnType<typeof reducers>

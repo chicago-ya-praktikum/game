@@ -83,6 +83,7 @@
     },
     "dependencies": {
         "@material-ui/core": "^4.11.3",
+        "@material-ui/icons": "^4.11.2",
         "@material-ui/lab": "^4.0.0-alpha.57",
         "express": "^4.17.1",
         "material-ui-number-input": "^5.0.24",
@@ -95,6 +96,7 @@
         "redux": "^4.0.5",
         "redux-devtools-extension": "^2.13.8",
         "redux-thunk": "^2.3.0",
+        "reselect": "^4.0.0",
         "sokoban-generator": "^1.1.5"
     }
 }

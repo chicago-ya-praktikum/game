@@ -2,10 +2,10 @@ import React, {FC, useState} from 'react'
 import {Button, withStyles} from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import {useDispatch} from 'react-redux'
-import {Actions} from '../../store/actions'
-import {actionCreator} from '../../utils/actionCreator'
-import {validateInput} from '../../utils/validateInput'
-import {Auth} from '../../API'
+import {Actions} from '../../../store/actions'
+import {actionCreator} from '../../../utils/actionCreator'
+import {validateInput} from '../../../utils/validateInput'
+import {Auth} from '../../../API'
 import {styles} from './styles'
 import {Props} from './types'
 
@@ -158,7 +158,7 @@ const RegForm: FC<Props> = (props: Props) => {
                             color={color}
                             label={input.label}
                             name={input.name}
-                            variant='outlined'
+                            // variant='outlined'
                             type={input.type}
                             onChange={(e) => inputHandler(e)}
                         />

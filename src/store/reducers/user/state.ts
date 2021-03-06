@@ -1,5 +1,5 @@
 export const info = {
-    id: 0,
+    // id: 0,
     first_name: '',
     second_name: '',
     display_name: '',
@@ -16,10 +16,12 @@ export type State = {
     status: LoadStatus,
     authStatus: boolean,
     info: Info | null,
+    id: number
 }
 
 export const initialState: State = {
     info: null,
     status: 'failed',
-    authStatus: false
+    authStatus: false,
+    id: 0
 }

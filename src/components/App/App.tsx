@@ -16,11 +16,11 @@ export function App() {
             <Provider store={store}>
                 <AlertProvider>
                     <AlertUI/>
-                    <Layout>
-                        <BrowserRouter>
+                    <BrowserRouter>
+                        <Layout>
                             <MainRouter/>
-                        </BrowserRouter>
-                    </Layout>
+                        </Layout>
+                    </BrowserRouter>
                 </AlertProvider>
             </Provider>
         </ErrorBoundary>

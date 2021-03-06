@@ -2,8 +2,9 @@ import React, {
     FC, MouseEvent, useCallback, useReducer
 } from 'react'
 import {
-    Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, withStyles
+    Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, withStyles
 } from '@material-ui/core'
+import {useDispatch} from 'react-redux'
 import {styles} from './styles'
 import {
     InputOnBlur,
@@ -15,12 +16,15 @@ import {
     fieldSet, fieldUpdateErr, formClose, formOpen
 } from './reducer/actions'
 import {checkForm} from './utils/checkForm'
+import {InputForm} from '../../UI/inputs/InputForm/index'
+import {putPassword} from '../../../store/reducers/user/actions'
 
 const ChangePasswordForm: FC<Props> = (props: Props) => {
     const [state, dispatch] = useReducer(reducer, initialState)
     const {open, fields} = state
     const {oldPassword, newPassword, confirmPassword} = fields
     const {classes} = props
+    const dispatchStore = useDispatch()
 
     const inputBlurHandler = useCallback((e: InputOnBlur) => {
         e.preventDefault()
@@ -37,15 +41,15 @@ const ChangePasswordForm: FC<Props> = (props: Props) => {
 
     const handleSave = useCallback((e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        const check = checkForm(state.fields)
+        const check = checkForm(fields)
         const {err, message, updateErr} = check
         if (err) {
-            if (message) window.alertShow('error', 'Form is filled in incorrectly.'.concat(message))
+            window.alertShow('error', 'Form is filled in incorrectly.'.concat(message))
             updateErr.forEach((name) => dispatch(fieldUpdateErr(fields, name)))
-            // return
+            return
         }
-        // dispatch(asyncSavePassword(fields))
-    }, [fields])
+        dispatchStore(putPassword(oldPassword.val, newPassword.val))
+    }, [dispatchStore, fields, newPassword.val, oldPassword.val])
 
     return (
         <Box>
@@ -58,33 +62,9 @@ const ChangePasswordForm: FC<Props> = (props: Props) => {
             >
                 <DialogTitle id='change-password-dialog-title'>Change password</DialogTitle>
                 <DialogContent className={classes.dialogContent}>
-                    <TextField
-                        id='oldPassword'
-                        name='oldPassword'
-                        fullWidth
-                        label='Old password (required)'
-                        error={oldPassword.err}
-                        defaultValue={oldPassword.val}
-                        onBlur={inputBlurHandler}
-                    />
-                    <TextField
-                        id='newPassword'
-                        name='newPassword'
-                        fullWidth
-                        label='New password (required)'
-                        error={newPassword.err}
-                        defaultValue={newPassword.val}
-                        onBlur={inputBlurHandler}
-                    />
-                    <TextField
-                        id='confirmPassword'
-                        name='confirmPassword'
-                        fullWidth
-                        label='Confirm password (required)'
-                        error={confirmPassword.err}
-                        defaultValue={confirmPassword.val}
-                        onBlur={inputBlurHandler}
-                    />
+                    <InputForm field={oldPassword} onBlur={inputBlurHandler}/>
+                    <InputForm field={newPassword} onBlur={inputBlurHandler}/>
+                    <InputForm field={confirmPassword} onBlur={inputBlurHandler}/>
                 </DialogContent>
                 <DialogActions>
                     <Button id='change-password_save' autoFocus onClick={handleSave} color='primary'>
