@@ -7,7 +7,6 @@ export interface GeneratorParameters {
     boxes?: number
     minWalls?: number
     attempts?: number
-    seed?: number
     initialPosition?: XYCoordinate
     type?: GeneratorType
 }

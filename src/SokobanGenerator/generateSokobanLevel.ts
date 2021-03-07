@@ -8,14 +8,13 @@ export function generateSokobanLevel(parameters: GeneratorParameters) {
         height = 9,
         boxes = 3,
         minWalls = 13,
-        seed = Date.now(),
         initialPosition,
         type = GeneratorType.String
     } = parameters
 
     let {attempts = 5000} = parameters
 
-    const grid = new Grid(width, height, boxes, seed, minWalls, initialPosition)
+    const grid = new Grid(width, height, boxes, minWalls, initialPosition)
 
     while (--attempts > 0) {
         if (!grid.applyTemplates()

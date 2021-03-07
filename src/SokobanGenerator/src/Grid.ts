@@ -1,5 +1,4 @@
 /* eslint-disable no-continue */
-import seedrandom from 'seedrandom'
 import {Matrix} from './Matrix'
 import {emptyMatrix} from '../helpers/emptyMatrix'
 import {XYCoordinate} from '../../GameCore/models/XYCoordinate'
@@ -16,24 +15,21 @@ export class Grid {
     private readonly _height: number
     private readonly _box: number
     _data: Matrix
-    private readonly _rand: any
-    private readonly _seed: number
+    private readonly _rand: typeof Math.random
     private readonly _minWall: number
-    private readonly _playerFixedPos: any
+    private readonly _playerFixedPos: XYCoordinate
     private _solutionStep: number
 
     constructor(width = 0,
         height = 0,
         box = 3,
-        seed = 0,
         minWall = 0,
-        playerPos?: XYCoordinate) {
+        playerPos: XYCoordinate = {x: 0, y: 0}) {
         this._width = width
         this._height = height
         this._box = box
         this._data = new Matrix(this._width, this._height, Tile.FLOOR)
-        this._rand = seedrandom(seed as unknown as string)
-        this._seed = seed
+        this._rand = Math.random
         this._minWall = minWall
         this._playerFixedPos = playerPos
         this._solutionStep = -1
@@ -70,7 +66,6 @@ export class Grid {
         const newGrid = new Grid(this._width,
             this._height,
             this._box,
-            this._seed,
             this._minWall,
             this._playerFixedPos)
         newGrid._data = this._data.clone()
@@ -118,7 +113,7 @@ export class Grid {
      * @private
      *
      */
-    _applyTemplate(x: number, y: number) {
+    private _applyTemplate(x: number, y: number) {
         // Choose a random template
         const temp = templates[Math.floor(this._rand() * templates.length)]
         let i = 0
@@ -320,7 +315,7 @@ export class Grid {
      *   to keep track of the steps when the player is at that specific location
      * @private
      */
-    _pullBoxes(initBoxes: XYCoordinate[], initPos: XYCoordinate, map: {}) {
+    private _pullBoxes(initBoxes: XYCoordinate[], initPos: XYCoordinate, map: {}) {
         let size = 0
         const stack = [{
             boxes: initBoxes.map(b => ({...b})),
@@ -353,21 +348,13 @@ export class Grid {
                     const {x, y} = box
                     const newBoxPos = moveToDirection(x, y, direction)
 
-                    if (!matrix.isAccessible(pos.x,
-                        pos.y,
-                        newBoxPos.x,
-                        newBoxPos.y)) {
+                    if (!matrix.isAccessible(pos.x, pos.y, newBoxPos.x, newBoxPos.y)) {
                         continue
                     }
 
-                    const newPlayerPos = moveToDirection(newBoxPos.x,
-                        newBoxPos.y,
-                        direction)
+                    const newPlayerPos = moveToDirection(newBoxPos.x, newBoxPos.y, direction)
 
-                    if (!matrix.isAccessible(pos.x,
-                        pos.y,
-                        newPlayerPos.x,
-                        newPlayerPos.y)) {
+                    if (!matrix.isAccessible(pos.x, pos.y, newPlayerPos.x, newPlayerPos.y)) {
                         continue
                     }
 
