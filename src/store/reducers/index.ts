@@ -1,13 +1,10 @@
 import {combineReducers} from 'redux'
-
-import {userReducer} from './userReducer'
-import {countReducer} from './countReduser'
-import {themeReducer} from './gameThemeReduser'
+import {userReducer} from './user/reducer'
+import {themeReducer} from '../../reducers/gameThemeReduser'
 
 // В этом файле будем объединять все редьюсеры в один
 export const reducers = combineReducers({
     user: userReducer,
-    count: countReducer,
     theme: themeReducer
 })
 

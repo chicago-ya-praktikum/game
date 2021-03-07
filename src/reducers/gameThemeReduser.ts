@@ -1,4 +1,4 @@
-import {Actions} from '../actions'
+import {Actions} from '../store/actions'
 
 enum Theme {
     SAND = 'sand'

@@ -8,8 +8,9 @@ const URL_AUTH = {
 }
 
 const URL_USERS = {
-    CHANGE_PASSWORD: '/api/v2/user/password',
-    SAVE_AVATAR: '/api/v2/user/profile/avatar'
+    PUT_PASSWORD: '/api/v2/user/password',
+    PUT_AVATAR: '/api/v2/user/profile/avatar',
+    PUT_PROFILE: '/api/v2/user/profile'
 }
 
 type SignUpObj = {
@@ -18,6 +19,15 @@ type SignUpObj = {
     login: string,
     email: string,
     password: string,
+    phone: string
+}
+
+type UserPutData = {
+    first_name: string,
+    second_name: string,
+    display_name: string,
+    login: string,
+    email: string,
     phone: string
 }
 
@@ -36,7 +46,8 @@ const requestHeaders = {
 
 const requestCredentials = 'include'
 
-const responseBody = (res: { json: () => any }) => res.json()
+const responseBody = (res: {json: () => any}) => res.json()
+const onResponse = async (response: Response) => response
 
 const requests = {
     del: (path: string) => {
@@ -48,7 +59,6 @@ const requests = {
                 credentials: requestCredentials
             })
             .then(responseBody)
-            .catch((error) => { throw new Error(error) })
     },
     get: (path: string) => {
         const url = new URL(path, API_ROOT)
@@ -58,8 +68,7 @@ const requests = {
                 headers: requestHeaders,
                 credentials: requestCredentials
             })
-            .then(response => response)
-            .catch((error) => { throw new Error(error) })
+            .then(onResponse)
     },
     patch: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
@@ -71,7 +80,6 @@ const requests = {
                 body: JSON.stringify(body)
             })
             .then(responseBody)
-            .catch((error) => { throw new Error(error) })
     },
     post: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
@@ -83,7 +91,6 @@ const requests = {
                 body: JSON.stringify(body)
             })
             .then(response => response)
-            .catch((error) => { throw new Error(error) })
     },
     put: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
@@ -94,20 +101,17 @@ const requests = {
                 credentials: requestCredentials,
                 body: JSON.stringify(body)
             })
-            .then(response => response)
-            .catch((error) => { throw new Error(error) })
+            .then(onResponse)
     },
     putFormData: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
         return fetch(`${url}`,
             {
                 method: 'PUT',
-                headers: requestHeaders,
-                // credentials: requestCredentials,
+                credentials: requestCredentials,
                 body: <FormData>body
             })
-            .then(response => response)
-            .catch((error) => { throw new Error(error) })
+            .then(onResponse)
     }
 };
 
@@ -115,13 +119,14 @@ export const Auth = {
     signIn: (obj: SignInObj, path = URL_AUTH.SIGNIN) => requests.post(path, obj),
     logout: (path = URL_AUTH.LOGOUT) => requests.post(path),
     signUp: (obj: SignUpObj, path = URL_AUTH.SIGNUP) => requests.post(path, obj),
-    userInfo: (path = URL_AUTH.USER_INFO) => requests.get(path)
+    user: (path = URL_AUTH.USER_INFO) => requests.get(path)
 };
 
 export const Users = {
-    changePassword: (
+    putPassword: (
         obj: ChangePasswordObj,
-        path = URL_USERS.CHANGE_PASSWORD
+        path = URL_USERS.PUT_PASSWORD
     ) => requests.put(path, obj),
-    saveAvatar: (obj: FormData, path = URL_USERS.SAVE_AVATAR) => requests.putFormData(path, obj)
+    putAvatar: (obj: FormData, path = URL_USERS.PUT_AVATAR) => requests.putFormData(path, obj),
+    putProfile: (obj: UserPutData, path = URL_USERS.PUT_PROFILE) => requests.put(path, obj)
 }

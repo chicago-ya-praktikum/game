@@ -1,25 +1,44 @@
-import React, {FC, useCallback, useReducer} from 'react'
+import React, {
+    FC, useCallback, useEffect, useReducer
+} from 'react'
 import {
-    Box, Button, TextField, Typography, withStyles
+    Box, Button, withStyles
 } from '@material-ui/core'
+import {useDispatch} from 'react-redux'
+import {withRouter} from 'react-router-dom'
 import {styles} from './styles'
 import {
     InputOnBlur, Props
 } from './types'
 import {AvatarUI} from '../../components/UI/AvatarUI/index'
-import {ChangePasswordForm} from '../../components/UI/ChangePasswordForm/index'
+import {ChangePasswordForm} from '../../components/forms/ChangePasswordForm/index'
 import {reducer} from './reducer/reducer'
 import {initialState} from './reducer/state'
-import {fieldSet, fieldUpdateErr} from './reducer/actions'
+import {
+    fieldSet, fieldUpdateErr, initSet, fieldsFill
+} from './reducer/actions'
 import {checkFields} from '../../utils/checkFields'
+import {getUserData, postLogout, putProfile} from '../../store/reducers/user/actions'
+import {InputForm} from '../../components/UI/inputs/InputForm/index'
+import {useTypedSelector} from '../../hooks/useTypedSelector'
+import {userInfoSelector} from '../../store/selectors'
+// eslint-disable-next-line import/no-cycle
+import {routeHome} from '../../components/routers/MainRouter/constants'
 
 const Profile: FC<Props> = (props: Props) => {
     const [state, dispatch] = useReducer(reducer, initialState)
-    const {fields} = state
-    const {
-        firstName, secondName, displayName, login, email, phone
-    } = fields
-    const {classes} = props
+    const {fields, init} = state
+    const {classes, history} = props
+    const dispatchStore = useDispatch()
+    const info = userInfoSelector(useTypedSelector(rootState => rootState))
+
+    useEffect(() => {
+        if (init) return
+        dispatch(initSet())
+        dispatchStore(getUserData())
+        if (!info) return
+        dispatch(fieldsFill(info, fields))
+    })
 
     const inputBlurHandler = useCallback((e: InputOnBlur) => {
         e.preventDefault()
@@ -28,78 +47,39 @@ const Profile: FC<Props> = (props: Props) => {
 
     const submitForm = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        const check = checkFields(state.fields)
+        const check = checkFields(fields)
         const {err, updateErr} = check
         if (err) {
             window.alertShow('error', 'Form is filled in incorrectly.')
             updateErr.forEach((name) => dispatch(fieldUpdateErr(fields, name)))
-            // return
+            return
         }
-    }, [fields])
+        if (!info) return
+        dispatchStore(putProfile(fields, info))
+    }, [dispatchStore, fields, info])
+
+    const handleLogOut = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault()
+        dispatchStore(postLogout())
+        history.push(routeHome)
+    }, [dispatchStore, history])
+
+    const RenderFields = () => (
+        <>
+            <InputForm field={fields.first_name} onBlur={inputBlurHandler}/>
+            <InputForm field={fields.second_name} onBlur={inputBlurHandler}/>
+            <InputForm field={fields.display_name} onBlur={inputBlurHandler}/>
+            <InputForm field={fields.login} onBlur={inputBlurHandler}/>
+            <InputForm field={fields.email} onBlur={inputBlurHandler}/>
+            <InputForm field={fields.phone} onBlur={inputBlurHandler}/>
+        </>
+    )
 
     return (
         <Box className={classes.root}>
-            <Box>
-                <Typography align='center' variant='h5'>
-                    Profile
-                </Typography>
-            </Box>
             <form className={classes.content}>
                 <AvatarUI showBtn/>
-                <TextField
-                    id='firstName'
-                    name='firstName'
-                    label='First name (required)'
-                    fullWidth
-                    variant='outlined'
-                    error={firstName.err}
-                    onBlur={inputBlurHandler}
-                />
-                <TextField
-                    id='secondName'
-                    name='secondName'
-                    label='Second name (required)'
-                    fullWidth
-                    variant='outlined'
-                    error={secondName.err}
-                    onBlur={inputBlurHandler}
-                />
-                <TextField
-                    id='displayName'
-                    name='displayName'
-                    label='Display name (required)'
-                    fullWidth
-                    variant='outlined'
-                    error={displayName.err}
-                    onBlur={inputBlurHandler}
-                />
-                <TextField
-                    id='login'
-                    name='login'
-                    label='Login (required)'
-                    fullWidth
-                    variant='outlined'
-                    error={login.err}
-                    onBlur={inputBlurHandler}
-                />
-                <TextField
-                    id='email'
-                    name='email'
-                    label='email (required)'
-                    fullWidth
-                    variant='outlined'
-                    error={email.err}
-                    onBlur={inputBlurHandler}
-                />
-                <TextField
-                    id='phone'
-                    name='phone'
-                    label='phone'
-                    fullWidth
-                    variant='outlined'
-                    error={phone.err}
-                    onBlur={inputBlurHandler}
-                />
+                {init && <RenderFields/>}
                 <Button
                     variant='contained'
                     color='primary'
@@ -113,9 +93,12 @@ const Profile: FC<Props> = (props: Props) => {
             <Box className={classes.changePasswordForm}>
                 <ChangePasswordForm/>
             </Box>
+            <Box>
+                <Button size='small' color='secondary' onClick={handleLogOut}>Log out</Button>
+            </Box>
 
         </Box>
     )
 }
 
-export const ProfileTSX = withStyles(styles)(Profile)
+export const ProfileTSX = withStyles(styles)(withRouter(Profile))

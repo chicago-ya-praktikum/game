@@ -1,16 +1,17 @@
 import {getDefaultFormField} from '../../../utils/getDefaultFormField'
 
 export const fields = {
-    firstName: getDefaultFormField(),
-    secondName: getDefaultFormField(),
-    displayName: getDefaultFormField(),
-    login: getDefaultFormField(),
-    email: getDefaultFormField(),
-    phone: getDefaultFormField()
+    first_name: getDefaultFormField('first_name', 'First name (required)'),
+    second_name: getDefaultFormField('second_name', 'Second name (required)'),
+    display_name: getDefaultFormField('display_name', 'Display name (required)'),
+    login: getDefaultFormField('login', 'Login (required)'),
+    email: getDefaultFormField('email', 'email (required)'),
+    phone: getDefaultFormField('phone', 'phone', '', false)
 }
 
 export const initialState = {
-    fields
+    fields,
+    init: false
 }
 
 export type State = typeof initialState

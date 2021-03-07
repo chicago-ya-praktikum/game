@@ -3,7 +3,5 @@ import {RouteComponentProps} from 'react-router-dom'
 import {styles} from './styles'
 
 export type Props = {
+    children: React.ReactNode
 } & WithStyles<typeof styles> & RouteComponentProps
-
-export type InputOnBlur = React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-export type SelectOnChange = React.ChangeEvent<{name?: string; value: unknown}>
