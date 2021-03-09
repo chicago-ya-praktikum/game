@@ -5,10 +5,10 @@ import {Fields as ProfileFields} from '../../../pages/Profile/reducer/state'
 import {Info} from './state'
 
 export enum Actions {
-    APPLOAD = 'APPLOAD',
-    SIGNUP = 'SIGNUP',
-    LOGOUT = 'LOGOUT',
-    SIGNIN = 'SIGNIN',
+    // APPLOAD = 'APPLOAD',
+    // SIGNUP = 'SIGNUP',
+    // LOGOUT = 'LOGOUT',
+    // SIGNIN = 'SIGNIN',
     NOT_AUTH = 'NOT_AUTH',
     AUTH = 'AUTH',
     PUT_PROFILE = 'PUT_PROFILE',
@@ -71,21 +71,24 @@ export const putPassword = (
         if (response.status >= 400) {
             const res = await response.json()
             window.alertShow('error', res.message)
+            dispatch(noActions())
         } else {
             window.alertShow('success', 'Password saved.')
+            dispatch(notAuth())
         }
     } else {
         const res = await response.text()
         window.alertShow('error', res)
+        dispatch(noActions())
     }
-    dispatch(noActions())
 }
 
-export const postLogout = () => async (dispatch: Dispatch<DispatchAction>) => {
+export const postLogout = (cb: () => void) => async (dispatch: Dispatch<DispatchAction>) => {
     const response = await Auth.logout()
     if (!response.ok) {
         const res = await response.text()
         window.alertShow('error', res)
     }
-    dispatch(noActions())
+    dispatch(notAuth())
+    cb()
 }

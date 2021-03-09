@@ -1,20 +1,22 @@
-import React, {FC, useEffect, useRef, useState} from 'react'
+import React, {
+    FC, useEffect, useRef, useState
+} from 'react'
 import {
     Avatar, Box, Button, withStyles
 } from '@material-ui/core'
 import {styles} from './styles'
 import {Props} from './types'
 import {putAvatar} from './utils/putAvatar'
-import {userAvatarSelector} from '../../../store/selectors'
-import {useTypedSelector} from '../../../hooks/useTypedSelector'
+// import {userAvatarSelector} from '../../../store/selectors'
+// import {useTypedSelector} from '../../../hooks/useTypedSelector'
 
 const AvatarUI: FC<Props> = (props: Props) => {
     const [avatarSrc, setAvatarSrc] = useState('')
     const [init, setInit] = useState(false)
     const {classes, showBtn} = props
     const refAvatar = useRef(null)
-    const pathAvatar = userAvatarSelector(useTypedSelector(rootState => rootState))
-    console.log(pathAvatar, avatarSrc)
+    // const pathAvatar = userAvatarSelector(useTypedSelector(rootState => rootState))
+    // console.log(pathAvatar, avatarSrc)
 
     useEffect(() => {
         if (init) return

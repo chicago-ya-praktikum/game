@@ -1,5 +1,5 @@
 import React from 'react'
-import {authView} from '../../utils/authView'
+import {authView} from '../../HOCs/authView'
 import {RegForm} from '../../components/forms/RegForm/index'
 
 function SignUp() {

@@ -1,4 +1,4 @@
 import {GameTSX} from './Game'
-import {privateRoute} from '../../utils/privateRoute'
+import {privateRoute} from '../../HOCs/privateRoute'
 
 export const Game = privateRoute(GameTSX)

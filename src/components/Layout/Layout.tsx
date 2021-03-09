@@ -4,17 +4,18 @@ import {
 } from '@material-ui/core'
 import {withRouter} from 'react-router-dom'
 import HomeIcon from '@material-ui/icons/Home'
+import {useSelector} from 'react-redux'
 import {Props} from './types'
 import {styles} from './styles'
 import {
     routeSignin, routeSignup, routeProfile, routeHome
 } from '../routers/MainRouter/constants'
-import {userIdSelector, userLoginSelector} from '../../store/selectors'
+import {userLoginSelector} from '../../store/selectors'
 import {useTypedSelector} from '../../hooks/useTypedSelector'
 
 const Layout: FC<Props> = (props: Props) => {
     const {children, classes, history} = props
-    const userId = userIdSelector(useTypedSelector(rootState => rootState))
+    // const userId = userIdSelector(useTypedSelector(rootState => rootState))
     const userLogin = userLoginSelector(useTypedSelector(rootState => rootState))
     const title = history.location.pathname.substr(1) || 'home'
 
@@ -24,7 +25,10 @@ const Layout: FC<Props> = (props: Props) => {
     }
 
     const UserCell = () => {
-        if (userId === 0) {
+        // if (userId === 0) {
+        console.log('Layout isAuth', useSelector((state: {userAsync: any, user: any}) => state.userAsync.authStatus || state.user.authStatus))
+        // eslint-disable-next-line max-len
+        if (!useSelector((state: {userAsync: any, user: any}) => state.userAsync.authStatus || state.user.authStatus)) {
             return (
                 <>
                     <Button color='inherit' onClick={(e) => onClick(e, routeSignin)}>Log in</Button>

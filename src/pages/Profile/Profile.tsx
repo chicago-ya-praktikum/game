@@ -60,8 +60,9 @@ const Profile: FC<Props> = (props: Props) => {
 
     const handleLogOut = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        dispatchStore(postLogout())
-        history.push(routeHome)
+        dispatchStore(postLogout(() => {
+            history.push(routeHome)
+        }))
     }, [dispatchStore, history])
 
     const RenderFields = () => (

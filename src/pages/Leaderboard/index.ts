@@ -1,4 +1,4 @@
 import {LeaderboardTSX} from './Leaderboard'
-import {privateRoute} from '../../utils/privateRoute'
+import {privateRoute} from '../../HOCs/privateRoute'
 
 export const Leaderboard = privateRoute(LeaderboardTSX)

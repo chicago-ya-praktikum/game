@@ -2,24 +2,24 @@ import {createSelector} from 'reselect'
 import {RootState} from './reducers'
 import {State as UserState} from './reducers/user/state'
 
-const userSelector = (state: RootState) => state.user
+const userSelector = (state: RootState) => state.userAsync
 
 export const userInfoSelector = createSelector(
     userSelector,
-    (user: UserState) => user.info
+    (userAsync: UserState) => userAsync.info
 )
 
 export const userAvatarSelector = createSelector(
     userSelector,
-    (user: UserState) => user.info?.avatar
+    (userAsync: UserState) => userAsync.info?.avatar
 )
 
 export const userIdSelector = createSelector(
     userSelector,
-    (user: UserState) => user.id
+    (userAsync: UserState) => userAsync.id
 )
 
 export const userLoginSelector = createSelector(
     userSelector,
-    (user: UserState) => user.info?.login
+    (userAsync: UserState) => userAsync.info?.login
 )
