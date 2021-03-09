@@ -26,7 +26,6 @@ const Layout: FC<Props> = (props: Props) => {
 
     const UserCell = () => {
         // if (userId === 0) {
-        console.log('Layout isAuth', useSelector((state: {userAsync: any, user: any}) => state.userAsync.authStatus || state.user.authStatus))
         // eslint-disable-next-line max-len
         if (!useSelector((state: {userAsync: any, user: any}) => state.userAsync.authStatus || state.user.authStatus)) {
             return (

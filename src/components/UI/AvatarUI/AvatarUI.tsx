@@ -16,7 +16,6 @@ const AvatarUI: FC<Props> = (props: Props) => {
     const {classes, showBtn} = props
     const refAvatar = useRef(null)
     // const pathAvatar = userAvatarSelector(useTypedSelector(rootState => rootState))
-    // console.log(pathAvatar, avatarSrc)
 
     useEffect(() => {
         if (init) return
