@@ -1,25 +1,17 @@
-import {createSelector} from 'reselect'
-import {RootState} from './reducers'
-import {State as UserState} from './reducers/user/state'
+import {TypedUseSelectorHook, useSelector} from 'react-redux'
+import {RootState} from './reducers/index'
+import {UserInfo} from './reducers/user/state'
 
-const userSelector = (state: RootState) => state.userAsync
+export const typedState: TypedUseSelectorHook<RootState> = useSelector
 
-export const userInfoSelector = createSelector(
-    userSelector,
-    (userAsync: UserState) => userAsync.info
-)
+export const userSelector = () => typedState(s => s).user
+export const authSelector = () => typedState(s => s).auth
 
-export const userAvatarSelector = createSelector(
-    userSelector,
-    (userAsync: UserState) => userAsync.info?.avatar
-)
+export const authStatusSelector = () => authSelector().authStatus
 
-export const userIdSelector = createSelector(
-    userSelector,
-    (userAsync: UserState) => userAsync.id
-)
-
-export const userLoginSelector = createSelector(
-    userSelector,
-    (userAsync: UserState) => userAsync.info?.login
-)
+export const userInfoPropSelector = (prop: keyof UserInfo) => {
+    const {info} = userSelector()
+    if (!info) return ''
+    return info[prop] ? info[prop] : ''
+}
+export const userInfoSelector = () => userSelector().info

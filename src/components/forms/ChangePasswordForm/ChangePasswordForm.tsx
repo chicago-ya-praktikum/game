@@ -13,11 +13,11 @@ import {
 import {reducer} from './reducer/reducer'
 import {initialState} from './reducer/state'
 import {
-    fieldSet, fieldUpdateErr, formClose, formOpen
+    setField, updateFieldErr, closeForm, openForm
 } from './reducer/actions'
 import {checkForm} from './utils/checkForm'
 import {InputForm} from '../../UI/inputs/InputForm/index'
-import {putPassword} from '../../../store/reducers/user/actions'
+import {putPassword} from '../../../store/reducers/user/thunks'
 
 const ChangePasswordForm: FC<Props> = (props: Props) => {
     const [state, dispatch] = useReducer(reducer, initialState)
@@ -28,14 +28,14 @@ const ChangePasswordForm: FC<Props> = (props: Props) => {
 
     const inputBlurHandler = useCallback((e: InputOnBlur) => {
         e.preventDefault()
-        dispatch(fieldSet(fields, String(e.target.name), String(e.target.value)))
+        dispatch(setField(fields, String(e.target.name), String(e.target.value)))
     }, [fields])
 
-    const handleClickOpen = useCallback(() => dispatch(formOpen()), [])
+    const handleClickOpen = useCallback(() => dispatch(openForm()), [])
 
     const handleCancel = useCallback((e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        dispatch(formClose())
+        dispatch(closeForm())
         window.alertHide()
     }, [])
 
@@ -45,7 +45,7 @@ const ChangePasswordForm: FC<Props> = (props: Props) => {
         const {err, message, updateErr} = check
         if (err) {
             window.alertShow('error', 'Form is filled in incorrectly.'.concat(message))
-            updateErr.forEach((name) => dispatch(fieldUpdateErr(fields, name)))
+            updateErr.forEach((name) => dispatch(updateFieldErr(fields, name)))
             return
         }
         dispatchStore(putPassword(oldPassword.val, newPassword.val))

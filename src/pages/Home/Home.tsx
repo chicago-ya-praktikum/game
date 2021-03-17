@@ -6,7 +6,9 @@ import {withRouter} from 'react-router-dom'
 import {styles} from './styles'
 import {Props} from './types'
 // eslint-disable-next-line import/no-cycle
-import {routeGame, routeForum, routeProfile} from '../../components/routers/MainRouter/constants'
+import {
+    routeGame, routeForum, routeProfile, routeLeaderboard
+} from '../../components/routers/MainRouter/constants'
 
 const Home: FC<Props> = (props: Props) => {
     const {classes, history} = props
@@ -33,6 +35,12 @@ const Home: FC<Props> = (props: Props) => {
                 onClick={useCallback((e) => onClick(e, routeProfile), [onClick])}
             >
                 Profile
+            </Button>
+            <Button
+                size='large'
+                onClick={useCallback((e) => onClick(e, routeLeaderboard), [onClick])}
+            >
+                Leaderboard
             </Button>
         </Box>
     )

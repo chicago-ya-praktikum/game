@@ -43,10 +43,8 @@ export const SokobanMain = memo(() => {
             }
 
             levels.push(data)
-            // eslint-disable-next-line max-len
-            // ERROR TS2343: This syntax requires an imported helper named '__spreadArray' which does not exist in 'tslib'. Consider upgrading your version of 'tslib'.
-            // setLevels([...levels])
-            setLevels(levels)
+            // @ts-ignore
+            setLevels([...levels])
 
             if (levels.length < 11) {
                 levelGenerator.postMessage(true)

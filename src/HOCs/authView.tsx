@@ -1,12 +1,11 @@
 import React, {FC} from 'react'
-import {useSelector} from 'react-redux'
 // eslint-disable-next-line import/no-cycle
 import {Game} from '../pages/Game/index'
+import {authStatusSelector} from '../store/selectors'
 
 export function authView(this: any, WrappedComponent: React.ComponentType) {
     const LoggedInComponent: FC = () => {
-        // eslint-disable-next-line max-len
-        const authStatus = useSelector((state: {userAsync: any, user: any}) => state.userAsync.authStatus || state.user.authStatus)
+        const authStatus = authStatusSelector()
         return (
             <>
                 {!authStatus ? <WrappedComponent/> : <Game/>}

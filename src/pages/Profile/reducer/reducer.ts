@@ -5,7 +5,7 @@ import {State, Fields} from './state'
 export const reducer = (state: State, action: Action): State => {
     const {payload} = action
     switch (action.type) {
-        case Actions.FIELD_SET: {
+        case Actions.SET_FIELD: {
             const {name, field} = action.payload as FormFieldPayload
             return {
                 ...state,
@@ -16,14 +16,14 @@ export const reducer = (state: State, action: Action): State => {
                 }
             }
         }
-        case Actions.FIELDS_FILL: {
+        case Actions.FILL_FIELDS: {
             if (!payload) return state
             return {
                 ...state,
-                fields: <Fields>payload.fieldsFilled
+                fields: <Fields>payload.fields
             }
         }
-        case Actions.INIT: {
+        case Actions.SET_INIT: {
             return {
                 ...state,
                 init: true

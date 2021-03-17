@@ -1,5 +1,16 @@
-export const info = {
-    // id: 0,
+export type UserInfo = {
+    id: number,
+    first_name: string,
+    second_name: string,
+    display_name: string,
+    login: string,
+    email: string,
+    phone: string,
+    avatar: string
+}
+
+export const info: UserInfo = {
+    id: 0,
     first_name: '',
     second_name: '',
     display_name: '',
@@ -10,18 +21,14 @@ export const info = {
 }
 
 type LoadStatus = 'success' | 'pending' | 'failed'
-export type Info = typeof info
+// export type Info = UserInfo | null
 
 export type State = {
     status: LoadStatus,
-    authStatus: boolean,
-    info: Info | null,
-    id: number
+    info?: UserInfo,
 }
 
 export const initialState: State = {
-    info: null,
-    status: 'failed',
-    authStatus: false,
-    id: 0
+    info: undefined,
+    status: 'success'
 }

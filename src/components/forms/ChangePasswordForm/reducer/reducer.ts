@@ -4,7 +4,7 @@ import {initialState, State} from './state'
 
 export const reducer = (state: State, action: FormAction): State => {
     switch (action.type) {
-        case Actions.FIELD_SET: {
+        case Actions.SET_FIELD: {
             const {name, field} = action.payload as FormFieldPayload
             return {
                 ...state,
@@ -15,9 +15,9 @@ export const reducer = (state: State, action: FormAction): State => {
                 }
             }
         }
-        case Actions.FORM_OPEN:
+        case Actions.OPEN_FORM:
             return {...state, open: true}
-        case Actions.FORM_CLOSE:
+        case Actions.CLOSE_FORM:
             return {...initialState, open: false}
         default:
             return state

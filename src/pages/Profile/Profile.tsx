@@ -15,12 +15,11 @@ import {ChangePasswordForm} from '../../components/forms/ChangePasswordForm/inde
 import {reducer} from './reducer/reducer'
 import {initialState} from './reducer/state'
 import {
-    fieldSet, fieldUpdateErr, initSet, fieldsFill
+    setField, fillFields, updateFieldErr, setInit
 } from './reducer/actions'
 import {checkFields} from '../../utils/checkFields'
-import {getUserData, postLogout, putProfile} from '../../store/reducers/user/actions'
+import {postLogout, putProfile} from '../../store/reducers/user/thunks'
 import {InputForm} from '../../components/UI/inputs/InputForm/index'
-import {useTypedSelector} from '../../hooks/useTypedSelector'
 import {userInfoSelector} from '../../store/selectors'
 // eslint-disable-next-line import/no-cycle
 import {routeHome} from '../../components/routers/MainRouter/constants'
@@ -30,19 +29,17 @@ const Profile: FC<Props> = (props: Props) => {
     const {fields, init} = state
     const {classes, history} = props
     const dispatchStore = useDispatch()
-    const info = userInfoSelector(useTypedSelector(rootState => rootState))
+    const info = userInfoSelector()
 
     useEffect(() => {
-        if (init) return
-        dispatch(initSet())
-        dispatchStore(getUserData())
-        if (!info) return
-        dispatch(fieldsFill(info, fields))
-    })
+        if (!info || init) return
+        dispatch(fillFields(info, fields))
+        dispatch(setInit())
+    }, [info])
 
     const inputBlurHandler = useCallback((e: InputOnBlur) => {
         e.preventDefault()
-        dispatch(fieldSet(fields, String(e.target.name), String(e.target.value)))
+        dispatch(setField(fields, String(e.target.name), String(e.target.value)))
     }, [fields])
 
     const submitForm = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -51,19 +48,17 @@ const Profile: FC<Props> = (props: Props) => {
         const {err, updateErr} = check
         if (err) {
             window.alertShow('error', 'Form is filled in incorrectly.')
-            updateErr.forEach((name) => dispatch(fieldUpdateErr(fields, name)))
+            updateErr.forEach((name) => dispatch(updateFieldErr(fields, name)))
             return
         }
         if (!info) return
         dispatchStore(putProfile(fields, info))
-    }, [dispatchStore, fields, info])
+    }, [fields, info])
 
     const handleLogOut = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        dispatchStore(postLogout(() => {
-            history.push(routeHome)
-        }))
-    }, [dispatchStore, history])
+        dispatchStore(postLogout(() => {history.push(routeHome)}))
+    }, [history])
 
     const RenderFields = () => (
         <>
@@ -80,7 +75,7 @@ const Profile: FC<Props> = (props: Props) => {
         <Box className={classes.root}>
             <form className={classes.content}>
                 <AvatarUI showBtn/>
-                {init && <RenderFields/>}
+                <RenderFields/>
                 <Button
                     variant='contained'
                     color='primary'

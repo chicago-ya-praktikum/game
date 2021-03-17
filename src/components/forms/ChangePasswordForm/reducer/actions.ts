@@ -1,35 +1,25 @@
 import {validateInput} from '../../../../utils/validateInput'
 import {FormAction} from '../../../../types/actionTypes'
 import {Fields, FieldsKeys} from './state'
+import {FormField} from '../../../../types/formTypes'
 
 export enum Actions {
-    FIELD_SET = 'FIELD_SET',
+    SET_FIELD = 'SET_FIELD',
     NO_ACTIONS = 'NO_ACTIONS',
-    FORM_OPEN = 'FORM_OPEN',
-    FORM_CLOSE = 'FORM_CLOSE'
+    OPEN_FORM = 'OPEN_FORM',
+    CLOSE_FORM = 'CLOSE_FORM'
 }
 
-export const formOpen = (): FormAction => ({type: Actions.FORM_OPEN})
-export const formClose = (): FormAction => ({type: Actions.FORM_CLOSE})
-export const fieldSet = (fields: Fields, name: string, val: string): FormAction => {
+export const openForm = (): FormAction => ({type: Actions.OPEN_FORM})
+export const closeForm = (): FormAction => ({type: Actions.CLOSE_FORM})
+export const updateFieldErr = (fields: Fields, name: string): FormAction => (
+    {type: Actions.SET_FIELD, payload: {name, field: {...fields[<FieldsKeys>name], err: true}}})
+export const setFieldAction = (name: string, field: FormField): FormAction => (
+    {type: Actions.SET_FIELD, payload: {name, field}})
+
+export const setField = (fields: Fields, name: string, val: string): FormAction => {
     const stateField = fields[<FieldsKeys>name]
     if (val === stateField.val) return {type: Actions.NO_ACTIONS}
     const err = !validateInput(String(name), val, stateField.required)
-    return {
-        type: Actions.FIELD_SET,
-        payload: {
-            name,
-            field: {...stateField, val, err}
-        }
-    }
-}
-export const fieldUpdateErr = (fields: Fields, name: string): FormAction => {
-    const stateField = fields[<FieldsKeys>name]
-    return {
-        type: Actions.FIELD_SET,
-        payload: {
-            name,
-            field: {...stateField, err: true}
-        }
-    }
+    return setFieldAction(name, {...stateField, val, err})
 }

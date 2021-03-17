@@ -1,4 +1,4 @@
-const API_ROOT = new URL('https://ya-praktikum.tech')
+export const API_ROOT = new URL('https://ya-praktikum.tech')
 
 const URL_AUTH = {
     SIGNIN: '/api/v2/auth/signin',

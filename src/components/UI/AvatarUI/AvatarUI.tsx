@@ -1,55 +1,54 @@
 import React, {
-    FC, useEffect, useRef, useState
+    FC, useCallback, useEffect, useRef, useState
 } from 'react'
 import {
     Avatar, Box, Button, withStyles
 } from '@material-ui/core'
+import {useDispatch} from 'react-redux'
 import {styles} from './styles'
 import {Props} from './types'
-import {putAvatar} from './utils/putAvatar'
-// import {userAvatarSelector} from '../../../store/selectors'
-// import {useTypedSelector} from '../../../hooks/useTypedSelector'
+import {userInfoPropSelector} from '../../../store/selectors'
+import {API_ROOT} from '../../../API'
+import {getUserData, putAvatar} from '../../../store/reducers/user/thunks'
 
 const AvatarUI: FC<Props> = (props: Props) => {
-    const [avatarSrc, setAvatarSrc] = useState('')
-    const [init, setInit] = useState(false)
     const {classes, showBtn} = props
     const refAvatar = useRef(null)
-    // const pathAvatar = userAvatarSelector(useTypedSelector(rootState => rootState))
+    const pathAvatar = String(userInfoPropSelector('avatar'))
+    const [srcAvatar, setSrcAvatar] = useState(pathAvatar ? API_ROOT + pathAvatar : '')
+    const dispatchStore = useDispatch()
 
     useEffect(() => {
-        if (init) return
-        setInit(true)
-        // setAvatarSrc(pathAvatar)
-        // dispatchStore(getUserData())
-    })
+        setSrcAvatar(pathAvatar ? API_ROOT + pathAvatar : '')
+    }, [pathAvatar])
 
-    const onClickAvatar = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const onClickAvatar = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
 
         const input = refAvatar.current as unknown as HTMLInputElement
         input.click()
-    }
+    }, [refAvatar])
 
-    const onChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeAvatar = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
 
         if (!e.target.files?.length) return
         const file = e.target.files[0]
         if (!file.type.match('image')) return
         const reader = new FileReader()
-        reader.onload = ev => {
-            setAvatarSrc(String(ev.target?.result))
-            putAvatar(file)
+        reader.onload = () => {
+            dispatchStore(putAvatar(file))
+                // @ts-ignore
+                .then(() => dispatchStore(getUserData()))
         }
         reader.readAsDataURL(file)
-    }
+    }, [])
 
     return (
         <Box className={classes.root}>
             <Avatar
                 className={classes.avatarSize}
-                src={avatarSrc}
+                src={srcAvatar}
             />
             {showBtn && (
                 <Button
@@ -58,7 +57,7 @@ const AvatarUI: FC<Props> = (props: Props) => {
                     type='submit'
                     size='small'
                     id='upload-a-photo'
-                    onClick={(e) => onClickAvatar(e)}
+                    onClick={onClickAvatar}
                 >
                     Upload a photo
                 </Button>
@@ -67,7 +66,7 @@ const AvatarUI: FC<Props> = (props: Props) => {
                 className={classes.inputFile}
                 type='file'
                 accept='.png, .jpg, .jpeg, .gif'
-                onChange={(e) => onChangeAvatar(e)}
+                onChange={onChangeAvatar}
                 ref={refAvatar}
             />
         </Box>

@@ -1,4 +1,4 @@
-import {Actions} from '../store/actions'
+import {Actions} from '../actions'
 
 enum Theme {
     SAND = 'sand'
@@ -17,7 +17,7 @@ const defaultReducer: ThemeReducer = {
 }
 
 export function themeReducer(state: ThemeReducer = defaultReducer,
-    action: { type: Actions, payload: any }): ThemeReducer {
+    action: {type: Actions, payload: any}): ThemeReducer {
     switch (action.type) {
         case Actions.SWITCH_TO_SAND_THEME:
             return {

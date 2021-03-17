@@ -27,7 +27,6 @@
         "import/prefer-default-export": 0,
         "@typescript-eslint/semi": 0,
         "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn",
         "indent": "off",
         "@typescript-eslint/indent": [
             "error",
