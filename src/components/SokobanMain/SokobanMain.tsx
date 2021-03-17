@@ -67,9 +67,8 @@ export const SokobanMain = memo(() => {
         game()
 
         levels.shift()
-        // eslint-disable-next-line max-len
-        // TS2343: This syntax requires an imported helper named '__spreadArray' which does not exist in 'tslib'. Consider upgrading your version of 'tslib'.
-        // setLevels([...levels])
+        // @ts-ignore
+        setLevels([...levels])
 
         levelGenerator.postMessage(true)
         gameCore.drawLevel(levels[0])
