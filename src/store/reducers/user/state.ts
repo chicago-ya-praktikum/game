@@ -21,14 +21,15 @@ export const info: UserInfo = {
 }
 
 type LoadStatus = 'success' | 'pending' | 'failed'
-// export type Info = UserInfo | null
 
 export type State = {
     status: LoadStatus,
     info?: UserInfo,
+    init: boolean
 }
 
 export const initialState: State = {
     info: undefined,
-    status: 'success'
+    status: 'success',
+    init: false
 }

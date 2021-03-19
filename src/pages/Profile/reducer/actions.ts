@@ -25,7 +25,7 @@ export const setFieldAction = (name: string, field: FormField): Action => (
     {type: Actions.SET_FIELD, payload: {name, field}})
 export const fillFieldsAction = (fields: Fields): Action => (
     {type: Actions.FILL_FIELDS, payload: {fields}})
-export const updateFieldErr = (fields: Fields, name: string): Action => ({
+export const setFieldErr = (fields: Fields, name: string): Action => ({
     type: Actions.SET_FIELD,
     payload: {
         name,

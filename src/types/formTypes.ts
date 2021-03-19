@@ -8,5 +8,13 @@ export type FormField = {
     type?: string
 }
 
+export type AuxProps = {
+    val?: string,
+    err?: boolean,
+    required?: boolean,
+    tip?: string,
+    type?: string
+}
+
 export class FormState {
 }

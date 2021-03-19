@@ -12,8 +12,6 @@ export enum Actions {
 
 export const openForm = (): FormAction => ({type: Actions.OPEN_FORM})
 export const closeForm = (): FormAction => ({type: Actions.CLOSE_FORM})
-export const updateFieldErr = (fields: Fields, name: string): FormAction => (
-    {type: Actions.SET_FIELD, payload: {name, field: {...fields[<FieldsKeys>name], err: true}}})
 export const setFieldAction = (name: string, field: FormField): FormAction => (
     {type: Actions.SET_FIELD, payload: {name, field}})
 
@@ -23,3 +21,19 @@ export const setField = (fields: Fields, name: string, val: string): FormAction 
     const err = !validateInput(String(name), val, stateField.required)
     return setFieldAction(name, {...stateField, val, err})
 }
+
+export const setFieldErr = (fields: Fields, name: string): FormAction => (
+    {type: Actions.SET_FIELD, payload: {name, field: {...fields[<FieldsKeys>name], err: true}}})
+
+// export const setFieldErr1 = <F>(fields: F, name: string): FormAction => (
+//     {
+//         type: Actions.SET_FIELD,
+//         payload: {
+//             name,
+//             field: {
+//                 ...fields[<keyof F>name],
+//                 err: true
+//             }
+//         }
+//     }
+// )

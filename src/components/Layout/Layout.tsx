@@ -1,5 +1,5 @@
 import React, {
-    FC, useCallback, useEffect, useState
+    FC, useCallback, useEffect
 } from 'react'
 import {
     AppBar, Button, Container, Grid, IconButton, Typography, withStyles
@@ -12,21 +12,20 @@ import {styles} from './styles'
 import {
     routeSignin, routeSignup, routeProfile, routeHome
 } from '../routers/MainRouter/constants'
-import {authStatusSelector, userInfoPropSelector} from '../../store/selectors'
+import {authStatusSelector, userInfoPropSelector, userInitSelector} from '../../store/selectors'
 import {getUserData} from '../../store/reducers/user/thunks'
+import {AvatarUI} from '../UI/AvatarUI/index'
 
 const Layout: FC<Props> = (props: Props) => {
     const {children, classes, history} = props
-    const [init, setInit] = useState(false)
     const dispatchStore = useDispatch()
     const userLogin = userInfoPropSelector('login')
     const authStatus = authStatusSelector()
+    const init = userInitSelector()
     const title = ''
 
     useEffect(() => {
         dispatchStore(getUserData())
-            // @ts-ignore
-            .then(() => setInit(true))
     }, [])
 
     useEffect(() => {
@@ -54,6 +53,7 @@ const Layout: FC<Props> = (props: Props) => {
         return (
             <>
                 <Button color='inherit' onClick={(e) => onClick(e, routeProfile)}>{userLogin}</Button>
+                <AvatarUI/>
             </>
         )
     }

@@ -6,17 +6,19 @@ import {
 } from '@material-ui/core'
 import {useDispatch} from 'react-redux'
 import {styles} from './styles'
-import {Props} from './types'
+import {Props, AvatarSizeStyle} from './types'
 import {userInfoPropSelector} from '../../../store/selectors'
 import {API_ROOT} from '../../../API'
 import {getUserData, putAvatar} from '../../../store/reducers/user/thunks'
 
 const AvatarUI: FC<Props> = (props: Props) => {
-    const {classes, showBtn} = props
+    const {classes, showBtn, size} = props
     const refAvatar = useRef(null)
     const pathAvatar = String(userInfoPropSelector('avatar'))
     const [srcAvatar, setSrcAvatar] = useState(pathAvatar ? API_ROOT + pathAvatar : '')
     const dispatchStore = useDispatch()
+
+    const avatarClassName: AvatarSizeStyle = (size ? `${size}Size` : 'smallSize') as AvatarSizeStyle
 
     useEffect(() => {
         setSrcAvatar(pathAvatar ? API_ROOT + pathAvatar : '')
@@ -47,7 +49,7 @@ const AvatarUI: FC<Props> = (props: Props) => {
     return (
         <Box className={classes.root}>
             <Avatar
-                className={classes.avatarSize}
+                className={classes[avatarClassName]}
                 src={srcAvatar}
             />
             {showBtn && (

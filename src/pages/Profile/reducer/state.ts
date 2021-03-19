@@ -6,7 +6,7 @@ export const fields = {
     display_name: getDefaultFormField('display_name', 'Display name (required)'),
     login: getDefaultFormField('login', 'Login (required)'),
     email: getDefaultFormField('email', 'email (required)'),
-    phone: getDefaultFormField('phone', 'phone', '', false)
+    phone: getDefaultFormField('phone', 'phone', {required: false})
 }
 
 export const initialState = {

@@ -11,13 +11,13 @@ import {setEmptyUserData, setUserData} from './actions'
 export const getUserData = (
 ): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async dispatch => {
     const response = await Auth.user()
+    dispatch(actionCreator(AuthActions.SIGNIN, response))
     if (response.ok) {
         const res = await response.json()
         dispatch(setUserData(res))
     } else {
         dispatch(setEmptyUserData())
     }
-    dispatch(actionCreator(AuthActions.SIGNIN, response))
     return null
 }
 
@@ -36,7 +36,7 @@ export const putAvatar = (
 
 export const putProfile = (
     fields: ProfileFields, info: UserInfo
-): ThunkAction<void, RootState, unknown, Action<string>> => async dispatch => {
+): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async dispatch => {
     const newInfo = {...info}
     Object.keys(fields).forEach((key) => {
         // @ts-ignore
@@ -57,11 +57,12 @@ export const putProfile = (
         window.alertShow('error', res)
         dispatch(setEmptyUserData())
     }
+    return null
 }
 
 export const putPassword = (
     oldPassword: string, newPassword: string
-): ThunkAction<void, RootState, unknown, Action<string>> => async () => {
+): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async () => {
     const response = await Users.putPassword({oldPassword, newPassword})
     if (response.ok) {
         if (response.status >= 400) {
@@ -74,11 +75,11 @@ export const putPassword = (
         const res = await response.text()
         window.alertShow('error', res)
     }
+    return null
 }
 
 export const postLogout = (
-    cb: () => void = () => {}
-): ThunkAction<void, RootState, unknown, Action<string>> => async dispatch => {
+): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async dispatch => {
     const response = await Auth.logout()
 
     if (!response.ok) {
@@ -88,5 +89,5 @@ export const postLogout = (
     dispatch(actionCreator(AuthActions.LOGOUT, response))
     dispatch(setEmptyUserData())
 
-    if (cb) cb()
+    return null
 }

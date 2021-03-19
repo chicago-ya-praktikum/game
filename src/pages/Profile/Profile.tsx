@@ -15,7 +15,7 @@ import {ChangePasswordForm} from '../../components/forms/ChangePasswordForm/inde
 import {reducer} from './reducer/reducer'
 import {initialState} from './reducer/state'
 import {
-    setField, fillFields, updateFieldErr, setInit
+    setField, fillFields, setFieldErr, setInit
 } from './reducer/actions'
 import {checkFields} from '../../utils/checkFields'
 import {postLogout, putProfile} from '../../store/reducers/user/thunks'
@@ -48,7 +48,7 @@ const Profile: FC<Props> = (props: Props) => {
         const {err, updateErr} = check
         if (err) {
             window.alertShow('error', 'Form is filled in incorrectly.')
-            updateErr.forEach((name) => dispatch(updateFieldErr(fields, name)))
+            updateErr.forEach((name) => dispatch(setFieldErr(fields, name)))
             return
         }
         if (!info) return
@@ -57,7 +57,9 @@ const Profile: FC<Props> = (props: Props) => {
 
     const handleLogOut = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        dispatchStore(postLogout(() => {history.push(routeHome)}))
+        dispatchStore(postLogout())
+            // @ts-ignore
+            .then(() => {history.push(routeHome)})
     }, [history])
 
     const RenderFields = () => (
@@ -74,7 +76,7 @@ const Profile: FC<Props> = (props: Props) => {
     return (
         <Box className={classes.root}>
             <form className={classes.content}>
-                <AvatarUI showBtn/>
+                <AvatarUI showBtn size='large'/>
                 <RenderFields/>
                 <Button
                     variant='contained'

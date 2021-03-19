@@ -1,9 +1,9 @@
 import {getDefaultFormField} from '../../../../utils/getDefaultFormField'
 
 export const fields = {
-    oldPassword: getDefaultFormField('oldPassword', 'Old password (required)', 'password'),
-    newPassword: getDefaultFormField('newPassword', 'New password (required)', 'password'),
-    confirmPassword: getDefaultFormField('confirmPassword', 'Confirm password (required)', 'password')
+    oldPassword: getDefaultFormField('oldPassword', 'Old password (required)', {type: 'password'}),
+    newPassword: getDefaultFormField('newPassword', 'New password (required)', {type: 'password'}),
+    confirmPassword: getDefaultFormField('confirmPassword', 'Confirm password (required)', {type: 'password'})
 }
 
 export const initialState = {

@@ -11,12 +11,19 @@ export const styles = (theme: Theme) => createStyles({
             margin: theme.spacing(1)
         }
     },
-    avatarSize: {
-        width: theme.spacing(15),
-        height: theme.spacing(15)
-    },
     inputFile: {
         display: 'none'
+    },
+    smallSize: {
+        width: theme.spacing(4),
+        height: theme.spacing(4)
+    },
+    middleSize: {
+        width: theme.spacing(9),
+        height: theme.spacing(9)
+    },
+    largeSize: {
+        width: theme.spacing(15),
+        height: theme.spacing(15)
     }
-
 })

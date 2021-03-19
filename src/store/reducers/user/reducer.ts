@@ -7,12 +7,14 @@ export function userReducer(state: State = initialState, action: TypedAction): S
         case Actions.SET_EMPTY_USER_DATA:
             return {
                 ...state,
-                info: undefined
+                info: undefined,
+                init: true
             }
         case Actions.SET_USER_DATA:
             return {
                 ...state,
-                info: <UserInfo>action.payload
+                info: <UserInfo>action.payload,
+                init: true
             }
         default:
             return state

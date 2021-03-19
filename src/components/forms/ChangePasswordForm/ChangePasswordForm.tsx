@@ -13,7 +13,7 @@ import {
 import {reducer} from './reducer/reducer'
 import {initialState} from './reducer/state'
 import {
-    setField, updateFieldErr, closeForm, openForm
+    setField, setFieldErr, closeForm, openForm
 } from './reducer/actions'
 import {checkForm} from './utils/checkForm'
 import {InputForm} from '../../UI/inputs/InputForm/index'
@@ -45,7 +45,7 @@ const ChangePasswordForm: FC<Props> = (props: Props) => {
         const {err, message, updateErr} = check
         if (err) {
             window.alertShow('error', 'Form is filled in incorrectly.'.concat(message))
-            updateErr.forEach((name) => dispatch(updateFieldErr(fields, name)))
+            updateErr.forEach((name) => dispatch(setFieldErr(fields, name)))
             return
         }
         dispatchStore(putPassword(oldPassword.val, newPassword.val))
