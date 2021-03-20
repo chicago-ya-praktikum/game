@@ -5,7 +5,6 @@ import {Fields as ProfileFields} from '../../../pages/Profile/reducer/state'
 import {actionCreator} from '../../../utils/actionCreator'
 import {Actions as AuthActions} from '../../actions'
 import {RootState} from '../index'
-import {UserInfo} from './state'
 import {setEmptyUserData, setUserData} from './actions'
 
 export const getUserData = (
@@ -35,8 +34,10 @@ export const putAvatar = (
 }
 
 export const putProfile = (
-    fields: ProfileFields, info: UserInfo
-): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async dispatch => {
+    fields: ProfileFields
+): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async (dispatch, getState) => {
+    const {info} = getState().user
+    if (!info) return null
     const newInfo = {...info}
     Object.keys(fields).forEach((key) => {
         // @ts-ignore
@@ -79,7 +80,7 @@ export const putPassword = (
 }
 
 export const postLogout = (
-): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async dispatch => {
+): ThunkAction<Promise<boolean>, RootState, unknown, Action<string>> => async dispatch => {
     const response = await Auth.logout()
 
     if (!response.ok) {
@@ -89,5 +90,5 @@ export const postLogout = (
     dispatch(actionCreator(AuthActions.LOGOUT, response))
     dispatch(setEmptyUserData())
 
-    return null
+    return response.ok
 }

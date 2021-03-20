@@ -24,16 +24,3 @@ export const setField = (fields: Fields, name: string, val: string): FormAction 
 
 export const setFieldErr = (fields: Fields, name: string): FormAction => (
     {type: Actions.SET_FIELD, payload: {name, field: {...fields[<FieldsKeys>name], err: true}}})
-
-// export const setFieldErr1 = <F>(fields: F, name: string): FormAction => (
-//     {
-//         type: Actions.SET_FIELD,
-//         payload: {
-//             name,
-//             field: {
-//                 ...fields[<keyof F>name],
-//                 err: true
-//             }
-//         }
-//     }
-// )

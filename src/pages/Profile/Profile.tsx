@@ -52,14 +52,14 @@ const Profile: FC<Props> = (props: Props) => {
             return
         }
         if (!info) return
-        dispatchStore(putProfile(fields, info))
+        dispatchStore(putProfile(fields))
     }, [fields, info])
 
     const handleLogOut = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         dispatchStore(postLogout())
             // @ts-ignore
-            .then(() => {history.push(routeHome)})
+            .then((success) => {if (success) history.push(routeHome)})
     }, [history])
 
     const RenderFields = () => (
