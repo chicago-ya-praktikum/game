@@ -1,7 +1,7 @@
 import React, {
     memo, useCallback, useEffect, useRef, useState
 } from 'react'
-import './SokobanMain.sass'
+// import './SokobanMain.sass'
 import {Button} from '@material-ui/core'
 import {GameCore} from '../../GameCore/GameCore'
 import {LevelStore} from '../../GameCore/models/LevelStore'

@@ -17,7 +17,16 @@ export const config: Configuration = {
         path.join(SRC_DIR, 'client')
     ].filter(Boolean) as unknown) as Entry,
     module: {
-        rules: [fileLoader.client, cssLoader.client, jsLoader.client]
+        rules: [fileLoader.client,
+            cssLoader.client,
+            jsLoader.client,        
+            {
+                test: /\.ts[x]$/,
+                exclude: /node_modules/,
+                use: {
+                  loader: "babel-loader"
+                }
+              }]
     },
     output: {
         path: DIST_DIR,
