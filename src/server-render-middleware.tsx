@@ -9,7 +9,7 @@ import { configureStore } from './store/store'
 import { getInitialState } from './store/getInitialState'
 import { Store } from 'redux'
 
-const HTMLTemplate = (reactDOM: string) => (`
+const HTMLTemplate = (reactDOM: string, reduxState: any) => (`
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -17,6 +17,9 @@ const HTMLTemplate = (reactDOM: string) => (`
     </head>
     <body>
         <div id="root">${reactDOM}</div>
+        <script>
+          window.__INITIAL_STATE__ = ${JSON.stringify(reduxState)}
+        </script>
         <script src="bundle.js"></script>
     </body>
     </html>
@@ -27,6 +30,7 @@ export const serverRenderMiddleware = (req: Request, res: Response) => {
     const location = req.url
     const store = configureStore(getInitialState(location), location) as unknown as Store;
     const context: StaticRouterContext = {};
+
 
     if (context.url) {
         res.redirect(context.url);
@@ -41,7 +45,9 @@ export const serverRenderMiddleware = (req: Request, res: Response) => {
         </ReduxProvider>
     );
     const reactDom = renderToString(jsx)
+    const reduxState = store.getState()
+
     res
         .status(context.statusCode || 200)
-        .send(HTMLTemplate(reactDom))
+        .send(HTMLTemplate(reactDom, reduxState))
 }
