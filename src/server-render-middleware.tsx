@@ -4,6 +4,9 @@ import { Request, Response } from 'express'
 import { App } from './components/App/App'
 import { StaticRouter } from 'react-router-dom'
 import { StaticRouterContext } from 'react-router'
+import { Provider as ReduxProvider } from 'react-redux'
+import {configureStore} from './store/store'
+import {getInitialState} from './store/getInitialState'
 
 const HTMLTemplate = (reactDOM: string) => (`
     <!DOCTYPE html>
@@ -18,6 +21,8 @@ const HTMLTemplate = (reactDOM: string) => (`
     </html>
 `)
 
+const store = configureStore(getInitialState(), location)
+
 export const serverRenderMiddleware = (req: Request, res: Response) => {
 
     const location = req.url
@@ -29,9 +34,11 @@ export const serverRenderMiddleware = (req: Request, res: Response) => {
     }
 
     const jsx = (
+        <ReduxProvider store={store}>
         <StaticRouter context={context} location={location}>
             <App />
         </StaticRouter>
+        </ReduxProvider>
     );
     const reactDom = renderToString(jsx)
     res

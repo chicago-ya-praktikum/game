@@ -1,18 +1,7 @@
-import {Actions} from '../actions'
+import {Actions} from '../../actions'
+import {AuthReducer, initialState} from './state'
 
-type Nullable<T> = T | null
-
-export type AuthReducer = {
-    user: Nullable<any>
-    authStatus: boolean
-}
-
-const defaultReducer: AuthReducer = {
-    user: null,
-    authStatus: false
-}
-
-export function authReducer(state: AuthReducer = defaultReducer,
+export function authReducer(state: AuthReducer = initialState,
     action: {type: Actions, payload: any}): AuthReducer {
     switch (action.type) {
         case Actions.SIGNUP:
