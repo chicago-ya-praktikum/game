@@ -1,8 +1,9 @@
 import React from 'react'
-import {renderToString} from 'react-dom/server'
-import {Request, Response} from 'express'
-import {App} from './components/App/App'
-
+import { renderToString } from 'react-dom/server'
+import { Request, Response } from 'express'
+import { App } from './components/App/App'
+import { StaticRouter } from 'react-router-dom'
+import { StaticRouterContext } from 'react-router'
 
 const HTMLTemplate = (reactDOM: string) => (`
     <!DOCTYPE html>
@@ -18,8 +19,22 @@ const HTMLTemplate = (reactDOM: string) => (`
 `)
 
 export const serverRenderMiddleware = (req: Request, res: Response) => {
-    console.log(req)
-    const jsx = (<App/>);
+
+    const location = req.url
+    const context: StaticRouterContext = {};
+
+    if (context.url) {
+        res.redirect(context.url);
+        return;
+    }
+
+    const jsx = (
+        <StaticRouter context={context} location={location}>
+            <App />
+        </StaticRouter>
+    );
     const reactDom = renderToString(jsx)
-    res.send(HTMLTemplate(reactDom))
+    res
+        .status(context.statusCode || 200)
+        .send(HTMLTemplate(reactDom))
 }
