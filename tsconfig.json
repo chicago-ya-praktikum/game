@@ -32,6 +32,10 @@
     },
     "include": [
         "src",
+        "webpack",
+        "webpack/**/*.config.ts",
+        "webpack/**/*.ts",
+        "server",
         "typings/**/*.d.ts",
         "./node_modules/@types",
         "tests/**/*.test.js",
