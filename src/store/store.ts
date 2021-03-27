@@ -1,9 +1,10 @@
 import {applyMiddleware, createStore} from 'redux'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
-import {createBrowserHistory, createMemoryHistory} from 'history';
+import {createBrowserHistory, createMemoryHistory} from 'history'
+import {routerMiddleware} from 'connected-react-router'
 import {isServer} from 'src/utils/isServer';
-import {reducers} from './reducers'
+import {reducers as createRootReducer} from './reducers'
 
 // export function configureStore(preloadedState: {}) {
 //     return createStore(reducers, preloadedState, composeWithDevTools(applyMiddleware(thunk)))
@@ -14,7 +15,6 @@ export function configureStore(preloadedState: {} | undefined, url = '/') {
         ? createMemoryHistory({initialEntries: [url]})
         : createBrowserHistory();
 
-    const composeEnhancers = getComposeEnhancers();
     const middlewares = [routerMiddleware(history), thunk];
 
     const store = createStore(

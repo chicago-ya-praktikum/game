@@ -21,11 +21,10 @@ const HTMLTemplate = (reactDOM: string) => (`
     </html>
 `)
 
-const store = configureStore(getInitialState(), location)
-
 export const serverRenderMiddleware = (req: Request, res: Response) => {
 
     const location = req.url
+    const store = configureStore(getInitialState(location), location);
     const context: StaticRouterContext = {};
 
     if (context.url) {
