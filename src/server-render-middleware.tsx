@@ -8,12 +8,17 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { configureStore } from './store/store'
 import { getInitialState } from './store/getInitialState'
 import { Store } from 'redux'
+import Helmet, { HelmetData } from 'react-helmet'
 
-const HTMLTemplate = (reactDOM: string, reduxState: any) => (`
+const helmetData = Helmet.renderStatic()
+
+const HTMLTemplate = (reactDOM: string, reduxState: any = {}, helmetData: HelmetData) => (`
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8"/>
+        ${helmetData.title.toString()}
+        ${helmetData.meta.toString()}
     </head>
     <body>
         <div id="root">${reactDOM}</div>
@@ -49,5 +54,5 @@ export const serverRenderMiddleware = (req: Request, res: Response) => {
 
     res
         .status(context.statusCode || 200)
-        .send(HTMLTemplate(reactDom, reduxState))
+        .send(HTMLTemplate(reactDom, reduxState, helmetData))
 }
