@@ -6,6 +6,7 @@ import {getTable} from './utils/getTable'
 import {getUserId} from './utils/getUserId'
 import {Props} from './types'
 import {styles} from './styles'
+import {PageMeta} from '../../components/PageMeta/PageMeta'
 
 const Leaderboard: FC<Props> = (props: Props) => {
     const {classes} = props
@@ -13,36 +14,42 @@ const Leaderboard: FC<Props> = (props: Props) => {
     const userId = getUserId()
 
     return (
-        <Box className={classes.content}>
-            <Typography
-                align='center'
-                variant='h5'
-                display='inline'
-            >
-                Leaderboard
-            </Typography>
-            <TableContainer className={classes.tableContainer} >
-                <Table className={classes.table} aria-label='simple table'>
-                    <TableHead className={classes.tableHead}>
-                        <TableRow>
-                            <TableCell>Login</TableCell>
-                            <TableCell align='right'>Points</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {table.map((row) => (
-                            <TableRow
-                                key={row.id}
-                                className={row.id === userId ? classes.mark : undefined}
-                            >
-                                <TableCell scope='row'>{row.login}</TableCell>
-                                <TableCell align='right'>{row.points}</TableCell>
+        <>
+            <PageMeta
+                title='Leaderboard Page'
+                description='Some description'
+            />
+            <Box className={classes.content}>
+                <Typography
+                    align='center'
+                    variant='h5'
+                    display='inline'
+                >
+                    Leaderboard
+                </Typography>
+                <TableContainer className={classes.tableContainer} >
+                    <Table className={classes.table} aria-label='simple table'>
+                        <TableHead className={classes.tableHead}>
+                            <TableRow>
+                                <TableCell>Login</TableCell>
+                                <TableCell align='right'>Points</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Box>
+                        </TableHead>
+                        <TableBody>
+                            {table.map((row) => (
+                                <TableRow
+                                    key={row.id}
+                                    className={row.id === userId ? classes.mark : undefined}
+                                >
+                                    <TableCell scope='row'>{row.login}</TableCell>
+                                    <TableCell align='right'>{row.points}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Box>
+        </>
     )
 }
 

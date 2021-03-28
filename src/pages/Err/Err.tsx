@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core'
 import {styles} from './styles'
 import {Props} from './types'
+import {PageMeta} from '../../components/PageMeta/PageMeta'
 
 const Err: FC<Props> = (props: Props) => {
     const {
@@ -11,21 +12,26 @@ const Err: FC<Props> = (props: Props) => {
     } = props
 
     return (
-        <Box className={classes.content}>
-            <Typography
-                align='center'
-                variant='h3'
-                color='error'
-            >
-                {error || 'Sorry'}
-            </Typography>
-            <Typography
-                align='center'
-                variant='h5'
-            >
-                {errorInfo || 'Something went wrong'}
-            </Typography>
-            { !hideBtn
+        <>
+            <PageMeta
+                title='Error 404'
+                description='Some description'
+            />
+            <Box className={classes.content}>
+                <Typography
+                    align='center'
+                    variant='h3'
+                    color='error'
+                >
+                    {error || 'Sorry'}
+                </Typography>
+                <Typography
+                    align='center'
+                    variant='h5'
+                >
+                    {errorInfo || 'Something went wrong'}
+                </Typography>
+                { !hideBtn
                 && (
                     <Button
                         className={classes.buttonBack}
@@ -34,7 +40,8 @@ const Err: FC<Props> = (props: Props) => {
                         Back
                     </Button>
                 ) }
-        </Box>
+            </Box>
+        </>
     )
 }
 

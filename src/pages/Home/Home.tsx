@@ -9,6 +9,7 @@ import {Props} from './types'
 import {
     routeGame, routeForum, routeProfile, routeLeaderboard
 } from '../../components/routers/MainRouter/constants'
+import {PageMeta} from '../../components/PageMeta/PageMeta'
 
 const Home: FC<Props> = (props: Props) => {
     const {classes, history} = props
@@ -17,32 +18,38 @@ const Home: FC<Props> = (props: Props) => {
         history.push(path)
     }, [history])
     return (
-        <Box className={classes.root}>
-            <Button
-                size='large'
-                onClick={useCallback((e) => onClick(e, routeGame), [onClick])}
-            >
-                Game
-            </Button>
-            <Button
-                size='large'
-                onClick={useCallback((e) => onClick(e, routeForum), [onClick])}
-            >
-                Forum
-            </Button>
-            <Button
-                size='large'
-                onClick={useCallback((e) => onClick(e, routeProfile), [onClick])}
-            >
-                Profile
-            </Button>
-            <Button
-                size='large'
-                onClick={useCallback((e) => onClick(e, routeLeaderboard), [onClick])}
-            >
-                Leaderboard
-            </Button>
-        </Box>
+        <>
+            <PageMeta
+                title='Home page'
+                description='Some description'
+            />
+            <Box className={classes.root}>
+                <Button
+                    size='large'
+                    onClick={useCallback((e) => onClick(e, routeGame), [onClick])}
+                >
+                    Game
+                </Button>
+                <Button
+                    size='large'
+                    onClick={useCallback((e) => onClick(e, routeForum), [onClick])}
+                >
+                    Forum
+                </Button>
+                <Button
+                    size='large'
+                    onClick={useCallback((e) => onClick(e, routeProfile), [onClick])}
+                >
+                    Profile
+                </Button>
+                <Button
+                    size='large'
+                    onClick={useCallback((e) => onClick(e, routeLeaderboard), [onClick])}
+                >
+                    Leaderboard
+                </Button>
+            </Box>
+        </>
     )
 }
 
