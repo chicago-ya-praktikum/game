@@ -23,6 +23,7 @@ import {InputForm} from '../../components/UI/inputs/InputForm/index'
 import {userInfoSelector} from '../../store/selectors'
 // eslint-disable-next-line import/no-cycle
 import {routeHome} from '../../components/routers/MainRouter/constants'
+import {PageMeta} from '../../components/PageMeta/PageMeta'
 
 const Profile: FC<Props> = (props: Props) => {
     const [state, dispatch] = useReducer(reducer, initialState)
@@ -74,28 +75,34 @@ const Profile: FC<Props> = (props: Props) => {
     )
 
     return (
-        <Box className={classes.root}>
-            <form className={classes.content}>
-                <AvatarUI showBtn size='large'/>
-                <RenderFields/>
-                <Button
-                    variant='contained'
-                    color='primary'
-                    type='submit'
-                    onClick={submitForm}
-                >
-                    Save
-                </Button>
+        <>
+            <PageMeta
+                title='Profile page'
+                description='Some description'
+            />
+            <Box className={classes.root}>
+                <form className={classes.content}>
+                    <AvatarUI showBtn size='large'/>
+                    <RenderFields/>
+                    <Button
+                        variant='contained'
+                        color='primary'
+                        type='submit'
+                        onClick={submitForm}
+                    >
+                        Save
+                    </Button>
 
-            </form>
-            <Box className={classes.changePasswordForm}>
-                <ChangePasswordForm/>
-            </Box>
-            <Box>
-                <Button size='small' color='secondary' onClick={handleLogOut}>Log out</Button>
-            </Box>
+                </form>
+                <Box className={classes.changePasswordForm}>
+                    <ChangePasswordForm/>
+                </Box>
+                <Box>
+                    <Button size='small' color='secondary' onClick={handleLogOut}>Log out</Button>
+                </Box>
 
-        </Box>
+            </Box>
+        </>
     )
 }
 
