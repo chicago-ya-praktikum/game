@@ -43,7 +43,6 @@ export const SokobanMain = memo(() => {
             }
 
             levels.push(data)
-            // @ts-ignore
             setLevels([...levels])
 
             if (levels.length < 11) {
@@ -67,7 +66,6 @@ export const SokobanMain = memo(() => {
         game()
 
         levels.shift()
-        // @ts-ignore
         setLevels([...levels])
 
         levelGenerator.postMessage(true)
