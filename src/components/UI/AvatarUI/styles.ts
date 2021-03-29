@@ -1,4 +1,4 @@
-import { createStyles, Theme } from "@material-ui/core";
+import {createStyles, Theme} from '@material-ui/core'
 
 export const styles = (theme: Theme) => createStyles({
 
@@ -8,15 +8,22 @@ export const styles = (theme: Theme) => createStyles({
         justifyContent: 'center',
         alignItems: 'center',
         '& > *': {
-            margin: theme.spacing(1),
+            margin: theme.spacing(1)
         }
-    },
-    avatarSize: {
-        width: theme.spacing(15),
-        height: theme.spacing(15),
     },
     inputFile: {
         display: 'none'
+    },
+    smallSize: {
+        width: theme.spacing(4),
+        height: theme.spacing(4)
+    },
+    middleSize: {
+        width: theme.spacing(9),
+        height: theme.spacing(9)
+    },
+    largeSize: {
+        width: theme.spacing(15),
+        height: theme.spacing(15)
     }
-
 })

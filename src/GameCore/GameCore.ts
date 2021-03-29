@@ -148,7 +148,6 @@ export class GameCore {
 
     private clearDynamicContent(coordinate: XYCoordinate) {
         this.checkDrawDot(coordinate)
-
         new ClearDot(this.ctx, this.step, coordinate).draw()
 
         if (this.isBoxSpace(coordinate)) {
@@ -172,7 +171,8 @@ export class GameCore {
     }
 
     private isWall({x, y}: XYCoordinate) {
-        return this.invalidDynamicCoordinate({x, y}) || this.level.layerDots[y][x] === LayerContent.Wall
+        return this.invalidDynamicCoordinate({x, y})
+        || this.level.layerDots[y][x] === LayerContent.Wall
     }
 
     private isBoxSpace({x, y}: XYCoordinate) {

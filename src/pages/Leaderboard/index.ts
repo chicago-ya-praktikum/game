@@ -1,4 +1,4 @@
-import {memo} from 'react'
 import {LeaderboardTSX} from './Leaderboard'
+import {privateRoute} from '../../HOCs/privateRoute'
 
-export const Leaderboard = memo(LeaderboardTSX)
+export const Leaderboard = privateRoute(LeaderboardTSX)

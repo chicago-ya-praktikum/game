@@ -19,12 +19,8 @@ export const styles = (theme: Theme) => createStyles({
         flexDirection: 'column',
         minWidth: '300px',
         '& > *': {
-            margin: theme.spacing(0.5),
+            margin: theme.spacing(0.5)
         }
-    },
-    alert: {
-        width: '80%',
-        margin: theme.spacing(1)
     },
     changePasswordForm: {
         margin: theme.spacing(5)

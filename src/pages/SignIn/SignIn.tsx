@@ -1,8 +1,10 @@
 import React from 'react'
-import {SignInForm} from '../../components/SignInForm/index'
+import {authView} from '../../HOCs/authView'
+import {SignInForm} from '../../components/forms/SignInForm/index'
 
-export function SignInPage() {
+function SignIn() {
     return (
         <SignInForm/>
     )
 }
+export const SignInPage = authView(SignIn)

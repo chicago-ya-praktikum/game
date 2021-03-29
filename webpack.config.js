@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     mode: 'development',
@@ -17,7 +18,7 @@ module.exports = {
         filename: 'bundle.js'
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.ts', '.js', '.png']
     },
     module: {
         rules: [
@@ -33,12 +34,31 @@ module.exports = {
                     'css-loader',
                     'sass-loader'
                 ]
+            },
+            {
+                test: /\.(svg|png|jpg|jpeg|gif)$/,
+                include: '/src/assets',
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[path][name].[ext]',
+                        outputPath: '/dist'
+                    }
+                }
             }
         ]
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: './www/index.html'
+        }),
+        new CopyPlugin({
+            patterns:
+            [
+                {
+                    from: './src/assets', to: 'assets'
+                }
+            ]
         })
     ]
 }

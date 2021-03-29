@@ -75,14 +75,14 @@ export const SokobanMain = memo(() => {
     return (
         <>
             <div className={gameClass}>
-                <div className="row">
+                <div className='row'>
                     <Button disabled={levels.length < 1} onClick={restart}>Restart</Button>
                     <Button disabled={levels.length < 2} onClick={next}>Next</Button>
                 </div>
                 <canvas
-                    className="bordered"
-                    height="400"
-                    width="400"
+                    className='bordered'
+                    height='400'
+                    width='400'
                     ref={ref}
                 />
             </div>

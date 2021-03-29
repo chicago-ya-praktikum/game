@@ -7,7 +7,8 @@
     },
     "parser": "@typescript-eslint/parser",
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "react-hooks"
     ],
     "env": {
         "browser": true,
@@ -25,6 +26,7 @@
         ],
         "import/prefer-default-export": 0,
         "@typescript-eslint/semi": 0,
+        "react-hooks/rules-of-hooks": "error",
         "indent": "off",
         "@typescript-eslint/indent": [
             "error",
@@ -44,9 +46,22 @@
             "error",
             4
         ],
-        "object-curly-spacing": [
+        "block-spacing" : [
             "error",
             "never"
+        ],
+        "object-curly-spacing": "off",
+        "@typescript-eslint/object-curly-spacing": [
+            "error",
+            "never"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "jsx-quotes": [
+            "error",
+            "prefer-single"
         ],
         "no-plusplus": "off",
         "no-underscore-dangle": "off",

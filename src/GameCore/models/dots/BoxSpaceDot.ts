@@ -2,9 +2,13 @@ import {Dot} from './Dot'
 
 export class BoxSpaceDot extends Dot {
     draw() {
-        const shift = (this.step - this.boxSpaceDiameter) / 2
+        const img = new Image()
+        img.src = './assets/gameElements/target/target.png'
+        // const shift = (this.step - this.boxSpaceDiameter) / 2
 
-        this.ctx.fillRect(this.x + shift, this.y + shift,
-            this.boxSpaceDiameter, this.boxSpaceDiameter)
+        img.onload = () => {
+            this.ctx.drawImage(img, this.x, this.y,
+                this.boxSpaceDiameter * 2, this.boxSpaceDiameter * 2)
+        }
     }
 }

@@ -1,9 +1,9 @@
-import { WithStyles } from '@material-ui/core'
-import { styles } from './styles'
+import {WithStyles} from '@material-ui/core'
+import {styles} from './styles'
 
 export type Props = {
-
-    cb?: (param: string) => void,
-    showBtn?: boolean
-
+    showBtn?: boolean,
+    size?: 'small' | 'middle' | 'large'
 } & WithStyles<typeof styles>
+
+export type AvatarSizeStyle = 'smallSize' | 'middleSize' | 'largeSize'

@@ -1,0 +1,7 @@
+export enum Actions {
+    APPLOAD = 'APPLOAD',
+    SIGNUP = 'SIGNUP',
+    LOGOUT = 'LOGOUT',
+    SIGNIN = 'SIGNIN',
+    SWITCH_TO_SAND_THEME = 'SWITCH_TO_SAND_THEME'
+}

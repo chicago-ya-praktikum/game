@@ -1,140 +1,102 @@
-import React, {FC, useCallback, useState} from 'react'
+import React, {
+    FC, useCallback, useEffect, useReducer
+} from 'react'
 import {
-    Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography, withStyles
+    Box, Button, withStyles
 } from '@material-ui/core'
-import ReactInputMask from 'react-input-mask'
-import {Alert} from '@material-ui/lab'
+import {useDispatch} from 'react-redux'
+import {withRouter} from 'react-router-dom'
 import {styles} from './styles'
-import {Field, Props, Setter} from './types'
-import {validateInput} from '../../utils/validateInput'
+import {
+    InputOnBlur, Props
+} from './types'
 import {AvatarUI} from '../../components/UI/AvatarUI/index'
-import {ChangePasswordForm} from '../../components/UI/ChangePasswordForm/index'
+import {ChangePasswordForm} from '../../components/forms/ChangePasswordForm/index'
+import {reducer} from './reducer/reducer'
+import {initialState} from './reducer/state'
+import {
+    setField, fillFields, setFieldErr, setInit
+} from './reducer/actions'
+import {checkFields} from '../../utils/checkFields'
+import {postLogout, putProfile} from '../../store/reducers/user/thunks'
+import {InputForm} from '../../components/UI/inputs/InputForm/index'
+import {userInfoSelector} from '../../store/selectors'
+// eslint-disable-next-line import/no-cycle
+import {routeHome} from '../../components/routers/MainRouter/constants'
 
 const Profile: FC<Props> = (props: Props) => {
-    const [nickname, setNickname] = useState({val: '', err: true, required: true} as Field)
-    const [avatarSrc, setAvatarSrc] = useState({val: '', err: true, required: true} as Field)
-    const [gender, setGender] = useState({val: '', err: false} as Field)
-    const [age, setAge] = useState({val: '18', err: false} as Field)
-    const [showAlert, setShowAlert] = useState(false)
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const {fields, init} = state
+    const {classes, history} = props
+    const dispatchStore = useDispatch()
+    const info = userInfoSelector()
 
-    const {classes} = props
+    useEffect(() => {
+        if (!info || init) return
+        dispatch(fillFields(info, fields))
+        dispatch(setInit())
+    }, [info])
 
-    const inputBlurHandler = useCallback((e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, field: Field, setter: Setter) => {
-        const curr = e.target.value as string
-        if (curr === field.val) return
-        const err = !validateInput(e.target.name as string, curr, field.required)
-        if (err !== field.err) field.err = err
-        field.val = curr
-        setter({...field})
-    }, [])
-
-    const selectChangeHandler = useCallback((e: React.ChangeEvent<{ name?: string; value: unknown }>, field:Field, setter: Setter) => {
-        const curr = e.target.value as string
-        if (curr === field.val) return
-        field.val = curr
-        setter({...field})
-    }, [])
-
-    const avatarCallback = useCallback((src: string) => {
-        if (src && src !== avatarSrc.val) {
-            avatarSrc.val = src
-            avatarSrc.err = false
-            setAvatarSrc({...avatarSrc})
-        }
-    }, [])
-
-
-    const formIsValid = () => {
-        let res = true
-        const fields = [nickname, avatarSrc, gender, age]
-        fields.forEach((field) => (
-            res = res && !field.err
-        ))
-
-        return res
-    }
+    const inputBlurHandler = useCallback((e: InputOnBlur) => {
+        e.preventDefault()
+        dispatch(setField(fields, String(e.target.name), String(e.target.value)))
+    }, [fields])
 
     const submitForm = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-
-        if (!formIsValid()) {
-            setShowAlert(true)
+        const check = checkFields(fields)
+        const {err, updateErr} = check
+        if (err) {
+            window.alertShow('error', 'Form is filled in incorrectly.')
+            updateErr.forEach((name) => dispatch(setFieldErr(fields, name)))
             return
         }
+        if (!info) return
+        dispatchStore(putProfile(fields))
+    }, [fields, info])
 
-        setShowAlert(false)
+    const handleLogOut = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault()
+        dispatchStore(postLogout())
+            // @ts-ignore
+            .then((success) => {if (success) history.push(routeHome)})
+    }, [history])
 
-        // TODO: save data
-    }, [])
-
-    const handleAlertClose = useCallback(() => {
-        setShowAlert(false)
-    }, [])
-
+    const RenderFields = () => (
+        <>
+            <InputForm field={fields.first_name} onBlur={inputBlurHandler}/>
+            <InputForm field={fields.second_name} onBlur={inputBlurHandler}/>
+            <InputForm field={fields.display_name} onBlur={inputBlurHandler}/>
+            <InputForm field={fields.login} onBlur={inputBlurHandler}/>
+            <InputForm field={fields.email} onBlur={inputBlurHandler}/>
+            <InputForm field={fields.phone} onBlur={inputBlurHandler}/>
+        </>
+    )
 
     return (
         <Box className={classes.root}>
-            {showAlert && <Alert className={classes.alert} severity='error' onClose={handleAlertClose}>Fields are not filled in correctly!</Alert>}
-            <Box>
-                <Typography align='center' variant='h5'>
-                    Profile
-                </Typography>
-            </Box>
             <form className={classes.content}>
-                <AvatarUI cb={avatarCallback} showBtn={true}/>
-                <TextField
-                    id='nickname'
-                    name='nickname'
-                    label='Nickname (required)'
-                    fullWidth
-                    variant='outlined'
-                    error={nickname.err}
-                    onBlur={(e) => inputBlurHandler(e, nickname, setNickname)}
-                />
-                <FormControl
-                    variant='outlined'
-                    fullWidth
-                >
-                    <InputLabel id='gender-select-label'>Gender</InputLabel>
-                    <Select
-                        labelId='gender-select-label'
-                        id='gender-select'
-                        defaultValue=''
-                        onChange={(e) => selectChangeHandler(e, gender, setGender)}
-                        label='Gender'
-                    >
-                        <MenuItem value=''><em>None</em></MenuItem>
-                        <MenuItem value='Male'>Male</MenuItem>
-                        <MenuItem value='Female'>Female</MenuItem>
-                    </Select>
-                </FormControl>
-                <ReactInputMask
-                    mask='99'
-                    defaultValue='18'
-                    maskPlaceholder={null}
-                    onBlur={(e) => inputBlurHandler(e, age, setAge)}
-                >
-                    {() => <TextField
-                                id='age'
-                                label='age'
-                                fullWidth
-                                name='age'
-                                variant='outlined'
-                            />}
-                </ReactInputMask>
+                <AvatarUI showBtn size='large'/>
+                <RenderFields/>
                 <Button
                     variant='contained'
-                    color='primary' type='submit'
-                    onClick={(e) => submitForm(e)}
-                >Save</Button>
+                    color='primary'
+                    type='submit'
+                    onClick={submitForm}
+                >
+                    Save
+                </Button>
 
             </form>
             <Box className={classes.changePasswordForm}>
                 <ChangePasswordForm/>
+            </Box>
+            <Box>
+                <Button size='small' color='secondary' onClick={handleLogOut}>Log out</Button>
             </Box>
 
         </Box>
     )
 }
 
-export const ProfileTSX = withStyles(styles)(Profile)
+export const ProfileTSX = withStyles(styles)(withRouter(Profile))
