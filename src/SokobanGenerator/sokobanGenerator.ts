@@ -1,9 +1,9 @@
-// @ts-ignore
-import {generateSokobanLevel} from 'sokoban-generator'
 import {LevelStore} from '../GameCore/models/LevelStore'
 import {LayerContent} from '../GameCore/enums/LayerContent'
+import {Tile} from './enums/Tile'
+import {generateSokobanLevel} from './generateSokobanLevel'
 
-export function SokobanGenerator() {
+export function sokobanGenerator() {
     const options = {
         attempts: 500000
     }
@@ -41,28 +41,28 @@ export function SokobanGenerator() {
         const char = stringLevel.charAt(i)
 
         switch (char) {
-            case '#':
+            case Tile.WALL:
                 push(LayerContent.Wall)
                 break
-            case ' ':
+            case Tile.FLOOR:
                 push(LayerContent.Space)
                 break
-            case '.':
+            case Tile.GOAL:
                 push(LayerContent.BoxSpace)
                 break
-            case '@':
+            case Tile.PLAYER:
                 addPlayer()
                 push(LayerContent.Space)
                 break
-            case '+':
+            case Tile.PLAYER_GOAL:
                 addPlayer()
                 push(LayerContent.BoxSpace)
                 break
-            case '$':
+            case Tile.BOX:
                 addBox()
                 push(LayerContent.Space)
                 break
-            case '*':
+            case Tile.BOX_GOAL:
                 addBox()
                 push(LayerContent.BoxSpace)
                 break
