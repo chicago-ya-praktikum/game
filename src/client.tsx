@@ -1,11 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './styles/style.sass'
-import { ConnectedRouter } from 'connected-react-router';
-import { Provider as ReduxProvider } from 'react-redux';
-import 'babel-polyfill';
+import {ConnectedRouter} from 'connected-react-router';
+import {Provider as ReduxProvider} from 'react-redux'
+import CssBaseline from '@material-ui/core/CssBaseline';
+import {ThemeProvider} from '@material-ui/core';
+import {configureStore} from './store/store';
+import theme from './themes/default';
 import {App} from './components/App/App'
-import { configureStore } from './store/store';
 
 declare global {
     interface Window {
@@ -14,12 +16,15 @@ declare global {
 }
 
 const initialState = window.__INITIAL_STATE__;
-const { store, history } = configureStore(initialState);
+const {store, history} = configureStore(initialState);
 
 ReactDOM.hydrate(
     <ReduxProvider store={store}>
         <ConnectedRouter history={history}>
-            <App />
+            <ThemeProvider theme={theme}>
+                <CssBaseline/>
+                <App/>
+            </ThemeProvider>
         </ConnectedRouter>
     </ReduxProvider>,
     document.getElementById('root')

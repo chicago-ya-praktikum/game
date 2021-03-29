@@ -3,8 +3,6 @@ import express from 'express'
 import compression from 'compression'
 import {serverRenderMiddleware} from './server-render-middleware'
 
-// const express = require('express')
-
 const app = express()
 
 app.use(compression())
