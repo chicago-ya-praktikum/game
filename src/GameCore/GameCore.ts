@@ -16,6 +16,7 @@ export class GameCore {
     private level!: LevelStore
     private readonly canvasDiameter: number
     private step!: number
+    private canvas: HTMLCanvasElement
 
     end = new UpdateListener<boolean>()
 
@@ -32,13 +33,18 @@ export class GameCore {
 
         this.canvasDiameter = canvas.width
         this.ctx = ctx
+        this.canvas = canvas
 
         return this
     }
 
     drawLevel(level: LevelStore) {
         this.level = deepClone(level)
-        this.step = Math.floor(this.canvasDiameter / this.level.layerDots.length)
+        const {length} = this.level.layerDots
+        this.step = Math.floor(this.canvasDiameter / length)
+
+        this.canvas.width = this.step * length
+        this.canvas.height = this.step * length
 
         this.level.layerDots.forEach((row, y) => {
             row.forEach((dot, x) => {
