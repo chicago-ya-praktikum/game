@@ -7,7 +7,7 @@ function SignUp() {
     return (
         <>
             <PageMeta
-                title='Signup oage'
+                title='Signup page'
                 description='Some description'
             />
             <RegForm/>
