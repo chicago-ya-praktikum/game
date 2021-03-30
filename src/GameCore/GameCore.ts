@@ -10,6 +10,7 @@ import {ClearDot} from './models/dots/ClearDot'
 import {deepClone} from '../utils/deepClone'
 import {UpdateListener} from '../models/UpdateListener'
 import {GamePosition} from './models/GamePosition'
+import {ThemeReducer} from '../store/reducers/gameThemeReduser'
 
 export class GameCore {
     private ctx: CanvasRenderingContext2D
@@ -36,13 +37,13 @@ export class GameCore {
         return this
     }
 
-    drawLevel(level: LevelStore) {
+    drawLevel(level: LevelStore, theme: ThemeReducer) {
         this.level = deepClone(level)
         this.step = Math.floor(this.canvasDiameter / this.level.layerDots.length)
 
         this.level.layerDots.forEach((row, y) => {
             row.forEach((dot, x) => {
-                new ClearDot(this.ctx, this.step, {x, y}).draw()
+                new ClearDot(this.ctx, this.step, {x, y}).draw(theme)
                 const constructor = getDotConstructor(dot)
                 new constructor(this.ctx, this.step, {x, y}).draw()
             })
@@ -58,7 +59,7 @@ export class GameCore {
         return this
     }
 
-    move(event: KeyboardEvent) {
+    move(event: KeyboardEvent, theme: ThemeReducer) {
         const {currentPosition} = this.level
         if (currentPosition === undefined) {
             throw new Error('current position is undefined')
@@ -103,13 +104,13 @@ export class GameCore {
                 return
             }
 
-            this.moveDynamicContent(next, doubleNext, DynamicContent.Box)
+            this.moveDynamicContent(next, doubleNext, DynamicContent.Box, theme)
             Object.assign(nextBox, doubleNext)
 
             this.checkBoxesPlaces()
         }
 
-        this.moveDynamicContent(coordinate, next, DynamicContent.Player)
+        this.moveDynamicContent(coordinate, next, DynamicContent.Player, theme)
         Object.assign(coordinate, next)
     }
 
@@ -135,8 +136,10 @@ export class GameCore {
         return fn(coordinate.x) || fn(coordinate.y)
     }
 
-    private moveDynamicContent(previous: XYCoordinate, next: XYCoordinate, type: DynamicContent) {
-        this.clearDynamicContent(previous)
+    private moveDynamicContent(
+        previous: XYCoordinate, next: XYCoordinate, type: DynamicContent, theme: ThemeReducer
+    ) {
+        this.clearDynamicContent(previous, theme)
         this.drawDynamicContent(next, type)
     }
 
@@ -146,9 +149,9 @@ export class GameCore {
         }
     }
 
-    private clearDynamicContent(coordinate: XYCoordinate) {
+    private clearDynamicContent(coordinate: XYCoordinate, theme: ThemeReducer) {
         this.checkDrawDot(coordinate)
-        new ClearDot(this.ctx, this.step, coordinate).draw()
+        new ClearDot(this.ctx, this.step, coordinate).draw(theme)
 
         if (this.isBoxSpace(coordinate)) {
             this.drawBoxSpace(coordinate)

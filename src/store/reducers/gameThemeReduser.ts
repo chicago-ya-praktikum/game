@@ -1,20 +1,22 @@
 import {Actions} from '../actions'
 
-enum Theme {
+enum GroundTheme {
     SAND = 'sand',
     STONE = 'stone'
 }
 
-type ThemeReducer = {
-    ground: string | null
+export type ThemeReducer = {
+    ground: string
     box: string
     walls: string
+    player: string
 }
 
 const defaultReducer: ThemeReducer = {
-    ground: Theme.SAND,
+    ground: GroundTheme.SAND,
     box: 'metall',
-    walls: 'bricks'
+    walls: 'bricks',
+    player: 'human'
 }
 
 export function themeReducer(state: ThemeReducer = defaultReducer,
@@ -23,12 +25,12 @@ export function themeReducer(state: ThemeReducer = defaultReducer,
         case Actions.SWITCH_TO_SAND_THEME:
             return {
                 ...state,
-                ground: Theme.SAND
+                ground: GroundTheme.SAND
             }
         case Actions.SWITCH_TO_STONE_THEME:
             return {
                 ...state,
-                ground: Theme.STONE
+                ground: GroundTheme.STONE
             }
         default:
             return state

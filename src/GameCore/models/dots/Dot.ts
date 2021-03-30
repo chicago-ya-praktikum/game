@@ -21,5 +21,5 @@ export abstract class Dot {
         this.y = y * this.step
     }
 
-    abstract draw(): void
+    abstract draw(theme?: any): void
 }

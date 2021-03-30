@@ -6,6 +6,8 @@ import {Button} from '@material-ui/core'
 import {GameCore} from '../../GameCore/GameCore'
 import {LevelStore} from '../../GameCore/models/LevelStore'
 import {levelGenerator} from '../../webWorkers/levelGenerator'
+import {themeSelector} from '../../store/selectors'
+import {ThemeReducer} from '../../store/reducers/gameThemeReduser'
 
 export const SokobanMain = memo(() => {
     const ref = useRef<HTMLCanvasElement>(null)
@@ -24,6 +26,8 @@ export const SokobanMain = memo(() => {
         setEndClass('hide')
     }
 
+    const theme: ThemeReducer = themeSelector()
+
     useEffect(() => {
         const canvas = ref.current
 
@@ -33,13 +37,13 @@ export const SokobanMain = memo(() => {
 
         gameCore = new GameCore(canvas)
         gameCore.end.subscribe(end)
-        const fn = (event: KeyboardEvent) => gameCore.move(event)
+        const fn = (event: KeyboardEvent) => gameCore.move(event, theme)
         window.addEventListener('keydown', fn)
 
         levelGenerator.postMessage(true)
         const generatorCallback = ({data}: MessageEvent<LevelStore>) => {
             if (levels.length < 1) {
-                gameCore.drawLevel(data)
+                gameCore.drawLevel(data, theme)
             }
 
             levels.push(data)
@@ -59,7 +63,7 @@ export const SokobanMain = memo(() => {
     }, [])
 
     const restart = useCallback(() => {
-        gameCore.drawLevel(levels[0])
+        gameCore.drawLevel(levels[0], theme)
     }, [])
 
     const next = useCallback(() => {
@@ -69,7 +73,7 @@ export const SokobanMain = memo(() => {
         setLevels([...levels])
 
         levelGenerator.postMessage(true)
-        gameCore.drawLevel(levels[0])
+        gameCore.drawLevel(levels[0], theme)
     }, [])
 
     return (
