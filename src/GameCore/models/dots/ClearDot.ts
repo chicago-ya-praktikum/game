@@ -1,18 +1,23 @@
 import {Dot} from './Dot'
+import {ThemeReducer} from '../../../store/reducers/gameThemeReduser'
 
 enum Ground {
-    SAND = './assets/gameElements/ground/ground.png'
+    SAND = './assets/gameElements/ground/ground.png',
+    STONE = './assets/gameElements/ground/stone.png'
 }
 
 export class ClearDot extends Dot {
-    draw(theme: {box?: string; ground: any; player?: string;} | undefined) {
+    draw(theme: ThemeReducer) {
         const img = new Image()
-        switch (theme?.ground) {
+        switch (theme.ground) {
             case 'sand':
                 img.src = Ground.SAND
-                break;
+                break
+            case 'stone':
+                img.src = Ground.STONE
+                break
             default:
-                break;
+                break
         }
 
         img.onload = () => {

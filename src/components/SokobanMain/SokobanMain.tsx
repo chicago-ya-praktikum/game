@@ -3,11 +3,14 @@ import React, {
 } from 'react'
 import './SokobanMain.sass'
 import {Button} from '@material-ui/core'
+import {useDispatch} from 'react-redux'
 import {GameCore} from '../../GameCore/GameCore'
 import {LevelStore} from '../../GameCore/models/LevelStore'
 import {levelGenerator} from '../../webWorkers/levelGenerator'
 import {themeSelector} from '../../store/selectors'
 import {ThemeReducer} from '../../store/reducers/gameThemeReduser'
+import {actionCreator} from '../../utils/actionCreator'
+import {Actions} from '../../store/actions'
 
 export const SokobanMain = memo(() => {
     const ref = useRef<HTMLCanvasElement>(null)
@@ -60,11 +63,11 @@ export const SokobanMain = memo(() => {
             gameCore.end.unsubscribe(end)
             levelGenerator.removeEventListener('message', generatorCallback)
         }
-    }, [])
+    }, [theme])
 
     const restart = useCallback(() => {
         gameCore.drawLevel(levels[0], theme)
-    }, [])
+    }, [theme])
 
     const next = useCallback(() => {
         game()
@@ -74,7 +77,17 @@ export const SokobanMain = memo(() => {
 
         levelGenerator.postMessage(true)
         gameCore.drawLevel(levels[0], theme)
-    }, [])
+    }, [theme])
+
+    const dispatch = useDispatch()
+
+    const switchToStone = () => {
+        dispatch(actionCreator(Actions.SWITCH_TO_STONE_THEME))
+    }
+
+    const switchToSand = () => {
+        dispatch(actionCreator(Actions.SWITCH_TO_SAND_THEME))
+    }
 
     return (
         <>
@@ -82,6 +95,8 @@ export const SokobanMain = memo(() => {
                 <div className='row'>
                     <Button disabled={levels.length < 1} onClick={restart}>Restart</Button>
                     <Button disabled={levels.length < 2} onClick={next}>Next</Button>
+                    <Button onClick={switchToStone}>Stone</Button>
+                    <Button onClick={switchToSand}>Sand</Button>
                 </div>
                 <canvas
                     className='bordered'
