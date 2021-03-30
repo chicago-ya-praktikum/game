@@ -1,5 +1,5 @@
 import path from 'path'
-import {Configuration, Plugin, Entry} from 'webpack'
+import {Configuration, WebpackPluginInstance as Plugin, Entry} from 'webpack'
 import {TsconfigPathsPlugin} from 'tsconfig-paths-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import CompressionPlugin from 'compression-webpack-plugin'
