@@ -1,11 +1,6 @@
-export const API_ROOT = new URL('https://ya-praktikum.tech')
+import {URL_AUTH} from './contstants/urlAuth'
 
-const URL_AUTH = {
-    SIGNIN: '/api/v2/auth/signin',
-    SIGNUP: '/api/v2/auth/signup',
-    LOGOUT: '/api/v2/auth/logout',
-    USER_INFO: '/api/v2/auth/user'
-}
+export const API_ROOT = new URL('https://ya-praktikum.tech')
 
 const URL_USERS = {
     PUT_PASSWORD: '/api/v2/user/password',
