@@ -1,10 +1,12 @@
 import {XYCoordinate} from '../XYCoordinate'
+import {GameTheme} from '../../enums/GameTheme'
 
 export abstract class Dot {
     protected ctx: CanvasRenderingContext2D
     protected step: number
     protected x: number
     protected y: number
+    protected theme?: GameTheme
 
     protected get boxSpaceDiameter() {
         return Math.floor(this.step / 2)
@@ -21,5 +23,5 @@ export abstract class Dot {
         this.y = y * this.step
     }
 
-    abstract draw(theme?: any): void
+    abstract draw(): void
 }

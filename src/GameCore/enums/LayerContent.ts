@@ -1,5 +1,7 @@
 export enum LayerContent {
     Wall,
     Space,
-    BoxSpace
+    BoxSpace,
+    Player,
+    Box
 }

@@ -1,20 +1,18 @@
 import {LevelStore} from './models/LevelStore'
 import {LayerContent} from './enums/LayerContent'
 import {XYCoordinate} from './models/XYCoordinate'
-import {DynamicContent} from './enums/DynamicContent'
 import {EventKey} from './enums/EventKey'
-import {BoxSpaceDot} from './models/dots/BoxSpaceDot'
-import {getDotConstructor} from './helpers/getDotConstructor'
-import {getDynamicConstructor} from './helpers/getDynamicConstructor'
-import {ClearDot} from './models/dots/ClearDot'
+import {BoxSpaceStoneDot} from './models/dots/stone/BoxSpaceStoneDot'
 import {deepClone} from '../utils/deepClone'
 import {UpdateListener} from '../models/UpdateListener'
 import {GamePosition} from './models/GamePosition'
-import {ThemeReducer} from '../store/reducers/gameThemeReduser'
+import {layerContent} from './constants/layerContent'
+import {GameTheme} from './enums/GameTheme'
 
 export class GameCore {
     private ctx: CanvasRenderingContext2D
     private level!: LevelStore
+    private theme!: GameTheme
     private readonly canvasDiameter: number
     private step!: number
     private canvas: HTMLCanvasElement
@@ -39,7 +37,7 @@ export class GameCore {
         return this
     }
 
-    drawLevel(level: LevelStore, theme: ThemeReducer) {
+    drawLevel(level: LevelStore, theme: GameTheme) {
         this.level = deepClone(level)
         const {length} = this.level.layerDots
         this.step = Math.floor(this.canvasDiameter / length)
@@ -47,25 +45,41 @@ export class GameCore {
         this.canvas.width = this.step * length
         this.canvas.height = this.step * length
 
-        this.level.layerDots.forEach((row, y) => {
-            row.forEach((dot, x) => {
-                new ClearDot(this.ctx, this.step, {x, y}).draw(theme)
-                const constructor = getDotConstructor(dot)
-                new constructor(this.ctx, this.step, {x, y}).draw()
-            })
-        })
-
-        this.level.currentPosition = deepClone(this.level.initialPosition)
-        const position = this.level.currentPosition as GamePosition
-
-        this.drawDynamicContent(position.playerCoordinate, DynamicContent.Player)
-        position.boxesCoordinates
-            .forEach((coordinate) => this.drawDynamicContent(coordinate, DynamicContent.Box))
+        this.redraw(theme)
 
         return this
     }
 
-    move(event: KeyboardEvent, theme: ThemeReducer) {
+    redraw(theme: GameTheme) {
+        this.theme = theme
+
+        const {layerDots, initialPosition} = this.level
+
+        if (!layerDots || !initialPosition) {
+            return
+        }
+
+        layerDots.forEach((row, y) => {
+            row.forEach((dot, x) => {
+                this.clearSpace({x, y})
+
+                const constructor = this.getDotConstructor(dot)
+                new constructor(this.ctx, this.step, {x, y}).draw()
+            })
+        })
+
+        if (!this.level.currentPosition) {
+            this.level.currentPosition = deepClone(initialPosition)
+        }
+
+        const position = this.level.currentPosition as GamePosition
+
+        this.drawDynamicContent(position.playerCoordinate, LayerContent.Player)
+        position.boxesCoordinates
+            .forEach((coordinate) => this.drawDynamicContent(coordinate, LayerContent.Box))
+    }
+
+    move(event: KeyboardEvent) {
         const {currentPosition} = this.level
         if (currentPosition === undefined) {
             throw new Error('current position is undefined')
@@ -110,13 +124,13 @@ export class GameCore {
                 return
             }
 
-            this.moveDynamicContent(next, doubleNext, DynamicContent.Box, theme)
+            this.moveDynamicContent(next, doubleNext, LayerContent.Box)
             Object.assign(nextBox, doubleNext)
 
             this.checkBoxesPlaces()
         }
 
-        this.moveDynamicContent(coordinate, next, DynamicContent.Player, theme)
+        this.moveDynamicContent(coordinate, next, LayerContent.Player)
         Object.assign(coordinate, next)
     }
 
@@ -143,9 +157,9 @@ export class GameCore {
     }
 
     private moveDynamicContent(
-        previous: XYCoordinate, next: XYCoordinate, type: DynamicContent, theme: ThemeReducer
+        previous: XYCoordinate, next: XYCoordinate, type: LayerContent
     ) {
-        this.clearDynamicContent(previous, theme)
+        this.clearDynamicContent(previous)
         this.drawDynamicContent(next, type)
     }
 
@@ -155,23 +169,27 @@ export class GameCore {
         }
     }
 
-    private clearDynamicContent(coordinate: XYCoordinate, theme: ThemeReducer) {
+    private clearDynamicContent(coordinate: XYCoordinate) {
         this.checkDrawDot(coordinate)
-        new ClearDot(this.ctx, this.step, coordinate).draw(theme)
+        this.clearSpace(coordinate)
 
         if (this.isBoxSpace(coordinate)) {
             this.drawBoxSpace(coordinate)
         }
     }
 
-    private drawDynamicContent(coordinate: XYCoordinate, type: DynamicContent) {
+    private drawDynamicContent(coordinate: XYCoordinate, type: LayerContent) {
         this.checkDrawDot(coordinate)
-        const constructor = getDynamicConstructor(type)
+        const constructor = this.getDotConstructor(type)
         new constructor(this.ctx, this.step, coordinate).draw()
+
+        if (this.isBoxSpace(coordinate)) {
+            this.drawBoxSpace(coordinate)
+        }
     }
 
     private drawBoxSpace(coordinate: XYCoordinate) {
-        new BoxSpaceDot(this.ctx, this.step, coordinate).draw()
+        new BoxSpaceStoneDot(this.ctx, this.step, coordinate).draw()
     }
 
     private getBox({x, y}: XYCoordinate) {
@@ -186,5 +204,14 @@ export class GameCore {
 
     private isBoxSpace({x, y}: XYCoordinate) {
         return this.level.layerDots[y][x] === LayerContent.BoxSpace
+    }
+
+    private getDotConstructor(dot: LayerContent) {
+        return layerContent[this.theme][dot]
+    }
+
+    private clearSpace({x, y}: XYCoordinate) {
+        const SpaceConstructor = this.getDotConstructor(LayerContent.Space)
+        new SpaceConstructor(this.ctx, this.step, {x, y}).draw()
     }
 }
