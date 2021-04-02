@@ -2,7 +2,6 @@ import {LevelStore} from './models/LevelStore'
 import {LayerContent} from './enums/LayerContent'
 import {XYCoordinate} from './models/XYCoordinate'
 import {EventKey} from './enums/EventKey'
-import {BoxSpaceStoneDot} from './models/dots/stone/BoxSpaceStoneDot'
 import {deepClone} from '../utils/deepClone'
 import {UpdateListener} from '../models/UpdateListener'
 import {GamePosition} from './models/GamePosition'
@@ -189,7 +188,8 @@ export class GameCore {
     }
 
     private drawBoxSpace(coordinate: XYCoordinate) {
-        new BoxSpaceStoneDot(this.ctx, this.step, coordinate).draw()
+        const SpaceConstructor = this.getDotConstructor(LayerContent.BoxSpace)
+        new SpaceConstructor(this.ctx, this.step, coordinate).draw()
     }
 
     private getBox({x, y}: XYCoordinate) {
