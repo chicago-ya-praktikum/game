@@ -1,10 +1,10 @@
-import {LayerContent} from '../enums/LayerContent'
-import {WallDot} from '../models/dots/WallDot'
-import {BoxSpaceDot} from '../models/dots/BoxSpaceDot'
-import {SpaceDot} from '../models/dots/SpaceDot'
+import {GameTheme} from '../enums/GameTheme'
+import {stoneLayerContent} from './stoneLayerContent'
+import {sandLayerContent} from './sandLayerContent'
+import {basicLayerContent} from './basicLayerContent'
 
 export const layerContent = {
-    [LayerContent.Wall]: WallDot,
-    [LayerContent.BoxSpace]: BoxSpaceDot,
-    [LayerContent.Space]: SpaceDot
+    [GameTheme.Basic]: basicLayerContent,
+    [GameTheme.Sand]: sandLayerContent,
+    [GameTheme.Stone]: stoneLayerContent
 }

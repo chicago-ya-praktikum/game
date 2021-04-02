@@ -2,7 +2,7 @@ import {combineReducers} from 'redux'
 // eslint-disable-next-line import/no-cycle
 import {userReducer} from './user/reducer'
 import {authReducer} from './authReducer'
-import {themeReducer} from './gameThemeReduser'
+import {themeReducer} from './themeReducer'
 
 // В этом файле будем объединять все редьюсеры в один
 export const reducers = combineReducers({

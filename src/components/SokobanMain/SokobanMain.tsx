@@ -2,17 +2,22 @@ import React, {
     memo, useCallback, useEffect, useRef, useState
 } from 'react'
 import './SokobanMain.sass'
-import {Button} from '@material-ui/core'
+import {Button, Menu, MenuItem} from '@material-ui/core'
+import {useDispatch} from 'react-redux'
 import {GameCore} from '../../GameCore/GameCore'
 import {LevelStore} from '../../GameCore/models/LevelStore'
 import {levelGenerator} from '../../webWorkers/levelGenerator'
+import {themeSelector} from '../../store/selectors'
+import {actionCreator} from '../../utils/actionCreator'
+import {Actions} from '../../store/actions'
 
 export const SokobanMain = memo(() => {
     const ref = useRef<HTMLCanvasElement>(null)
-    let gameCore: GameCore
+    const gameCoreRef = useRef<GameCore>()
     const [levels, setLevels] = useState<LevelStore[]>([])
     const [gameClass, setGameClass] = useState('block')
     const [endClass, setEndClass] = useState('hide')
+    const [anchorEl, setAnchorEl] = useState(null)
 
     const end = () => {
         setGameClass('hide')
@@ -24,6 +29,8 @@ export const SokobanMain = memo(() => {
         setEndClass('hide')
     }
 
+    const theme = themeSelector()
+
     useEffect(() => {
         const canvas = ref.current
 
@@ -31,7 +38,8 @@ export const SokobanMain = memo(() => {
             throw new Error('canvas is null')
         }
 
-        gameCore = new GameCore(canvas)
+        gameCoreRef.current = new GameCore(canvas)
+        const gameCore = gameCoreRef.current
         gameCore.end.subscribe(end)
         const fn = (event: KeyboardEvent) => gameCore.move(event)
         window.addEventListener('keydown', fn)
@@ -39,7 +47,7 @@ export const SokobanMain = memo(() => {
         levelGenerator.postMessage(true)
         const generatorCallback = ({data}: MessageEvent<LevelStore>) => {
             if (levels.length < 1) {
-                gameCore.drawLevel(data)
+                gameCore.drawLevel(data, theme)
             }
 
             levels.push(data)
@@ -58,9 +66,15 @@ export const SokobanMain = memo(() => {
         }
     }, [])
 
+    useEffect(() => {
+        if (levels.length > 0) {
+            gameCoreRef.current?.redraw(theme)
+        }
+    }, [theme])
+
     const restart = useCallback(() => {
-        gameCore.drawLevel(levels[0])
-    }, [])
+        gameCoreRef.current?.drawLevel(levels[0], theme)
+    }, [theme])
 
     const next = useCallback(() => {
         game()
@@ -69,7 +83,22 @@ export const SokobanMain = memo(() => {
         setLevels([...levels])
 
         levelGenerator.postMessage(true)
-        gameCore.drawLevel(levels[0])
+        gameCoreRef.current?.drawLevel(levels[0], theme)
+    }, [theme])
+
+    const dispatch = useDispatch()
+
+    const handleClick = useCallback((event: any) => {
+        setAnchorEl(event.currentTarget)
+    }, [])
+
+    const handleClose = useCallback(() => {
+        setAnchorEl(null)
+    }, [])
+
+    const switchTo = useCallback((action: Actions) => {
+        dispatch(actionCreator(action))
+        handleClose()
     }, [])
 
     return (
@@ -78,6 +107,24 @@ export const SokobanMain = memo(() => {
                 <div className='row'>
                     <Button disabled={levels.length < 1} onClick={restart}>Restart</Button>
                     <Button disabled={levels.length < 2} onClick={next}>Next</Button>
+                    <Button
+                        aria-controls='simple-menu'
+                        aria-haspopup='true'
+                        onClick={handleClick}
+                    >
+                        Themes
+                    </Button>
+                    <Menu
+                        id='simple-menu'
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                    >
+                        <MenuItem onClick={() => switchTo(Actions.STONE_THEME)}>Stone</MenuItem>
+                        <MenuItem onClick={() => switchTo(Actions.SAND_THEME)}>Sand</MenuItem>
+                        <MenuItem onClick={() => switchTo(Actions.BASIC_THEME)}>Basic</MenuItem>
+                    </Menu>
                 </div>
                 <canvas
                     className='bordered'
