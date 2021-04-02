@@ -88,28 +88,18 @@ export const SokobanMain = memo(() => {
 
     const dispatch = useDispatch()
 
-    const handleClick = (event: any) => {
+    const handleClick = useCallback((event: any) => {
         setAnchorEl(event.currentTarget)
-    }
+    }, [])
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setAnchorEl(null)
-    }
+    }, [])
 
-    const switchToStone = () => {
-        dispatch(actionCreator(Actions.STONE_THEME))
+    const switchTo = useCallback((action: Actions) => {
+        dispatch(actionCreator(action))
         handleClose()
-    }
-
-    const switchToSand = () => {
-        dispatch(actionCreator(Actions.SAND_THEME))
-        handleClose()
-    }
-
-    const switchToBasic = () => {
-        dispatch(actionCreator(Actions.BASIC_THEME))
-        handleClose()
-    }
+    }, [])
 
     return (
         <>
@@ -131,9 +121,9 @@ export const SokobanMain = memo(() => {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={switchToStone}>Stone</MenuItem>
-                        <MenuItem onClick={switchToSand}>Sand</MenuItem>
-                        <MenuItem onClick={switchToBasic}>Basic</MenuItem>
+                        <MenuItem onClick={() => switchTo(Actions.STONE_THEME)}>Stone</MenuItem>
+                        <MenuItem onClick={() => switchTo(Actions.SAND_THEME)}>Sand</MenuItem>
+                        <MenuItem onClick={() => switchTo(Actions.BASIC_THEME)}>Basic</MenuItem>
                     </Menu>
                 </div>
                 <canvas
