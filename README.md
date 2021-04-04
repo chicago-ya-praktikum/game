@@ -20,9 +20,9 @@ The Sokoban game is interesting in terms of computational complexity. The diffic
 
 ## Cerificate for HTTPS Localhost
 
-1.ol Creating Keys and Cerificate
-2.ol Creating Keys and Cerificate
-3.ol Get Decrypted Keys
+1. ol Creating Keys and Cerificate
+2. ol Creating Keys and Cerificate
+3. ol Get Decrypted Keys
 
 ## Credits
 
