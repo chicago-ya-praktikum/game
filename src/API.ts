@@ -1,12 +1,4 @@
-import {URL_AUTH} from './contstants/urlAuth'
-
-export const API_ROOT = new URL('https://ya-praktikum.tech')
-
-const URL_USERS = {
-    PUT_PASSWORD: '/api/v2/user/password',
-    PUT_AVATAR: '/api/v2/user/profile/avatar',
-    PUT_PROFILE: '/api/v2/user/profile'
-}
+import {URL_AUTH, URL_USER, API_ROOT} from './contstants/index'
 
 type SignUpObj = {
     first_name: string,
@@ -42,7 +34,7 @@ const requestHeaders = {
 const requestCredentials = 'include'
 
 const responseBody = (res: {json: () => any}) => res.json()
-const onResponse = async (response: Response) => response
+const onResponse = (response: Response) => response
 
 const requests = {
     del: (path: string) => {
@@ -114,14 +106,14 @@ export const Auth = {
     signIn: (obj: SignInObj, path = URL_AUTH.SIGNIN) => requests.post(path, obj),
     logout: (path = URL_AUTH.LOGOUT) => requests.post(path),
     signUp: (obj: SignUpObj, path = URL_AUTH.SIGNUP) => requests.post(path, obj),
-    user: (path = URL_AUTH.USER_INFO) => requests.get(path)
+    user: (path = URL_USER.GET_USER_INFO) => requests.get(path)
 };
 
 export const Users = {
     putPassword: (
         obj: ChangePasswordObj,
-        path = URL_USERS.PUT_PASSWORD
+        path = URL_USER.PUT_PASSWORD
     ) => requests.put(path, obj),
-    putAvatar: (obj: FormData, path = URL_USERS.PUT_AVATAR) => requests.putFormData(path, obj),
-    putProfile: (obj: UserPutData, path = URL_USERS.PUT_PROFILE) => requests.put(path, obj)
+    putAvatar: (obj: FormData, path = URL_USER.PUT_AVATAR) => requests.putFormData(path, obj),
+    putProfile: (obj: UserPutData, path = URL_USER.PUT_PROFILE) => requests.put(path, obj)
 }

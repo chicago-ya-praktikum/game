@@ -7,7 +7,7 @@ export type AuthReducer = {
     authStatus: boolean
 }
 
-const defaultReducer: AuthReducer = {
+export const defaultReducer: AuthReducer = {
     user: null,
     authStatus: false
 }

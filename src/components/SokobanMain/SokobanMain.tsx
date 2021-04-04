@@ -6,7 +6,7 @@ import {Button, Menu, MenuItem} from '@material-ui/core'
 import {useDispatch} from 'react-redux'
 import {GameCore} from '../../GameCore/GameCore'
 import {LevelStore} from '../../GameCore/models/LevelStore'
-import {levelGenerator} from '../../webWorkers/levelGenerator'
+// import {levelGenerator} from '../../webWorkers/levelGenerator'
 import {themeSelector} from '../../store/selectors'
 import {actionCreator} from '../../utils/actionCreator'
 import {Actions} from '../../store/actions'
@@ -44,26 +44,26 @@ export const SokobanMain = memo(() => {
         const fn = (event: KeyboardEvent) => gameCore.move(event)
         window.addEventListener('keydown', fn)
 
-        levelGenerator.postMessage(true)
-        const generatorCallback = ({data}: MessageEvent<LevelStore>) => {
-            if (levels.length < 1) {
-                gameCore.drawLevel(data, theme)
-            }
+        // levelGenerator.postMessage(true)
+        // const generatorCallback = ({data}: MessageEvent<LevelStore>) => {
+        //     if (levels.length < 1) {
+        //         gameCore.drawLevel(data, theme)
+        //     }
 
-            levels.push(data)
-            setLevels([...levels])
+        //     levels.push(data)
+        //     setLevels([...levels])
 
-            if (levels.length < 11) {
-                levelGenerator.postMessage(true)
-            }
-        }
-        levelGenerator.addEventListener('message', generatorCallback)
+        //     if (levels.length < 11) {
+        //         levelGenerator.postMessage(true)
+        //     }
+        // }
+        // levelGenerator.addEventListener('message', generatorCallback)
 
-        return () => {
-            window.removeEventListener('keydown', fn)
-            gameCore.end.unsubscribe(end)
-            levelGenerator.removeEventListener('message', generatorCallback)
-        }
+        // return () => {
+        //     window.removeEventListener('keydown', fn)
+        //     gameCore.end.unsubscribe(end)
+        //     levelGenerator.removeEventListener('message', generatorCallback)
+        // }
     }, [])
 
     useEffect(() => {
@@ -82,7 +82,7 @@ export const SokobanMain = memo(() => {
         levels.shift()
         setLevels([...levels])
 
-        levelGenerator.postMessage(true)
+        // levelGenerator.postMessage(true)
         gameCoreRef.current?.drawLevel(levels[0], theme)
     }, [theme])
 

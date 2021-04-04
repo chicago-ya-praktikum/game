@@ -41,9 +41,11 @@ export const AlertProvider: FC = ({children}) => {
 
     const {visible, text, severity} = state
 
-    window.alertShow = alertShow
-    window.alertHide = alertHide
-    window.alertToggle = alertToggle
+    if (IS_CLIENT) {
+        window.alertShow = alertShow
+        window.alertHide = alertHide
+        window.alertToggle = alertToggle
+    }
 
     return (
         <AlertContext.Provider value={{

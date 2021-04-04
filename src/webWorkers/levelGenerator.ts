@@ -1,1 +1,1 @@
-export const levelGenerator = new Worker(new URL('./levelGeneratorWorker', import.meta.url))
+export const levelGenerator = IS_SERVER ? null : new Worker(new URL('./levelGenerator', import.meta.url))

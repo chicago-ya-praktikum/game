@@ -36,6 +36,7 @@
         "typings/**/*.d.ts",
         "./node_modules/@types",
         "tests/**/*.test.js",
-        "tests/**/*.test.ts"
+        "tests/**/*.test.ts",
+        "SPA/index.tsx"
     ]
 }
