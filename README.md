@@ -21,7 +21,7 @@ The Sokoban game is interesting in terms of computational complexity. The diffic
 ## Cerificate for HTTPS Localhost
 
 1. Create directory ```sert``` in ```SSR```
-2. Inside ```sert``` needs to do:  
+2. Inside ```sert``` needs to do:
 * create Keys and Cerificate ```openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365```  
 * get decrypted Keys ```openssl rsa -in keytmp.pem -out key.pem```
 
