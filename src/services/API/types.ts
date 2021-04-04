@@ -1,4 +1,4 @@
 export type YaCookie = {
-    authCookie: string, 
+    authCookie: string
     uuid: string
 }

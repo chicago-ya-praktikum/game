@@ -10,10 +10,3 @@ export const jsLoader = {
         use: {loader: 'babel-loader'}
     }
 }
-
-// rules: [
-//     {
-//         test: /\.tsx?$/,
-//         use: 'ts-loader',
-//         exclude: /node_modules/
-//     },

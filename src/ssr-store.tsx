@@ -1,5 +1,3 @@
-// import url from 'url'
-// import path from 'path'
 import React from 'react'
 import {renderToString} from 'react-dom/server'
 import {Request, Response} from 'express'
@@ -8,14 +6,7 @@ import {StaticRouter} from 'react-router-dom'
 import {StaticRouterContext} from 'react-router'
 import {Provider as ReduxProvider} from 'react-redux'
 import {App} from './components/App/App'
-// import Helmet, {HelmetData} from 'react-helmet'
-// import {ChunkExtractor} from '@loadable/server'
-// import { App } from './components/App/App';
-// import {configureStore} from '../store/store'
-// import rootSaga from './store/rootSaga';
 import {getInitialState, configureStore} from './store/store'
-// import {getUserData} from './store/reducers/user/thunks'
-// import routes from './routes';
 
 const getHtml = (reactHtml: string, reduxState = {}) => `
         <!DOCTYPE html>
@@ -41,8 +32,6 @@ export const serverRenderMiddleware = (req: Request, res: Response) => {
     const context: StaticRouterContext = {}
 
     const {store} = configureStore(getInitialState())
-
-    console.log('Cookies: ', req.cookies)
 
     const jsx = (
         <ReduxProvider store={store}>

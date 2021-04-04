@@ -35,6 +35,8 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
     const cookieManager = new ServerCookiesManager(req, res);
 
     const {store} = configureStore(getInitialState())
+    // @ts-ignore
+    await store.dispatch(getUserData(req.cookies))
 
     const jsx = (
         <ReduxProvider store={store}>
@@ -46,10 +48,7 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
         </ReduxProvider>
     )
 
-    // @ts-ignore
-    await store.dispatch(getUserData(req.cookies))
-
-    // console.log('store', context.url) Почему два раза?
+    // console.log('store', context.url) // Почему два раза?
 
     const reactHtml = renderToString(jsx)
 

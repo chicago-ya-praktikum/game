@@ -11,11 +11,9 @@ import {CookiesProvider} from './services/cookie'
 
 const {store} = configureStore(window.__INITIAL_STATE__)
 
-// global redeclared types
 declare global {
     interface Window {
         __INITIAL_STATE__: State
-        // __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: Function
     }
 }
 

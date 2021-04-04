@@ -33,7 +33,6 @@ const AvatarUI: FC<Props> = (props: Props) => {
 
     const onChangeAvatar = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
-
         if (!e.target.files?.length) return
         const file = e.target.files[0]
         if (!file.type.match('image')) return

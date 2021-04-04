@@ -6,7 +6,9 @@ import {Button, Menu, MenuItem} from '@material-ui/core'
 import {useDispatch} from 'react-redux'
 import {GameCore} from '../../GameCore/GameCore'
 import {LevelStore} from '../../GameCore/models/LevelStore'
+// SSR_PROBLEM \\
 // import {levelGenerator} from '../../webWorkers/levelGenerator'
+// SSR_PROBLEM //
 import {themeSelector} from '../../store/selectors'
 import {actionCreator} from '../../utils/actionCreator'
 import {Actions} from '../../store/actions'
@@ -44,6 +46,7 @@ export const SokobanMain = memo(() => {
         const fn = (event: KeyboardEvent) => gameCore.move(event)
         window.addEventListener('keydown', fn)
 
+        // SSR_PROBLEM \\
         // levelGenerator.postMessage(true)
         // const generatorCallback = ({data}: MessageEvent<LevelStore>) => {
         //     if (levels.length < 1) {
@@ -64,6 +67,7 @@ export const SokobanMain = memo(() => {
         //     gameCore.end.unsubscribe(end)
         //     levelGenerator.removeEventListener('message', generatorCallback)
         // }
+        // SSR_PROBLEM //
     }, [])
 
     useEffect(() => {
@@ -82,7 +86,9 @@ export const SokobanMain = memo(() => {
         levels.shift()
         setLevels([...levels])
 
+        // SSR_PROBLEM \\
         // levelGenerator.postMessage(true)
+        // SSR_PROBLEM //
         gameCoreRef.current?.drawLevel(levels[0], theme)
     }, [theme])
 

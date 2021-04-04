@@ -18,6 +18,11 @@ The game has been implemented for a lot of computer platforms, including almost 
 
 The Sokoban game is interesting in terms of computational complexity. The difficulty of solving Sokoban levels is caused by both the strong branching of the decision tree (comparable to chess) and its great depth — some levels require more than 1000 pushes of boxes to solve.
 
+## Cerificate for HTTPS Localhost
+
+1. Creating Keys and Cerificate
+2. Get Decrypted Keys
+
 ## Credits
 
 * [Nickolay Kazantsev](https://github.com/realb0t) - Mentor

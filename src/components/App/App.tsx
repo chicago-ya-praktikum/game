@@ -1,4 +1,5 @@
 import React from 'react'
+import {NoSsr} from '@material-ui/core'
 import {MainRouter} from '../routers/MainRouter/MainRouter'
 import {ErrorBoundary} from '../ErrorBoundary/ErrorBoundary'
 import {AlertProvider} from '../UI/Alert/AlertProvider/AlertProvider'
@@ -9,10 +10,12 @@ export function App() {
     return (
         <ErrorBoundary>
             <AlertProvider>
-                <AlertUI/>
-                <Layout>
-                    <MainRouter/>
-                </Layout>
+                <NoSsr>
+                    <AlertUI/>
+                    <Layout>
+                        <MainRouter/>
+                    </Layout>
+                </NoSsr>
             </AlertProvider>
         </ErrorBoundary>
     )

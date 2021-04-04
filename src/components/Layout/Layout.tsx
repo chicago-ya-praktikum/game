@@ -25,7 +25,7 @@ const Layout: FC<Props> = (props: Props) => {
     const title = ''
 
     useEffect(() => {
-        if (!init) return
+        if (init) return
         dispatchStore(getUserData())
     }, [])
 

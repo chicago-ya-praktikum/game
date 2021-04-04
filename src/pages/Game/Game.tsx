@@ -13,7 +13,7 @@ const Game: FC<Props> = (props: Props) => {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <div className={classes.paper}>
-                        <SokobanMain/>
+                        {IS_CLIENT && <SokobanMain/>}
                     </div>
                 </Grid>
             </Grid>

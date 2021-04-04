@@ -15,9 +15,9 @@
         "build-run": "node server.js",
         "prod": "webpack --mode production && node server.js",
         "clear-dist": "rm -rf dist",
-        "ssr:webpack": "npm run clear-dist && webpack --mode=development --watch",
+        "ssr:webpack": "webpack --mode=development --watch",
         "ssr:server": "nodemon SSR/index.js --watch dist/server.js",
-        "ssr": "NODE_ENV=development npm-run-all --print-label --parallel ssr:*"
+        "ssr": "npm run clear-dist && NODE_ENV=development npm-run-all --print-label --parallel ssr:*"
     },
     "jest": {
         "setupFiles": [
@@ -89,6 +89,7 @@
         "jest-enzyme": "^7.1.2",
         "mini-css-extract-plugin": "^1.4.0",
         "nodemon": "^2.0.7",
+        "npm-run-all": "^4.1.5",
         "null-loader": "^4.0.1",
         "path": "^0.12.7",
         "react-hot-loader": "^4.13.0",
