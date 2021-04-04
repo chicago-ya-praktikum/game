@@ -20,7 +20,7 @@ The Sokoban game is interesting in terms of computational complexity. The diffic
 
 ## Cerificate for HTTPS Localhost
 
-It needs to make directory ```sert``` in ```SSR```
+1. It needs to make directory ```sert``` in ```SSR```
 2. Creating Keys and Cerificate
 3. Get Decrypted Keys
 
