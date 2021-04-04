@@ -12,16 +12,6 @@ import {YaCookie} from '../../../services/API/types'
 export const getUserData = (
     cookies: YaCookie | null = null
 ): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async dispatch => {
-    // const response = await Auth.user()
-    // dispatch(actionCreator(AuthActions.SIGNIN, response))
-    // if (response.ok) {
-    //     const res = await response.json()
-    //     dispatch(setUserData(res))
-    // } else {
-    //     dispatch(setEmptyUserData())
-    // }
-    // return null
-
     const response = await apiGetUserData(cookies)
     dispatch(actionCreator(AuthActions.SIGNIN, response))
     if (response.statusText === 'OK' || response.status === 200) {

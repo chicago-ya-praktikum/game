@@ -5,7 +5,6 @@ import {cssLoader} from './loaders/css'
 import {fileLoader} from './loaders/file'
 import {jsLoader} from './loaders/js'
 import path from 'path'
-// const HtmlWebpackPlugin = require('html-webpack-plugin')
 import CopyPlugin from 'copy-webpack-plugin'
 import {getCommonConfig} from './common.config'
 import {merge} from 'webpack-merge'
@@ -14,7 +13,6 @@ export const config: Configuration = merge(getCommonConfig('client'), {
     entry: ([
         '@babel/polyfill', 
         IS_DEV && 'react-hot-loader/patch',
-        // IS_DEV && 'webpack-hot-middleware/client',
         IS_DEV && 'css-hot-loader/hotModuleReplacement',
         path.join(SRC_DIR, 'client'),
     ].filter(Boolean) as unknown) as Entry,
@@ -23,10 +21,6 @@ export const config: Configuration = merge(getCommonConfig('client'), {
         filename: 'client.js',
         publicPath: '/'
     },
-    // output: {
-    //     path: path.join(__dirname, '../dist'),
-    //     filename: 'bundle.js'
-    // },
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.png']
     },
