@@ -8,7 +8,7 @@ import {useDispatch} from 'react-redux'
 import {styles} from './styles'
 import {Props, AvatarSizeStyle} from './types'
 import {userInfoPropSelector} from '../../../store/selectors'
-import {API_ROOT} from '../../../API'
+import {API_ROOT} from '../../../contstants/index'
 import {getUserData, putAvatar} from '../../../store/reducers/user/thunks'
 
 const AvatarUI: FC<Props> = (props: Props) => {
@@ -33,7 +33,6 @@ const AvatarUI: FC<Props> = (props: Props) => {
 
     const onChangeAvatar = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
-
         if (!e.target.files?.length) return
         const file = e.target.files[0]
         if (!file.type.match('image')) return

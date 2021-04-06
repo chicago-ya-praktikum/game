@@ -1,6 +1,10 @@
 const path = require('path')
+// eslint-disable-next-line import/no-extraneous-dependencies
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+// eslint-disable-next-line import/no-extraneous-dependencies
 const CopyPlugin = require('copy-webpack-plugin')
+// eslint-disable-next-line import/no-extraneous-dependencies
+const webpack = require('webpack')
 
 module.exports = {
     mode: 'development',
@@ -12,9 +16,9 @@ module.exports = {
         overlay: true,
         open: true
     },
-    entry: './src/index.tsx',
+    entry: './SPA/index.tsx',
     output: {
-        path: path.join(__dirname, '/dist'),
+        path: path.join(__dirname, '../dist'),
         filename: 'bundle.js'
     },
     resolve: {
@@ -50,7 +54,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './www/index.html'
+            template: path.join(__dirname, './www/index.html')
         }),
         new CopyPlugin({
             patterns:
@@ -59,6 +63,10 @@ module.exports = {
                     from: './src/assets', to: 'assets'
                 }
             ]
+        }),
+        new webpack.DefinePlugin({
+            IS_CLIENT: JSON.stringify(true),
+            IS_SERVER: JSON.stringify(false)
         })
     ]
 }

@@ -1,4 +1,4 @@
-import {URL_AUTH} from '../contstants/urlAuth'
+import {URL_USER} from '../contstants/index'
 
 interface RightMap extends ServiceWorkerEventMap {
     'install': ExtendableEvent
@@ -18,7 +18,7 @@ const ctx = self as unknown as RightServiceWorker
 const CACHE_NAME = 'cache-v1'
 
 const URLS = [
-    URL_AUTH.USER_INFO
+    URL_USER.GET_USER_INFO
 ]
 
 ctx.addEventListener('install', event => {

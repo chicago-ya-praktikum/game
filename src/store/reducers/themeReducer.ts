@@ -11,7 +11,9 @@ const actionToTheme: ActionToTheme = {
     [Actions.STONE_THEME]: GameTheme.Stone
 }
 
-export function themeReducer(state: GameTheme = GameTheme.Stone,
+export const defaultState: GameTheme = GameTheme.Stone
+
+export function themeReducer(state: GameTheme = defaultState,
     action: {type: Actions, payload: any}): GameTheme {
     return actionToTheme[action.type] ?? state
 }

@@ -18,6 +18,13 @@ The game has been implemented for a lot of computer platforms, including almost 
 
 The Sokoban game is interesting in terms of computational complexity. The difficulty of solving Sokoban levels is caused by both the strong branching of the decision tree (comparable to chess) and its great depth — some levels require more than 1000 pushes of boxes to solve.
 
+## Cerificate for HTTPS Localhost
+
+1. Create directory ```sert``` in ```SSR```
+2. Inside ```sert``` needs to do:
+* create keys and cerificate ```openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365```  
+* get decrypted keys ```openssl rsa -in keytmp.pem -out key.pem``` (keytmp.pem can be deleted)
+
 ## Credits
 
 * [Nickolay Kazantsev](https://github.com/realb0t) - Mentor

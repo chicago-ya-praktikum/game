@@ -6,12 +6,12 @@ import {Button, Menu, MenuItem} from '@material-ui/core'
 import {useDispatch} from 'react-redux'
 import {GameCore} from '../../GameCore/GameCore'
 import {LevelStore} from '../../GameCore/models/LevelStore'
-import {levelGenerator} from '../../webWorkers/levelGenerator'
 import {themeSelector} from '../../store/selectors'
 import {actionCreator} from '../../utils/actionCreator'
 import {Actions} from '../../store/actions'
 
 export const SokobanMain = memo(() => {
+    const levelGenerator = new Worker(new URL('../../webWorkers/levelGeneratorWorker', import.meta.url))
     const ref = useRef<HTMLCanvasElement>(null)
     const gameCoreRef = useRef<GameCore>()
     const [levels, setLevels] = useState<LevelStore[]>([])
@@ -82,7 +82,9 @@ export const SokobanMain = memo(() => {
         levels.shift()
         setLevels([...levels])
 
-        levelGenerator.postMessage(true)
+        // SSR_PROBLEM \\
+        // levelGenerator.postMessage(true)
+        // SSR_PROBLEM //
         gameCoreRef.current?.drawLevel(levels[0], theme)
     }, [theme])
 

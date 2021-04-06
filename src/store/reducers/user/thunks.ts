@@ -6,14 +6,16 @@ import {actionCreator} from '../../../utils/actionCreator'
 import {Actions as AuthActions} from '../../actions'
 import {RootState} from '../index'
 import {setEmptyUserData, setUserData} from './actions'
+import {apiGetUserData} from '../../../services/API/index'
+import {YaCookie} from '../../../services/API/types'
 
 export const getUserData = (
+    cookies: YaCookie | null = null
 ): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async dispatch => {
-    const response = await Auth.user()
+    const response = await apiGetUserData(cookies)
     dispatch(actionCreator(AuthActions.SIGNIN, response))
-    if (response.ok) {
-        const res = await response.json()
-        dispatch(setUserData(res))
+    if (response.statusText === 'OK' || response.status === 200) {
+        dispatch(setUserData(response.data))
     } else {
         dispatch(setEmptyUserData())
     }
