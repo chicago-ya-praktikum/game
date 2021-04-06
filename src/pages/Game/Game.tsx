@@ -4,6 +4,9 @@ import {withStyles} from '@material-ui/core'
 import {SokobanMain} from '../../components/SokobanMain/SokobanMain'
 import {styles} from './styles'
 import {Props} from './types'
+import {clientOnly} from '../../HOCs/clientOnly'
+
+const ClientSokobanMain = clientOnly(SokobanMain)
 
 const Game: FC<Props> = (props: Props) => {
     const {classes} = props
@@ -13,7 +16,7 @@ const Game: FC<Props> = (props: Props) => {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <div className={classes.paper}>
-                        {IS_CLIENT && <SokobanMain/>}
+                        <ClientSokobanMain/>
                     </div>
                 </Grid>
             </Grid>

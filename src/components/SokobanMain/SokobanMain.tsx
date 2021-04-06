@@ -6,14 +6,12 @@ import {Button, Menu, MenuItem} from '@material-ui/core'
 import {useDispatch} from 'react-redux'
 import {GameCore} from '../../GameCore/GameCore'
 import {LevelStore} from '../../GameCore/models/LevelStore'
-// SSR_PROBLEM \\
-// import {levelGenerator} from '../../webWorkers/levelGenerator'
-// SSR_PROBLEM //
 import {themeSelector} from '../../store/selectors'
 import {actionCreator} from '../../utils/actionCreator'
 import {Actions} from '../../store/actions'
 
 export const SokobanMain = memo(() => {
+    const levelGenerator = new Worker(new URL('../../webWorkers/levelGeneratorWorker', import.meta.url))
     const ref = useRef<HTMLCanvasElement>(null)
     const gameCoreRef = useRef<GameCore>()
     const [levels, setLevels] = useState<LevelStore[]>([])
@@ -46,28 +44,26 @@ export const SokobanMain = memo(() => {
         const fn = (event: KeyboardEvent) => gameCore.move(event)
         window.addEventListener('keydown', fn)
 
-        // SSR_PROBLEM \\
-        // levelGenerator.postMessage(true)
-        // const generatorCallback = ({data}: MessageEvent<LevelStore>) => {
-        //     if (levels.length < 1) {
-        //         gameCore.drawLevel(data, theme)
-        //     }
+        levelGenerator.postMessage(true)
+        const generatorCallback = ({data}: MessageEvent<LevelStore>) => {
+            if (levels.length < 1) {
+                gameCore.drawLevel(data, theme)
+            }
 
-        //     levels.push(data)
-        //     setLevels([...levels])
+            levels.push(data)
+            setLevels([...levels])
 
-        //     if (levels.length < 11) {
-        //         levelGenerator.postMessage(true)
-        //     }
-        // }
-        // levelGenerator.addEventListener('message', generatorCallback)
+            if (levels.length < 11) {
+                levelGenerator.postMessage(true)
+            }
+        }
+        levelGenerator.addEventListener('message', generatorCallback)
 
-        // return () => {
-        //     window.removeEventListener('keydown', fn)
-        //     gameCore.end.unsubscribe(end)
-        //     levelGenerator.removeEventListener('message', generatorCallback)
-        // }
-        // SSR_PROBLEM //
+        return () => {
+            window.removeEventListener('keydown', fn)
+            gameCore.end.unsubscribe(end)
+            levelGenerator.removeEventListener('message', generatorCallback)
+        }
     }, [])
 
     useEffect(() => {
