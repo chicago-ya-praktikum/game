@@ -17,7 +17,10 @@
         "clear-dist": "rm -rf dist",
         "ssr:webpack": "webpack --mode=development --watch",
         "ssr:server": "nodemon SSR/index.js --watch dist/server.js",
-        "ssr": "npm run clear-dist && NODE_ENV=development npm-run-all --print-label --parallel ssr:*"
+        "ssr": "npm run clear-dist && NODE_ENV=development npm-run-all --print-label --parallel ssr:*",
+        "prod-ssr:webpack": "webpack --mode=production --watch",
+        "prod-ssr:server": "nodemon SSR/index.js --watch dist/server.js",
+        "prod-ssr": "npm run clear-dist && NODE_ENV=production npm-run-all --print-label --parallel prod-ssr:*"
     },
     "jest": {
         "setupFiles": [
