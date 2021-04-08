@@ -5,6 +5,6 @@ import {ImageContent} from '../../../enums/ImageContent'
 export class PlayerStoneDot extends Dot {
     draw() {
         if (!gameImage) return
-        this.ctx.drawImage(gameImage.images[ImageContent.Player], this.x, this.y, 45, 45)
+        this.ctx.drawImage(gameImage.images[ImageContent.Player], this.x, this.y, this.step, this.step)
     }
 }

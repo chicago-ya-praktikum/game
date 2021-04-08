@@ -9,15 +9,34 @@ import {LevelStore} from '../../GameCore/models/LevelStore'
 import {themeSelector} from '../../store/selectors'
 import {actionCreator} from '../../utils/actionCreator'
 import {Actions} from '../../store/actions'
+import {useTouches} from '../../hooks/useTouches'
+
+interface NextButtonProps {
+    levels: LevelStore[]
+    next: () => void
+}
+
+const NextButton = memo(({levels, next}: NextButtonProps) => (
+    <Button
+        className='button_margin'
+        variant='contained'
+        color='secondary'
+        disabled={levels.length < 2}
+        onClick={next}>
+        Next
+    </Button>
+))
 
 export const SokobanMain = memo(() => {
     const levelGenerator = new Worker(new URL('../../webWorkers/levelGeneratorWorker', import.meta.url))
     const ref = useRef<HTMLCanvasElement>(null)
+    const fullscreenRef = useRef<HTMLDivElement>(null)
     const gameCoreRef = useRef<GameCore>()
     const [levels, setLevels] = useState<LevelStore[]>([])
     const [gameClass, setGameClass] = useState('block')
     const [endClass, setEndClass] = useState('hide')
     const [anchorEl, setAnchorEl] = useState(null)
+    useTouches(gameCoreRef)
 
     const end = () => {
         setGameClass('hide')
@@ -41,7 +60,7 @@ export const SokobanMain = memo(() => {
         gameCoreRef.current = new GameCore(canvas)
         const gameCore = gameCoreRef.current
         gameCore.end.subscribe(end)
-        const fn = (event: KeyboardEvent) => gameCore.move(event)
+        const fn = ({key}: KeyboardEvent) => gameCore.move(key)
         window.addEventListener('keydown', fn)
 
         levelGenerator.postMessage(true)
@@ -82,9 +101,7 @@ export const SokobanMain = memo(() => {
         levels.shift()
         setLevels([...levels])
 
-        // SSR_PROBLEM \\
-        // levelGenerator.postMessage(true)
-        // SSR_PROBLEM //
+        levelGenerator.postMessage(true)
         gameCoreRef.current?.drawLevel(levels[0], theme)
     }, [theme])
 
@@ -103,17 +120,33 @@ export const SokobanMain = memo(() => {
         handleClose()
     }, [])
 
+    const fullscreen = useCallback(() => {
+        const el = fullscreenRef.current
+
+        el?.requestFullscreen()
+    }, [])
+
     return (
-        <>
+        <div
+            className='container_flex'
+            ref={fullscreenRef}>
             <div className={gameClass}>
                 <div className='row'>
-                    <Button disabled={levels.length < 1} onClick={restart}>Restart</Button>
-                    <Button disabled={levels.length < 2} onClick={next}>Next</Button>
                     <Button
+                        className='button_margin'
+                        variant='contained'
+                        color='primary'
+                        disabled={levels.length < 1}
+                        onClick={restart}>
+                        Restart
+                    </Button>
+                    <NextButton levels={levels} next={next}/>
+                    <Button className='button_margin' onClick={fullscreen}>Full screen</Button>
+                    <Button
+                        className='button_margin'
                         aria-controls='simple-menu'
                         aria-haspopup='true'
-                        onClick={handleClick}
-                    >
+                        onClick={handleClick}>
                         Themes
                     </Button>
                     <Menu
@@ -121,8 +154,7 @@ export const SokobanMain = memo(() => {
                         anchorEl={anchorEl}
                         keepMounted
                         open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                    >
+                        onClose={handleClose}>
                         <MenuItem onClick={() => switchTo(Actions.STONE_THEME)}>Stone</MenuItem>
                         <MenuItem onClick={() => switchTo(Actions.SAND_THEME)}>Sand</MenuItem>
                         <MenuItem onClick={() => switchTo(Actions.BASIC_THEME)}>Basic</MenuItem>
@@ -132,14 +164,13 @@ export const SokobanMain = memo(() => {
                     className='bordered'
                     height='400'
                     width='400'
-                    ref={ref}
-                />
+                    ref={ref}/>
             </div>
 
             <div className={endClass}>
                 <h2>Success!</h2>
-                <Button onClick={next}>Next</Button>
+                <NextButton levels={levels} next={next}/>
             </div>
-        </>
+        </div>
     )
 })
