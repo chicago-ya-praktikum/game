@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+    sokoban-app:
+        build:
+            context: .
+        ports:
+            ["4003:80"]
