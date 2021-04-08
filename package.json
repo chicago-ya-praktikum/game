@@ -13,14 +13,12 @@
         "spa": "npm run clear-dist && webpack serve --config SPA/webpack.SPA.js",
         "build": "webpack --mode production",
         "build-run": "node server.js",
-        "prod": "webpack --mode production && node server.js",
+        "prod": "webpack --mode production && node SSR/index.js",
         "clear-dist": "rm -rf dist",
         "ssr:webpack": "webpack --mode=development --watch",
         "ssr:server": "nodemon SSR/index.js --watch dist/server.js",
         "ssr": "npm run clear-dist && NODE_ENV=development npm-run-all --print-label --parallel ssr:*",
-        "prod-ssr:webpack": "webpack --mode=production --watch",
-        "prod-ssr:server": "nodemon SSR/index.js --watch dist/server.js",
-        "prod-ssr": "npm run clear-dist && NODE_ENV=production npm-run-all --print-label --parallel prod-ssr:*"
+        "ssr:build": "webpack --mode=development"
     },
     "jest": {
         "setupFiles": [
@@ -102,7 +100,7 @@
         "style-loader": "^2.0.0",
         "ts-loader": "^8.0.14",
         "tsconfig-paths-webpack-plugin": "^3.5.1",
-        "tslib": "^2.1.0",
+        "tslib": "^2.2.0",
         "typescript": "^4.1.3",
         "webpack": "^5.20.1",
         "webpack-cli": "^4.5.0",
