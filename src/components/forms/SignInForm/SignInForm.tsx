@@ -11,6 +11,7 @@ import {styles} from './styles'
 import {Props} from './types'
 import {Actions} from '../../../store/actions'
 import {actionCreator} from '../../../utils/actionCreator'
+import {apiGetYandexServiceId, apiPostYandexOauth} from '../../../services/API/index'
 
 const SignInForm: FC<Props> = (props: Props) => {
     const {classes} = props
@@ -92,6 +93,18 @@ const SignInForm: FC<Props> = (props: Props) => {
         ]
     )
 
+    const signInByYandex = React.useCallback(
+        async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            e.preventDefault()
+            const reqId = await apiGetYandexServiceId()
+            if (!reqId) window.alertShow('error', 'Could not auth by Yandex!')
+            const {service_id} = reqId.data
+            const req = await apiPostYandexOauth(service_id)
+            console.log('req', req)
+        },
+        []
+    )
+
     return (
         <div className={classes.root}>
             <form className={classes.form} noValidate autoComplete='off'>
@@ -112,6 +125,7 @@ const SignInForm: FC<Props> = (props: Props) => {
                     ))
                 }
                 <Button variant='contained' color='primary' type='submit' onClick={(e) => submitForm(e)}>SignIn</Button>
+                <Button variant='contained' color='primary' type='submit' onClick={(e) => signInByYandex(e)}>SignIn by Yandex</Button>
             </form>
         </div>
     )

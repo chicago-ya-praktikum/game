@@ -1,4 +1,5 @@
 import React from 'react'
+// eslint-disable-next-line import/no-cycle
 import {authView} from '../../HOCs/authView'
 import {SignInForm} from '../../components/forms/SignInForm/index'
 
