@@ -5,6 +5,6 @@ COPY . .
 
 RUN npm install && npm run ssr:build
 
-EXPOSE 80
+EXPOSE 5000
 
 CMD node SSR/index.js

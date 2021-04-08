@@ -9,25 +9,27 @@ services:
         environment:
             [./dev.env]
         ports:
-            ["4003:80"]
+            ["5000:5000"]
         restart: always
         networks:
             [awesome]
-    postgres:
+
+    postgres: # Можно и не указывать, тогда будет взято за основу название сервиса: `postgres`
         image: postgres:12
         ports:
-            ["4008:5432"]
+            ["4005:5432"]
         volumes: 
-        - ./postgresdata:/var/lib/postgresql/data
-        # Если у вас есть схема БД, которую можно подгрузить на старте, — передайте её
-        # - ./src/migrations/dbinit.sql:/docker-entrypoint-initdb.d/dbinit.sql
+            - ./postgresdata:/var/lib/postgresql/data
+                  # Если у вас есть схема БД, которую можно подгрузить на старте, — передайте её
+                #   - ./src/migrations/dbinit.sql:/docker-entrypoint-initdb.d/dbinit.sql
         restart: always
         environment:
-            POSTGRES_USER: chicago
-            POSTGRES_PASSWORD: 1234
-            POSTGRES_DB: sokobanbd
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: sokobandb
         networks:
             [awesome]
+
     pgadmin:
             container_name: pgadmin
             image: dpage/pgadmin4:4.18
