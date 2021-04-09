@@ -25,6 +25,13 @@ The Sokoban game is interesting in terms of computational complexity. The diffic
 * create keys and cerificate ```openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365```  
 * get decrypted keys ```openssl rsa -in keytmp.pem -out key.pem``` (keytmp.pem can be deleted)
 
+## Start
+
+# npm install
+
+# docker-compose build
+# docker-compose up
+
 ## Credits
 
 * [Nickolay Kazantsev](https://github.com/realb0t) - Mentor
