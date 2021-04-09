@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react'
-import {Button, withStyles} from '@material-ui/core'
+import {Box, Button, withStyles} from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import {useDispatch} from 'react-redux'
 import {Actions} from '../../../store/actions'
@@ -8,6 +8,7 @@ import {validateInput} from '../../../utils/validateInput'
 import {Auth} from '../../../API'
 import {styles} from './styles'
 import {Props} from './types'
+import {ButtonsOauth} from '../../UI/buttons/ButtonsOauth/index'
 
 const RegForm: FC<Props> = (props: Props) => {
     const {classes} = props
@@ -164,7 +165,10 @@ const RegForm: FC<Props> = (props: Props) => {
                         />
                     ))
                 }
-                <Button variant='contained' color='primary' type='submit' onClick={(e) => submitForm(e)}>SignUp</Button>
+                <Box>
+                    <Button variant='contained' color='primary' type='submit' onClick={(e) => submitForm(e)}>SignUp</Button>
+                    <ButtonsOauth/>
+                </Box>
             </form>
         </div>
     )
