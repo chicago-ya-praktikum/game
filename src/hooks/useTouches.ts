@@ -1,4 +1,4 @@
-import {RefObject, useEffect} from 'react'
+import {RefObject, useCallback, useEffect} from 'react'
 import {GameCore} from '../GameCore/GameCore'
 import {deepClone} from '../utils/deepClone'
 import {EventKey} from '../GameCore/enums/EventKey'
@@ -12,19 +12,19 @@ export const useTouches = (gameCoreRef: RefObject<GameCore | undefined>) => {
     let start = deepClone(initialXY)
     let end = deepClone(initialXY)
 
-    const touchmove = (event: TouchEvent) => {
+    const touchmove = useCallback((event: TouchEvent) => {
         const {screenX, screenY} = event.touches[0]
         end.x = screenX
         end.y = screenY
-    }
+    }, [])
 
-    const touchstart = (event: TouchEvent) => {
+    const touchstart = useCallback((event: TouchEvent) => {
         const {screenX, screenY} = event.touches[0]
         start.x = screenX
         start.y = screenY
-    }
+    }, [])
 
-    const touchend = () => {
+    const touchend = useCallback(() => {
         let key = ''
 
         const diff = {
@@ -53,7 +53,7 @@ export const useTouches = (gameCoreRef: RefObject<GameCore | undefined>) => {
         end = deepClone(initialXY)
 
         gameCoreRef.current?.move(key)
-    }
+    }, [])
 
     useEffect(() => {
         window.addEventListener('touchend', touchend)

@@ -121,9 +121,7 @@ export const SokobanMain = memo(() => {
     }, [])
 
     const fullscreen = useCallback(() => {
-        const el = fullscreenRef.current
-
-        el?.requestFullscreen()
+        fullscreenRef.current?.requestFullscreen()
     }, [])
 
     return (
