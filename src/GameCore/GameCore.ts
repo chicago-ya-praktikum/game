@@ -78,7 +78,7 @@ export class GameCore {
             .forEach((coordinate) => this.drawDynamicContent(coordinate, LayerContent.Box))
     }
 
-    move(event: KeyboardEvent) {
+    move(key: string) {
         const {currentPosition} = this.level
         if (currentPosition === undefined) {
             throw new Error('current position is undefined')
@@ -92,7 +92,7 @@ export class GameCore {
 
         const next = {...coordinate}
         const doubleNext = {...coordinate}
-        switch (event.key) {
+        switch (key) {
             case EventKey.Down:
                 next.y += 1
                 doubleNext.y += 2
