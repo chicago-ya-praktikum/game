@@ -1,13 +1,13 @@
-import {create} from '../controllers/record.controller'
+import {create, getAll} from '../controllers/record.controller'
 
 const recordRoutes = (app: any) => {  
     var router = require("express").Router();
   
-    // Create a new forum user
-    router.post("/", create);
+    // Create a new record
+    router.post("/", create)
   
-    // read the list of forum users
-    // router.get("/", getAll);
+    // read the list of records
+    router.get("/", getAll)
   
     app.use("/api/records", router);
   };

@@ -7,11 +7,6 @@ export const checkUserStatus = async (token: any) => {
         })
         .catch((err: { message: any; }) => {
             console.log(err)
-            // res.status(500).send({
-            //     message:
-            //         err.message || "Some error occurred while looking for token."
-            // });
         });
-    console.log(status)
     return status
 }
