@@ -1,4 +1,5 @@
 import {db} from '../models/index'
+// import {checkUserStatus} from './helpers'
 const Record = db.records;
 // const Op = db.Sequelize.Op;
 
@@ -15,10 +16,11 @@ export const create = (req: any, res: any) => {
     return;
   }
 
+
+
   // Create a record
   const record = {
     parentId: req.body.parentId,
-    userId: req.body.userId,
     content: req.body.content
   };
 
