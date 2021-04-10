@@ -5,7 +5,7 @@ import compression from 'compression'
 import '@babel/polyfill'
 import cookieParser from 'cookie-parser'
 import {render} from './ssrMiddleware/render'
-import {oauth} from './ssrMiddleware/oauth'
+// import {oauth} from './ssrMiddleware/oauth'
 import {favicon} from './ssrMiddleware/favicon'
 
 const app = express()
@@ -18,7 +18,7 @@ app.use(compression())
     .use(cookieParser())
 
 app.get('/favicon.ico', favicon)
-app.get('/*', oauth)
+// app.get('/*', oauth)
 app.get('/*', render)
 // app.use('/', router)
 

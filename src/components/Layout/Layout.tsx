@@ -1,5 +1,5 @@
 import React, {
-    FC, useCallback, useEffect
+    FC, useCallback, useEffect, useLayoutEffect, useState
 } from 'react'
 import {
     AppBar, Button, Container, Grid, IconButton, Typography, withStyles
@@ -22,9 +22,10 @@ const Layout: FC<Props> = (props: Props) => {
     const userLogin = userInfoPropSelector('login')
     const authStatus = authStatusSelector()
     const init = userInitSelector()
+    const [didMount, setDidMount] = useState(false)
     const title = ''
 
-    // console.log(window.location)
+    useLayoutEffect(() => setDidMount(true), [])
 
     useEffect(() => {
         if (init) return
@@ -32,7 +33,7 @@ const Layout: FC<Props> = (props: Props) => {
     }, [])
 
     useEffect(() => {
-        if (!init) return
+        if (!init || !didMount) return
         dispatchStore(getUserData())
     }, [authStatus])
 

@@ -22,7 +22,7 @@ export const apiPostYandexOauth = async (code: string): Promise<AxiosResponse> =
     try {
         const res = await axios.post(API_ROOT + POST_OAUTH_YANDEX, {
             code
-            // redirect_uri: 'https://local.ya-praktikum.tech:4000/'
+            // redirect_uri: 'https://local.ya-praktikum.tech:5000'
         })
         return res
     } catch (err) {
