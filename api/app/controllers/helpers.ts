@@ -1,5 +1,6 @@
 import { db } from '../models/index'
 const Token = db.tokens
+
 export const checkUserStatus = async (token: any) => {
     const status = await Token.findOne({ where: { token: token } })
         .then((data: any) => {
@@ -10,3 +11,4 @@ export const checkUserStatus = async (token: any) => {
         });
     return status
 }
+
