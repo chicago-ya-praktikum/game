@@ -4,6 +4,15 @@ services:
     sokoban-app:
         build:
             context: .
+        ports:
+            ["3000:3000"]
+        restart: always
+        networks:
+            [awesome]
+
+    sokoban-api:
+        build:
+            context: ./api
         depends_on:
             - postgres
         environment:
