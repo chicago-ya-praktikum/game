@@ -1,12 +1,15 @@
 import {WithStyles} from '@material-ui/core'
 import {styles} from './styles'
+import {ratingFieldName} from '../../contstants/ratingFieldName'
 
 // LB - Leaderboard
 export type LBItem = {
-    id: string,
+    id: number,
     login: string,
     points: number,
-    mark: boolean
+    mark: boolean,
+    [ratingFieldName]?: number,
+    key?: number
 }
 
 export type Props = {
