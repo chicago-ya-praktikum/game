@@ -1,10 +1,11 @@
-const express = require('express')
+const {app} = require('./dist/bundle')
 
-const app = express()
-
-const port = 4000
-
-app.listen(port, () => {
-    // eslint-disable-next-line no-console
-    console.log('Application is started on localhost:', port)
-})
+app.get("/", (req, res) => {
+    res.json({ message: "Welcome to bezkoder application." });
+  });
+  
+// set port, listen for requests
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
