@@ -2,7 +2,7 @@ const express = require("express");
 export const app = express();
 import {db} from './models/index'
 
-db.sequelize.sync().then(() => {
+db.sequelize.sync({ force: true }).then(() => {
 }) 
 
 app.get("/", (req: any, res: any) => {
