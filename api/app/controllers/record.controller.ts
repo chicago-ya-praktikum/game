@@ -59,3 +59,35 @@ export const create = (req: any, res: any) => {
         }
       })
   };
+
+  export const remove = (req: any, res: any) => {
+    checkUserStatus(req.headers.authorization)
+      .then(data => {
+        if (!data) {
+          res.status(401).send('Unauthorized')
+        } else {
+    const id = req.params.id;  
+    Record.destroy({
+      where: { id: id }
+    })
+      .then((num: number) => {
+        if (num == 1) {
+          res.send({
+            message: "Record was deleted successfully!"
+          });
+        } else {
+          res.status(404).send({
+            message: `Cannot delete Record with id=${id}. Maybe Tutorial was not found!`
+          });
+        }
+      })
+      .catch((err: any) => {
+        console.log(err)
+        res.status(500).send({
+          message: `Could not delete Record with id= + ${id}`
+        });
+      });
+        }
+      })
+
+  };
