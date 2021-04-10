@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import React, {
     memo, useCallback, useEffect, useRef, useState
 } from 'react'
@@ -6,10 +7,13 @@ import {Button, Menu, MenuItem} from '@material-ui/core'
 import {useDispatch} from 'react-redux'
 import {GameCore} from '../../GameCore/GameCore'
 import {LevelStore} from '../../GameCore/models/LevelStore'
-import {themeSelector} from '../../store/selectors'
+import {themeSelector, userInfoSelector} from '../../store/selectors'
 import {actionCreator} from '../../utils/actionCreator'
 import {Actions} from '../../store/actions'
 import {useTouches} from '../../hooks/useTouches'
+import {Users} from '../../API'
+import {LeaderboardNewLeaderRequest} from '../../models/api/LeaderboardNewLeaderRequest'
+import {getUserData} from '../../store/reducers/user/thunks'
 
 interface NextButtonProps {
     levels: LevelStore[]
@@ -29,16 +33,23 @@ const NextButton = memo(({levels, next}: NextButtonProps) => (
 
 export const SokobanMain = memo(() => {
     const levelGenerator = new Worker(new URL('../../webWorkers/levelGeneratorWorker', import.meta.url))
+
     const ref = useRef<HTMLCanvasElement>(null)
     const fullscreenRef = useRef<HTMLDivElement>(null)
+
     const gameCoreRef = useRef<GameCore>()
     const [levels, setLevels] = useState<LevelStore[]>([])
     const [gameClass, setGameClass] = useState('block')
     const [endClass, setEndClass] = useState('hide')
     const [anchorEl, setAnchorEl] = useState(null)
+    const [count, setCount] = useState(0)
+    const dispatch = useDispatch()
+    const user = userInfoSelector()
+
     useTouches(gameCoreRef)
 
     const end = () => {
+        setCount(count + 1)
         setGameClass('hide')
         setEndClass('block')
     }
@@ -51,6 +62,8 @@ export const SokobanMain = memo(() => {
     const theme = themeSelector()
 
     useEffect(() => {
+        dispatch(getUserData())
+
         const canvas = ref.current
 
         if (canvas === null) {
@@ -91,6 +104,16 @@ export const SokobanMain = memo(() => {
         }
     }, [theme])
 
+    const saveResult = useCallback(() => {
+        if (user) {
+            Users.leaderboard(
+                new LeaderboardNewLeaderRequest(user.id, count, user.login)
+            ).then(() => alert('Success'))
+        } else {
+            alert('User is undefined')
+        }
+    }, [count, user])
+
     const restart = useCallback(() => {
         gameCoreRef.current?.drawLevel(levels[0], theme)
     }, [theme])
@@ -104,8 +127,6 @@ export const SokobanMain = memo(() => {
         levelGenerator.postMessage(true)
         gameCoreRef.current?.drawLevel(levels[0], theme)
     }, [theme])
-
-    const dispatch = useDispatch()
 
     const handleClick = useCallback((event: any) => {
         setAnchorEl(event.currentTarget)
@@ -163,6 +184,16 @@ export const SokobanMain = memo(() => {
                     height='400'
                     width='400'
                     ref={ref}/>
+                <div className='row align-items_center'>
+                    <p>
+                        Your result is {count}
+                    </p>
+                    <Button
+                        className='button_margin'
+                        onClick={saveResult}>
+                        Save it on leaderboard
+                    </Button>
+                </div>
             </div>
 
             <div className={endClass}>

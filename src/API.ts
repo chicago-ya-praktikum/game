@@ -1,4 +1,7 @@
-import {URL_AUTH, URL_USER, API_ROOT} from './contstants/index'
+import {API_ROOT, URL_AUTH, URL_USER} from './contstants/index'
+import {LeaderboardNewLeaderRequest} from './models/api/LeaderboardNewLeaderRequest'
+import {LeaderboardRequest} from './models/api/LeaderboardRequest'
+import {LBItem} from './pages/Leaderboard/types'
 
 type SignUpObj = {
     first_name: string,
@@ -33,8 +36,21 @@ const requestHeaders = {
 
 const requestCredentials = 'include'
 
+const fetchInit: RequestInit = {
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+}
+
 const responseBody = (res: {json: () => any}) => res.json()
 const onResponse = (response: Response) => response
+
+const withUrl = <T>(path: string, method: string, body?: unknown): Promise<T> => fetch(
+    new URL(path, API_ROOT).toString(),
+    {method, body: JSON.stringify(body), ...fetchInit}
+// eslint-disable-next-line no-console
+).then(response => response.json()).catch(error => console.log(error))
 
 const requests = {
     del: (path: string) => {
@@ -57,6 +73,11 @@ const requests = {
             })
             .then(onResponse)
     },
+    alternativePost: <T>(path: string, body: unknown) => withUrl<T>(
+        path,
+        'POST',
+        body
+    ),
     patch: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
         return fetch(`${url}`,
@@ -115,5 +136,12 @@ export const Users = {
         path = URL_USER.PUT_PASSWORD
     ) => requests.put(path, obj),
     putAvatar: (obj: FormData, path = URL_USER.PUT_AVATAR) => requests.putFormData(path, obj),
-    putProfile: (obj: UserPutData, path = URL_USER.PUT_PROFILE) => requests.put(path, obj)
+    putProfile: (obj: UserPutData, path = URL_USER.PUT_PROFILE) => requests.put(path, obj),
+    leaderboard: (body: LeaderboardNewLeaderRequest) => requests.alternativePost(
+        URL_USER.LEADERBOARD, body
+    ),
+    leaderboardAll: (body: LeaderboardRequest) => requests.alternativePost<{data: LBItem}[]>(
+        URL_USER.LEADERBOARD_ALL, body
+    ).then(result => result
+        .map((item, key) => Object.assign(item.data, {key})))
 }
