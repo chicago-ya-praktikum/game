@@ -17,7 +17,7 @@ export const create = (req: any, res: any) => {
 
   // Create a record
   const record = {
-    parentId: req.body.parentId || null,
+    parentId: req.body.parentId,
     userId: req.body.userId,
     content: req.body.content
   };
@@ -36,20 +36,20 @@ export const create = (req: any, res: any) => {
 };
 
 // Get all forum-users from the database.
-export const getAll = (req: any, res: any) => {
-    console.log(req)
-//   const title = req.query.title;
-//   to do condition - user is online
-//   var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
+// export const getAll = (req: any, res: any) => {
+//     console.log(req)
+// //   const title = req.query.title;
+// //   to do condition - user is online
+// //   var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
-  User.findAll()
-    .then((data: any) => {
-      res.status(200).send(data);
-    })
-    .catch((err: { message: any; }) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    });
-};
+//   User.findAll()
+//     .then((data: any) => {
+//       res.status(200).send(data);
+//     })
+//     .catch((err: { message: any; }) => {
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while retrieving tutorials."
+//       });
+//     });
+// };
