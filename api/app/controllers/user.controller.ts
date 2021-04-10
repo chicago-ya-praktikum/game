@@ -1,5 +1,6 @@
 import { checkUserStatus } from './helpers'
 import { db } from '../models/index'
+import { isUserData } from './requestDataVaidators';
 const User = db.users;
 const Token = db.tokens
 // const Op = db.Sequelize.Op;
@@ -7,11 +8,7 @@ const Token = db.tokens
 // Create and Save a new forum-user
 export const create = (req: any, res: any) => {
     // Validate request
-    if (!req.body
-        || !req.body.displayName
-        || !req.body.avatar
-        || !req.headers.authorization
-    ) {
+    if (!isUserData(req)) {
         res.status(400).send({
             message: "Wrong API"
         });
