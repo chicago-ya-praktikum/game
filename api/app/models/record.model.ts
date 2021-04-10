@@ -1,9 +1,5 @@
 export const recordTable = (sequelize: any, Sequelize: any) => {
     const Record = sequelize.define("records", {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true
-      },
       parentId: {
           type: Sequelize.INTEGER,
           allowNull: true

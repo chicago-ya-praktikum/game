@@ -1,6 +1,6 @@
 import {create, getAll} from '../controllers/user.controller'
 
-const userRout = (app: any) => {  
+const userRoutes = (app: any) => {  
     var router = require("express").Router();
   
     // Create a new forum user
@@ -12,4 +12,4 @@ const userRout = (app: any) => {
     app.use("/api/users", router);
   };
 
-  export default userRout
+  export default userRoutes

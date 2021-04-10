@@ -3,6 +3,8 @@ export const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 import { db } from './models/index'
+import userRoutes from './routes/user.routes'
+import recordRoutes from './routes/record.routes'
 
 
 var corsOptions = {
@@ -23,10 +25,8 @@ app.get("/", (req: any, res: any) => {
     res.json({ message: "Welcome to sokoban api"});
 });
 
-// require("./app/routes/user.routes")(app);
-import userRout from './routes/user.routes'
-
-userRout(app)
+userRoutes(app)
+recordRoutes(app)
 
 const PORT = process.env.PORT || 5000;
 
