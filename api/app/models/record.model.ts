@@ -5,13 +5,16 @@ export const recordTable = (sequelize: any, Sequelize: any) => {
         primaryKey: true
       },
       parentId: {
-          type: Sequelize.INTEGER
+          type: Sequelize.INTEGER,
+          allowNull: true
       },
       userId: {
-          type: Sequelize.INTEGER
+          type: Sequelize.INTEGER,
+          allowNull: false
       },
       content: {
-          type: Sequelize.STRING(1234)
+          type: Sequelize.STRING(1234),
+          allowNull: false
       }
     });
   

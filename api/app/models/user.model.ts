@@ -1,14 +1,17 @@
 export const userTable = (sequelize: any, Sequelize: any) => {
     const User = sequelize.define("users", {
-      id: {
+      userId: {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        unique: true,
+        allowNull: false
       },
       displayName: {
-          type: Sequelize.STRING
+          type: Sequelize.STRING,
+          allowNull: true
       },
       avatar: {
-          type: Sequelize.STRING
+          type: Sequelize.STRING,
+          allowNull: true
       }
     });
   

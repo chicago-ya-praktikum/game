@@ -2,10 +2,12 @@ export const tokenTable = (sequelize: any, Sequelize: any) => {
     const Token = sequelize.define("tokens", {
       userId: {
         type: Sequelize.INTEGER,
-        unique: true
+        unique: true,
+        allowNull: false
       },
       token: {
-          type: Sequelize.STRING
+          type: Sequelize.STRING,
+          allowNull: false
       }
     });
   
