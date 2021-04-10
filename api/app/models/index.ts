@@ -1,6 +1,6 @@
+const Sequelize = require('sequelize')
 import {sequelize} from '../config/db.config'
-import {Sequelize} from 'sequelize'
-import User from './user.model'
+import {User} from './user.model'
 
 const db:any = {}
 

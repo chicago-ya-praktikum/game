@@ -5,7 +5,7 @@ import { AllowNull, AutoIncrement, Column, DataType, Model, PrimaryKey, Table } 
     paranoid: true,   // add 'deleted_at'
     tableName: 'users'
 })
-class User extends Model<User> {
+export class User extends Model<User> {
     @AutoIncrement
     @PrimaryKey
     @Column(DataType.INTEGER)
@@ -16,5 +16,3 @@ class User extends Model<User> {
     name!: string;
 
 }
-
-export default User
