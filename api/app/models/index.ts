@@ -1,12 +1,14 @@
+
 const Sequelize = require('sequelize')
 import {sequelize} from '../config/db.config'
-import {User} from './user.model'
+import { userTable } from './user.model'
+// import {User} from './user.model'
 
-const db:any = {}
+export const db:any = {}
 
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
-db.users = new (User)(sequelize, Sequelize)
-
-export default db
+// db.users = new (User)(sequelize, Sequelize)
+// db.users = sequelize.define(User)
+db.users = userTable(sequelize, Sequelize)

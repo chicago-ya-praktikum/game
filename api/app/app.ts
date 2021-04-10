@@ -1,9 +1,16 @@
-const express = require("express")
-const app = express()
-const db = require('./models/index');
+const express = require("express");
+export const app = express();
+import {db} from './models/index'
 
-db.sequelize.sync().then(() => {
-    console.log('Успех')
-}); 
+db.sequelize.sync();
 
-export default app
+app.get("/", (req: any, res: { json: (arg0: { message: string; }) => void; }) => {
+    console.log(req)
+  res.json({ message: "Welcome to sokoban api" });
+});
+
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
