@@ -16,16 +16,16 @@ export const apiGetYandexServiceId = async (
     }
 }
 
-export const apiPostYandexOauth = async (service_id:string): Promise<AxiosResponse> => {
+export const apiPostYandexOauth = async (code: string): Promise<AxiosResponse> => {
     const axios = getAxios()
     const {POST_OAUTH_YANDEX} = URL_OAUTH
-    // try {
+    try {
         const res = await axios.post(API_ROOT + POST_OAUTH_YANDEX, {
-            code: service_id,
-            redirect_uri: 'https://local.ya-praktikum.tech:4000/'
+            code
+            // redirect_uri: 'https://local.ya-praktikum.tech:4000/'
         })
         return res
-    // } catch (err) {
-    //    return JSON.parse('{"err": "Wrong request"}')
-    // }
+    } catch (err) {
+        return JSON.parse(`{"err": "${err.message}"}`)
+    }
 }

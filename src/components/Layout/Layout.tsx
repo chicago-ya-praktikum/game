@@ -24,6 +24,8 @@ const Layout: FC<Props> = (props: Props) => {
     const init = userInitSelector()
     const title = ''
 
+    // console.log(window.location)
+
     useEffect(() => {
         if (init) return
         dispatchStore(getUserData())

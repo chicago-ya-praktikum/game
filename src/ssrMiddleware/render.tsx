@@ -29,7 +29,7 @@ const getHtml = (reactHtml: string, reduxState = {}) => `
         </html>
     `
 
-export const renderMiddleware = async (req: Request, res: Response) => {
+export const render = async (req: Request, res: Response) => {
     const location = req.url
     const context: StaticRouterContext = {}
     const cookieManager = new ServerCookiesManager(req, res);
