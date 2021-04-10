@@ -1,14 +1,13 @@
 import {db} from '../models/index'
-const User = db.users;
+const Record = db.records;
 // const Op = db.Sequelize.Op;
 
-// Create and Save a new forum-user
-export const create = (req: { body: { userId: any; displayName: any; avatar: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: { message: any; }): void; new(): any; }; }; send: (arg0: any) => void; }) => {
+// Create and Save a new record
+export const create = (req: any, res: any) => {
   // Validate request
   if (!req.body
     || !req.body.userId
-    || !req.body.displayName
-    || !req.body.avatar
+    || !req.body.content
     ) {
     res.status(400).send({
       message: "Wrong API"
@@ -16,22 +15,22 @@ export const create = (req: { body: { userId: any; displayName: any; avatar: any
     return;
   }
 
-  // Create a forum-user
-  const user = {
+  // Create a record
+  const record = {
+    parentId: req.body.parentId || null,
     userId: req.body.userId,
-    displayName: req.body.displayName,
-    avatar: req.body.avatar
+    content: req.body.content
   };
 
   // Save forum user in the database
-  User.create(user)
+  Record.create(record)
     .then((data: any) => {
       res.status(201).send(data);
     })
     .catch((err: { message: any; }) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the forum user."
+          err.message || "Some error occurred while creating the record."
       });
     });
 };
