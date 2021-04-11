@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core'
 import {styles} from './styles'
 import {Props} from './types'
-import {CommentsTree} from '../CommentsTree'
+import {CommentsTree} from '../commentsTree/CommentsTree'
 
 const Topic: FC<Props> = (props: Props) => {
     const {classes, cb, rights} = props
