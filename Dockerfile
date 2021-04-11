@@ -1,10 +1,10 @@
-FROM node:13
+FROM node:15
 
 WORKDIR app
-COPY . .
+COPY . . 
 
-RUN npm install && npm run build
+RUN npm install && npm run ssr:build
 
-EXPOSE 80
+EXPOSE 5000
 
-CMD npm run build-run
+CMD node SSR/index.js
