@@ -11,4 +11,7 @@ export const checkUserStatus = async (token: any) => {
         });
     return status
 }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
