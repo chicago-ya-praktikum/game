@@ -26,10 +26,12 @@ const Topic: FC<Props> = (props: Props) => {
                 <Box>
                     <TextField
                         disabled={disabledForm}
+                        margin='normal'
                         placeholder='Topic title'/>
                     <TextField
                         disabled={disabledForm}
                         fullWidth
+                        variant='outlined'
                         placeholder='Topic body'
                         multiline
                         rows={5}
