@@ -11,7 +11,7 @@ import {styles} from './styles'
 import {Props} from './types'
 import {Actions} from '../../../store/actions'
 import {actionCreator} from '../../../utils/actionCreator'
-import {ButtonsOauth} from '../../UI/buttons/ButtonsOauth/index'
+import {OauthButtons} from '../../oauth/OauthButtons/index'
 
 const SignInForm: FC<Props> = (props: Props) => {
     const {classes} = props
@@ -114,7 +114,7 @@ const SignInForm: FC<Props> = (props: Props) => {
                 }
                 <Box>
                     <Button variant='contained' color='primary' type='submit' onClick={(e) => submitForm(e)}>SignIn</Button>
-                    <ButtonsOauth/>
+                    <OauthButtons/>
                 </Box>
             </form>
         </div>

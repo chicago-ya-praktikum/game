@@ -8,7 +8,7 @@ import {validateInput} from '../../../utils/validateInput'
 import {Auth} from '../../../API'
 import {styles} from './styles'
 import {Props} from './types'
-import {ButtonsOauth} from '../../UI/buttons/ButtonsOauth/index'
+import {OauthButtons} from '../../oauth/OauthButtons/index'
 
 const RegForm: FC<Props> = (props: Props) => {
     const {classes} = props
@@ -167,7 +167,7 @@ const RegForm: FC<Props> = (props: Props) => {
                 }
                 <Box>
                     <Button variant='contained' color='primary' type='submit' onClick={(e) => submitForm(e)}>SignUp</Button>
-                    <ButtonsOauth/>
+                    <OauthButtons/>
                 </Box>
             </form>
         </div>

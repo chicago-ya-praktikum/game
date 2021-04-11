@@ -2,9 +2,9 @@ import React, {FC, useCallback} from 'react'
 import {Box, Button, withStyles} from '@material-ui/core'
 import {Props} from './types'
 import {styles} from './styles'
-import {apiGetYandexServiceId} from '../../../../services/API/index'
+import {apiGetYandexServiceId} from '../../../services/API/index'
 
-const ButtonsOauth: FC<Props> = (props: Props) => {
+const OauthButtons: FC<Props> = (props: Props) => {
     const {classes} = props
     const signInByYandex = useCallback(
         async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -32,4 +32,4 @@ const ButtonsOauth: FC<Props> = (props: Props) => {
     )
 }
 
-export const ButtonsOauthTSX = withStyles(styles)(ButtonsOauth)
+export const OauthButtonsTSX = withStyles(styles)(OauthButtons)
