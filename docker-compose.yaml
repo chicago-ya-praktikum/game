@@ -25,7 +25,8 @@ services:
         networks:
             [awesome]
 
-    postgres: 
+    postgres:
+        hostname: postgres
         container_name: postgres
         image: postgres:9.6.5-alpine
         ports:
