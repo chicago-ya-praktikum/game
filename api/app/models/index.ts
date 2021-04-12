@@ -12,5 +12,5 @@ db.sequelize = sequelize
 
 db.users = userTable(sequelize, Sequelize)
 db.tokens = tokenTable(sequelize, Sequelize)
-db.tokens = reactionTable(sequelize, Sequelize)
+db.reactions = reactionTable(sequelize, Sequelize)
 db.records = recordTable(sequelize, Sequelize)

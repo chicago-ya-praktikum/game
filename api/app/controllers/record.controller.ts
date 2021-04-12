@@ -1,13 +1,11 @@
 import { db } from '../models/index'
 import { checkUserStatus } from './utils/helpers'
-const Record = db.records;
+import { isRecordData } from './utils/requestDataVaidators'
+
+const Record = db.records
 
 export const create = (req: any, res: any) => {
-  if (!req.body
-    || !req.body.title
-    || !req.body.content
-    || !req.headers.authorization
-  ) {
+  if (!isRecordData(req)) {
     res.status(400).send({
       message: "Wrong API"
     });

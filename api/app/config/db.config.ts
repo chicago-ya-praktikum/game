@@ -1,7 +1,7 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 
 const sequelizeOptions: SequelizeOptions = {
-      host: '127.0.0.1',
+      host: 'localhost',
       port: 5436,
       username: 'chicago',
       password: 'password',

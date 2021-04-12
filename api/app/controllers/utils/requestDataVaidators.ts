@@ -10,3 +10,17 @@ export const isUserData = (obj: any) => {
     }
     return true
 }
+
+
+export const isRecordData = (obj: any) => {
+    if (!obj.body
+        || !obj.body.title
+        || typeof obj.body.title !== 'string'
+        || !obj.body.content
+        || typeof obj.body.content !== 'string'
+        || !obj.headers.authorization
+        || typeof obj.headers.authorization !== 'string') {
+        return false
+    }
+    return true
+}
