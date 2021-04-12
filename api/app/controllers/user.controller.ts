@@ -1,6 +1,6 @@
-import { checkUserStatus } from './helpers'
+import { checkUserStatus } from './utils/helpers'
 import { db } from '../models/index'
-import { isUserData } from './requestDataVaidators';
+import { isUserData } from './utils/requestDataVaidators';
 const User = db.users;
 const Token = db.tokens
 

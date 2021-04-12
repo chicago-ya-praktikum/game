@@ -8,6 +8,10 @@ export const recordTable = (sequelize: any, Sequelize: any) => {
           type: Sequelize.INTEGER,
           allowNull: false
       },
+      title: {
+          type: Sequelize.STRING,
+          allowNull: false
+      },
       content: {
           type: Sequelize.STRING(1234),
           allowNull: false

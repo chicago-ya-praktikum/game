@@ -1,9 +1,10 @@
 import { db } from '../models/index'
-import { checkUserStatus } from './helpers'
+import { checkUserStatus } from './utils/helpers'
 const Record = db.records;
 
 export const create = (req: any, res: any) => {
   if (!req.body
+    || !req.body.title
     || !req.body.content
     || !req.headers.authorization
   ) {
@@ -21,6 +22,7 @@ export const create = (req: any, res: any) => {
         const record = {
           userId: data,
           parentId: req.body.parentId,
+          title: req.body.title,
           content: req.body.content
         };
 
