@@ -60,6 +60,27 @@ export const create = (req: any, res: any) => {
       })
   };
 
+  export const getOne = (req: any, res: any) => {
+    checkUserStatus(req.headers.authorization)
+      .then(data => {
+        if (!data) {
+          res.status(401).send('Unauthorized')
+        } else {
+          const id = req.params.id
+          Record.findOne({where: {id: id}})
+            .then((data: any) => {
+              res.status(200).send(data);
+            })
+            .catch((err: { message: any; }) => {
+              res.status(500).send({
+                message:
+                  err.message || "Some error occurred while retrieving tutorials."
+              });
+            });
+        }
+      })
+  };
+
   export const remove = (req: any, res: any) => {
     checkUserStatus(req.headers.authorization)
       .then(data => {

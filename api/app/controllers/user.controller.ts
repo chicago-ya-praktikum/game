@@ -47,16 +47,42 @@ export const create = (req: any, res: any) => {
 };
 
 export const getAll = (req: any, res: any) => {
-    console.log(req)
-
-    User.findAll()
-        .then((data: any) => {
-            res.status(200).send(data);
+    checkUserStatus(req.headers.authorization)
+        .then(data => {
+            if (!data) {
+                res.status(401).send('Unauthorized')
+            } else {
+                User.findAll()
+                    .then((data: any) => {
+                        res.status(200).send(data);
+                    })
+                    .catch((err: { message: any; }) => {
+                        res.status(500).send({
+                            message:
+                                err.message || "Some error occurred while retrieving tutorials."
+                        })
+                    })
+            }
         })
-        .catch((err: { message: any; }) => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving tutorials."
-            });
-        });
-};
+}
+
+export const getOne = (req: any, res: any) => {
+    checkUserStatus(req.headers.authorization)
+        .then(data => {
+            if (!data) {
+                res.status(401).send('Unauthorized')
+            } else {
+                const id = req.params.id
+                User.findOne({where: {id: id}})
+                    .then((data: any) => {
+                        res.status(200).send(data);
+                    })
+                    .catch((err: { message: any; }) => {
+                        res.status(500).send({
+                            message:
+                                err.message || "Some error occurred while retrieving tutorials."
+                        });
+                    });
+            }
+        })
+}
