@@ -13,7 +13,6 @@ import {Actions} from '../../store/actions'
 import {useTouches} from '../../hooks/useTouches'
 import {Users} from '../../API'
 import {LeaderboardNewLeaderRequest} from '../../models/api/LeaderboardNewLeaderRequest'
-import {getUserData} from '../../store/reducers/user/thunks'
 
 interface NextButtonProps {
     levels: LevelStore[]
@@ -48,22 +47,29 @@ export const SokobanMain = memo(() => {
 
     useTouches(gameCoreRef)
 
-    const end = () => {
+    const end = useCallback(() => {
         setCount(count + 1)
         setGameClass('hide')
         setEndClass('block')
-    }
 
-    const game = () => {
+        if (user) {
+            Users.leaderboard(
+                new LeaderboardNewLeaderRequest(user.id, count + 1, user.login)
+            ).then(() => {
+                window.alertShow('success', 'Progress saved on leaderboard')
+                setTimeout(() => window.alertHide(), 3000)
+            })
+        }
+    }, [count, user])
+
+    const game = useCallback(() => {
         setGameClass('block')
         setEndClass('hide')
-    }
+    }, [])
 
     const theme = themeSelector()
 
     useEffect(() => {
-        dispatch(getUserData())
-
         const canvas = ref.current
 
         if (canvas === null) {
@@ -72,7 +78,6 @@ export const SokobanMain = memo(() => {
 
         gameCoreRef.current = new GameCore(canvas)
         const gameCore = gameCoreRef.current
-        gameCore.end.subscribe(end)
         const fn = ({key}: KeyboardEvent) => gameCore.move(key)
         window.addEventListener('keydown', fn)
 
@@ -93,26 +98,22 @@ export const SokobanMain = memo(() => {
 
         return () => {
             window.removeEventListener('keydown', fn)
-            gameCore.end.unsubscribe(end)
             levelGenerator.removeEventListener('message', generatorCallback)
         }
     }, [])
+
+    useEffect(() => {
+        gameCoreRef.current?.end.subscribe(end)
+        return () => {
+            gameCoreRef.current?.end.unsubscribe(end)
+        }
+    }, [end])
 
     useEffect(() => {
         if (levels.length > 0) {
             gameCoreRef.current?.redraw(theme)
         }
     }, [theme])
-
-    const saveResult = useCallback(() => {
-        if (user) {
-            Users.leaderboard(
-                new LeaderboardNewLeaderRequest(user.id, count, user.login)
-            ).then(() => alert('Success'))
-        } else {
-            alert('User is undefined')
-        }
-    }, [count, user])
 
     const restart = useCallback(() => {
         gameCoreRef.current?.drawLevel(levels[0], theme)
@@ -188,11 +189,6 @@ export const SokobanMain = memo(() => {
                     <p>
                         Your result is {count}
                     </p>
-                    <Button
-                        className='button_margin'
-                        onClick={saveResult}>
-                        Save it on leaderboard
-                    </Button>
                 </div>
             </div>
 

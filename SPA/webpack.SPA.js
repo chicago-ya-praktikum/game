@@ -1,15 +1,13 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const path = require('path')
-// eslint-disable-next-line import/no-extraneous-dependencies
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-// eslint-disable-next-line import/no-extraneous-dependencies
 const CopyPlugin = require('copy-webpack-plugin')
-// eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     mode: 'development',
     devServer: {
-        contentBase: path.join(__dirname, 'dist'),
+        contentBase: '../dist',
         historyApiFallback: true,
         writeToDisk: true,
         hot: true,
@@ -24,6 +22,7 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.png']
     },
+    devtool: 'inline-source-map',
     module: {
         rules: [
             {
