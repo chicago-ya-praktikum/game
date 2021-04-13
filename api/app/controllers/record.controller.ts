@@ -37,78 +37,94 @@ export const create = (req: any, res: any) => {
       };
 
     })
-  }
+}
 
 
-  export const getAll = (req: any, res: any) => {
-    checkUserStatus(req.headers.authorization)
-      .then(data => {
-        if (!data) {
-          res.status(401).send('Unauthorized')
-        } else {
-          Record.findAll()
-            .then((data: any) => {
-              res.status(200).send(data);
-            })
-            .catch((err: { message: any; }) => {
-              res.status(500).send({
-                message:
-                  err.message || "Some error occurred while retrieving tutorials."
-              });
+export const getAll = (req: any, res: any) => {
+  checkUserStatus(req.headers.authorization)
+    .then(data => {
+      if (!data) {
+        res.status(401).send('Unauthorized')
+      } else {
+        Record.findAll()
+          .then((data: any) => {
+            res.status(200).send(data);
+          })
+          .catch((err: { message: any; }) => {
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while retrieving tutorials."
             });
-        }
-      })
-  };
-
-  export const getOne = (req: any, res: any) => {
-    checkUserStatus(req.headers.authorization)
-      .then(data => {
-        if (!data) {
-          res.status(401).send('Unauthorized')
-        } else {
-          const id = req.params.id
-          Record.findOne({where: {id: id}})
-            .then((data: any) => {
-              res.status(200).send(data);
-            })
-            .catch((err: { message: any; }) => {
-              res.status(500).send({
-                message:
-                  err.message || "Some error occurred while retrieving tutorials."
-              });
-            });
-        }
-      })
-  };
-
-  export const remove = (req: any, res: any) => {
-    checkUserStatus(req.headers.authorization)
-      .then(data => {
-        if (!data) {
-          res.status(401).send('Unauthorized')
-        } else {
-    const id = req.params.id;  
-    Record.destroy({
-      where: { id: id }
+          });
+      }
     })
-      .then((num: number) => {
-        if (num == 1) {
-          res.send({
-            message: "Record was deleted successfully!"
-          });
-        } else {
-          res.status(404).send({
-            message: `Cannot delete Record with id=${id}. Maybe Tutorial was not found!`
-          });
-        }
-      })
-      .catch((err: any) => {
-        console.log(err)
-        res.status(500).send({
-          message: `Could not delete Record with id= + ${id}`
-        });
-      });
-        }
-      })
+};
 
-  };
+export const getOne = (req: any, res: any) => {
+  checkUserStatus(req.headers.authorization)
+    .then(data => {
+      if (!data) {
+        res.status(401).send('Unauthorized')
+      } else {
+        const id = req.params.id
+        Record.findOne({ where: { id: id } })
+          .then((data: any) => {
+            if (data === null) {
+              res.status(404).send('Record not found')
+            }
+            res.status(200).send(data);
+          })
+          .catch((err: { message: any; }) => {
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while retrieving tutorials."
+            });
+          });
+      }
+    })
+};
+
+export const remove = (req: any, res: any) => {
+  checkUserStatus(req.headers.authorization)
+    .then(data => {
+      if (!data) {
+        res.status(401).send('Unauthorized')
+      } else {
+        const userId = data
+        const id = req.params.id
+
+        Record.findOne({
+          where: {
+            id: id
+          }
+        })
+          .then((data: { userId: any }) => {
+            if (data.userId !== userId) {
+              res.status(403).send('Forbidden')
+            } else {
+              Record.destroy({
+                where: { id: id }
+              })
+                .then((num: number) => {
+                  if (num == 1) {
+                    res.send({
+                      message: "Record was deleted successfully!"
+                    });
+                  } else {
+                    res.status(404).send({
+                      message: `Cannot delete Record with id=${id}. Maybe Tutorial was not found!`
+                    });
+                  }
+                })
+                .catch((err: any) => {
+                  console.log(err)
+                  res.status(500).send({
+                    message: `Could not delete Record with id= + ${id}`
+                  });
+                });
+            }
+          })
+      }
+    })
+
+};
