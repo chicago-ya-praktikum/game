@@ -17,19 +17,21 @@ export const create = (req: any, res: any) => {
             if (!data) {
                 res.status(401).send('Unauthorized')
             } else {
-                const userId = data.id
+                const userId = data
+
+                const recordId = req.params.id
 
                 const userReaction = {
                     reactionId: req.body.reactionId,
                     userId: userId,
-                    recordId: req.body.recordId
+                    recordId: recordId
                 }
 
                 UserReaction.findOne({
                     where: {
-                        userId: userId,
                         reactionId: req.body.reactionId,
-                        recordId: req.body.recordId
+                        userId: userId,
+                        recordId: recordId
                     }
                 })
                     .then((data: any) => {
@@ -37,8 +39,8 @@ export const create = (req: any, res: any) => {
                             res.status(409).send('Reaction is already set')
                         } else {
                             UserReaction.create(userReaction)
-                                .then(() => {
-                                    res.status(201).send(data);
+                                .then((response: any) => {
+                                    res.status(201).send(response);
                                 })
                                 .catch((err: { message: any; }) => {
                                     res.status(500).send({
@@ -59,7 +61,12 @@ export const getAll = (req: any, res: any) => {
             if (!data) {
                 res.status(401).send('Unauthorized')
             } else {
-                User.findAll()
+                const id = req.params.id
+                UserReaction.findAll({
+                    where: {
+                        recordId: id
+                    }
+                })
                     .then((data: any) => {
                         res.status(200).send(data);
                     })
@@ -73,23 +80,23 @@ export const getAll = (req: any, res: any) => {
         })
 }
 
-export const getOne = (req: any, res: any) => {
-    checkUserStatus(req.headers.authorization)
-        .then(data => {
-            if (!data) {
-                res.status(401).send('Unauthorized')
-            } else {
-                const id = req.params.id
-                User.findOne({ where: { id: id } })
-                    .then((data: any) => {
-                        res.status(200).send(data);
-                    })
-                    .catch((err: { message: any; }) => {
-                        res.status(500).send({
-                            message:
-                                err.message || "Some error occurred while retrieving tutorials."
-                        });
-                    });
-            }
-        })
-}
+// export const getOne = (req: any, res: any) => {
+//     checkUserStatus(req.headers.authorization)
+//         .then(data => {
+//             if (!data) {
+//                 res.status(401).send('Unauthorized')
+//             } else {
+//                 const id = req.params.id
+//                 User.findOne({ where: { id: id } })
+//                     .then((data: any) => {
+//                         res.status(200).send(data);
+//                     })
+//                     .catch((err: { message: any; }) => {
+//                         res.status(500).send({
+//                             message:
+//                                 err.message || "Some error occurred while retrieving tutorials."
+//                         });
+//                     });
+//             }
+//         })
+// }

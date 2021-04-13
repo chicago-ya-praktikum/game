@@ -1,5 +1,5 @@
 export const userReactionTable = (sequelize: any, Sequelize: any) => {
-    const UserReaction = sequelize.define("userReactions", {
+    const UserReaction = sequelize.define("userreactions", {
       reactionId: {
           type: Sequelize.INTEGER,
           allowNull: false

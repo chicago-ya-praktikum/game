@@ -5,6 +5,7 @@ import { db } from './models/index'
 import userRoutes from './routes/user.routes'
 import recordRoutes from './routes/record.routes'
 import reactionRoutes from './routes/reaction.routes'
+import userReactionsRoutes from './routes/userReaction.routes';
 export const app = express()
 
 
@@ -29,6 +30,7 @@ app.get("/", (req: any, res: any) => {
 userRoutes(app)
 recordRoutes(app)
 reactionRoutes(app)
+userReactionsRoutes(app)
 
 const PORT = process.env.PORT || 8000;
 
