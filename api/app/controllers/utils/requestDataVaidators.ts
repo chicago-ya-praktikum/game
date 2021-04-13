@@ -24,3 +24,14 @@ export const isRecordData = (obj: any) => {
     }
     return true
 }
+
+export const isUserReactionData = (obj: any) => {
+    if (!obj.body
+       || !obj.body.reactionId
+       || typeof obj.body.reactionId !== 'number'
+       || !obj.body.recordId
+       || typeof obj.body.recordId !== 'number') {
+        return false
+       }
+       return true
+}
