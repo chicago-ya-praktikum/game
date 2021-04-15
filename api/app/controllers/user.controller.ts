@@ -64,6 +64,7 @@ export const getAll = async (req: any, res: any) => {
         res.status(500).send({
             message: 'Some error occurred while reading the list of users.'
         })
+        return
     }
 
     res.status(200).send(users)
@@ -85,6 +86,7 @@ export const getOne = async (req: any, res: any) => {
         res.status(500).send({
             message: 'Some error occurred while reading attributes of user.'
         })
+        return
     }
     res.status(200).send(user)
 }
