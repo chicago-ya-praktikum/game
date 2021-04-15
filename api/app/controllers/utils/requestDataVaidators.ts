@@ -11,7 +11,6 @@ export const isUserData = (obj: any) => {
     return true
 }
 
-
 export const isRecordData = (obj: any) => {
     if (!obj.body
         || !obj.body.title
@@ -30,6 +29,6 @@ export const isUserReactionData = (obj: any) => {
        || !obj.body.reactionId
        || typeof obj.body.reactionId !== 'number') {
         return false
-       }
-       return true
+    }
+    return true
 }
