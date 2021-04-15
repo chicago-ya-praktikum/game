@@ -32,6 +32,7 @@ export const create = async (req: any, res: any) => {
         res.status(500).send({
             message: 'Some error occurred while creating the record.'
         })
+        return
     }
     res.status(201).send(newRecord)
 }
