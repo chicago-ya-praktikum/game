@@ -10,3 +10,17 @@ export const checkUserStatus = async (token: any) => {
         });
     return await status
 }
+
+export enum ErrorName {
+    WRONG_API = 'Wrong API',
+    AUTH_CONFLICT = 'User already in system',
+    RECORD_REACTION_CONFLICT = 'Reaction is already set',
+    INTERNAL_ERROR = 'Something went wrong',
+    UNAUTHORIZED = 'Unauthorized',
+    NOT_FOUND = 'Not found',
+    FORBIDDEN = 'Access denied'
+}
+
+export const createBadResponse = (errorName: ErrorName) => ({
+    message: errorName
+})
