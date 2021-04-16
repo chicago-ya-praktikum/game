@@ -6,11 +6,11 @@ import {actionCreator} from '../../../utils/actionCreator'
 import {Actions as AuthActions} from '../../actions'
 import {RootState} from '../index'
 import {setEmptyUserData, setUserData} from './actions'
-import {apiGetUserData} from '../../../services/API/index'
-import {YaCookie} from '../../../services/API/types'
+import {getUserData as apiGetUserData} from '../../../services/API/yandex/index'
+import {YaCookie} from '../../../services/API/yandex/types'
 
 export const getUserData = (
-    cookies: YaCookie | null = null
+    cookies: YaCookie | undefined = undefined
 ): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async dispatch => {
     const response = await apiGetUserData(cookies)
     dispatch(actionCreator(AuthActions.SIGNIN, response))

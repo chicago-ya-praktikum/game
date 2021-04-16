@@ -1,4 +1,4 @@
-import {URL_USER} from '../contstants/index'
+import {URL_USER} from '../contstants/apiYandex/index'
 
 interface RightMap extends ServiceWorkerEventMap {
     'install': ExtendableEvent

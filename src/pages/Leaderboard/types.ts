@@ -1,6 +1,6 @@
 import {WithStyles} from '@material-ui/core'
 import {styles} from './styles'
-import {ratingFieldName} from '../../contstants/ratingFieldName'
+import {ratingFieldName} from '../../contstants/apiYandex/ratingFieldName'
 
 // LB - Leaderboard
 export type LBItem = {

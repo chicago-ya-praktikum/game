@@ -48,8 +48,6 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
         </ReduxProvider>
     )
 
-    // console.log('store', context.url) // Почему два раза?
-
     const reactHtml = renderToString(jsx)
 
     if (context.url) {

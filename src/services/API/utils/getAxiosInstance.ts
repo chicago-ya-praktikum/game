@@ -1,22 +1,24 @@
 import axios, {AxiosInstance} from 'axios'
-import {YaCookie} from '../types'
+import {YaCookie} from '../yandex/types'
 
 export const stringifyCookies = (cookies: YaCookie) => Object
     .entries(cookies)
     .map(([key, value]) => `${key}=${value}`)
     .join(';')
 
-export const getAxiosInstance = (cookies: YaCookie | null = null): AxiosInstance | null => {
-    let axiosInstance: null | AxiosInstance
+type AxiosParams = {
+    cookies?: YaCookie
+    withCredentials?: boolean
+}
+
+export const getAxiosInstance = (AxiosParams : AxiosParams = {}): AxiosInstance => {
+    const {cookies, withCredentials} = AxiosParams
+    const axiosInstance = axios.create()
     if (IS_CLIENT) {
-        axiosInstance = axios.create({withCredentials: true})
+        axiosInstance.defaults.withCredentials = withCredentials || true
     } else {
-        if (!cookies) return JSON.parse('{}')
-        axiosInstance = axios.create({
-            headers: {
-                Cookie: stringifyCookies(cookies)
-            }
-        })
+        // eslint-disable-next-line no-lonely-if
+        if (cookies) axiosInstance.defaults.headers.cookie = stringifyCookies(cookies)
     }
     return axiosInstance
 }

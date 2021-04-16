@@ -1,4 +1,6 @@
-import React, {FC, useCallback, useState} from 'react'
+import React, {
+    FC, useCallback, useEffect, useState
+} from 'react'
 import {
     Box, Button, Container, Grid, withStyles
 } from '@material-ui/core'
@@ -6,12 +8,33 @@ import {styles} from './styles'
 import {Props} from './types'
 import {Topic} from '../../components/forum/Topic/index'
 import {ListTopics} from '../../components/forum/ListTopics/index'
+import {postCreateUser} from '../../services/API/database/index'
+import {userSelector} from '../../store/selectors'
 
 const Forum: FC<Props> = (props: Props) => {
     const {classes} = props
     const [topic, setTopic] = useState(false)
+    const [err, setErr] = useState('')
     const [listTopics, setListTopics] = useState(true)
     const [topicRights, setTopicRights] = useState<'edit' | 'view'>('edit')
+    const {info} = userSelector()
+
+    useEffect(() => {if (err) throw new Error(err)})
+
+    useEffect(() => {
+        if (info) {
+            postCreateUser(info)
+                .then((res) => {
+                    if (res.status !== 201 && res.status !== 409) {
+                        if (res.status === 401) {
+                            setErr(res.statusText)
+                        } else {
+                            window.alertShow('error', res.statusText)
+                        }
+                    }
+                })
+        }
+    }, [info])
 
     const onClickNewTopic = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()

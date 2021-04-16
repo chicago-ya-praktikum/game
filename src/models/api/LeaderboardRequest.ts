@@ -1,4 +1,4 @@
-import {ratingFieldName} from '../../contstants/ratingFieldName'
+import {ratingFieldName} from '../../contstants/apiYandex/ratingFieldName'
 
 export class LeaderboardRequest {
     ratingFieldName: string

@@ -9,7 +9,7 @@ const key = fs.readFileSync(path.join(__dirname, '..', 'SSR', 'cert', 'key.pem')
 
 const server = https.createServer({key, cert}, app)
 
-const port = 3000
+const port = 5000
 
 server.listen(port, () => {
     // eslint-disable-next-line no-console
