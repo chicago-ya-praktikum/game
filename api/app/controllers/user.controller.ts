@@ -7,19 +7,18 @@ const User = db.users;
 const Token = db.tokens
 
 export const create = async (req: any, res: any) => {
+    const status = await checkUserStatus(req.headers.authorization)
+
+    if (status) {
+        res.status(409).send('User already in system')
+        return
+    }
     const validation = new Validator(req, userDataRules)
 
     if (validation.fails()) {
         res.status(400).send({
             message: 'Wrong API'
         })
-        return
-    }
-
-    const status = await checkUserStatus(req.headers.authorization)
-
-    if (status) {
-        res.status(409).send('User already in system')
         return
     }
 

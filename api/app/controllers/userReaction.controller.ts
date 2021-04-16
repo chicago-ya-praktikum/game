@@ -1,6 +1,7 @@
+import Validator from 'validatorjs'
 import {checkUserStatus} from './utils/helpers'
 import {db} from '../models/index'
-import {isUserReactionData} from './utils/requestDataVaidators'
+import {userReactionDataRules} from './utils/requestDataVaidators'
 
 const UserReaction = db.userReactions
 
@@ -12,7 +13,9 @@ export const create = async (req: any, res: any) => {
         return
     }
 
-    if (!isUserReactionData(req)) {
+    const validation = new Validator(req, userReactionDataRules)
+
+    if (validation.fails()) {
         res.status(400).send({
             message: 'Wrong API'
         });

@@ -1,21 +1,23 @@
+import Validator from 'validatorjs'
 import {db} from '../models/index'
 import {checkUserStatus} from './utils/helpers'
-import {isRecordData} from './utils/requestDataVaidators'
+import {recordDataRules} from './utils/requestDataVaidators'
 
 const Record = db.records
 
 export const create = async (req: any, res: any) => {
-    if (!isRecordData(req)) {
-        res.status(400).send({
-            message: 'Wrong API'
-        });
-        return
-    }
-
     const status = await checkUserStatus(req.headers.authorization)
 
     if (!status) {
         res.status(401).send('Unauthorized')
+        return
+    }
+    const validation = new Validator(req, recordDataRules)
+
+    if (validation.fails()) {
+        res.status(400).send({
+            message: 'Wrong API'
+        });
         return
     }
 
