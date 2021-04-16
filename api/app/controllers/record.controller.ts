@@ -37,90 +37,91 @@ export const create = async (req: any, res: any) => {
     res.status(201).send(newRecord)
 }
 
-export const getAll = (req: any, res: any) => {
-    checkUserStatus(req.headers.authorization)
-        .then(data => {
-            if (!data) {
-                res.status(401).send('Unauthorized')
-            } else {
-                Record.findAll()
-                    .then((data: any) => {
-                        res.status(200).send(data);
-                    })
-                    .catch((err: {message: any;}) => {
-                        res.status(500).send({
-                            message:
-                err.message || 'Some error occurred while retrieving tutorials.'
-                        });
-                    });
-            }
+export const getAll = async (req: any, res: any) => {
+    const status = await checkUserStatus(req.headers.authorization)
+
+    if (!status) {
+        res.status(401).send('Unauthorized')
+        return
+    }
+
+    const records = await Record.findAll()
+
+    if (!records) {
+        res.status(500).send({
+            message: 'Some error occurred while reading list of records.'
         })
+    }
+    res.status(200).send(records)
+}
+
+export const getOne = async (req: any, res: any) => {
+    const status = await checkUserStatus(req.headers.authorization)
+
+    if (!status) {
+        res.status(401).send('Unauthorized')
+        return
+    }
+    const {id} = req.params
+
+    const record = await Record.findOne({
+        where: {id}
+    })
+
+    if (record === null) {
+        res.status(404).send({
+            message: 'Record not found'
+        })
+    }
+
+    if (!record) {
+        res.status(500).send({
+            message: 'Some error occurred while reading attributes of record.'
+        })
+    }
+    res.status(200).send(record)
 };
 
-export const getOne = (req: any, res: any) => {
-    checkUserStatus(req.headers.authorization)
-        .then(data => {
-            if (!data) {
-                res.status(401).send('Unauthorized')
-            } else {
-                const {id} = req.params
-                Record.findOne({where: {id}})
-                    .then((data: any) => {
-                        if (data === null) {
-                            res.status(404).send('Record not found')
-                        }
-                        res.status(200).send(data);
-                    })
-                    .catch((err: {message: any;}) => {
-                        res.status(500).send({
-                            message:
-                err.message || 'Some error occurred while retrieving tutorials.'
-                        });
-                    });
-            }
-        })
-};
+export const remove = async (req: any, res: any) => {
+    const status = await checkUserStatus(req.headers.authorization)
 
-export const remove = (req: any, res: any) => {
-    checkUserStatus(req.headers.authorization)
-        .then(data => {
-            if (!data) {
-                res.status(401).send('Unauthorized')
-            } else {
-                const userId = data
-                const {id} = req.params
+    if (!status) {
+        res.status(401).send('Unauthorized')
+        return
+    }
+    const {id} = req.params
 
-                Record.findOne({
-                    where: {
-                        id
-                    }
-                })
-                    .then((data: {userId: any}) => {
-                        if (data.userId !== userId) {
-                            res.status(403).send('Forbidden')
-                        } else {
-                            Record.destroy({
-                                where: {id}
-                            })
-                                .then((num: number) => {
-                                    if (num == 1) {
-                                        res.send({
-                                            message: 'Record was deleted successfully!'
-                                        });
-                                    } else {
-                                        res.status(404).send({
-                                            message: `Cannot delete Record with id=${id}. Maybe Tutorial was not found!`
-                                        });
-                                    }
-                                })
-                                .catch((err: any) => {
-                                    console.log(err)
-                                    res.status(500).send({
-                                        message: `Could not delete Record with id= + ${id}`
-                                    });
-                                });
-                        }
-                    })
-            }
+    const record = await Record.findOne({
+        where: {id}
+    })
+
+    if (record === null) {
+        res.status(404).send({
+            message: 'Record not found'
         })
-};
+    }
+
+    if (!record) {
+        res.status(500).send({
+            message: 'Some error occurred while reading attributes of record.'
+        })
+    }
+
+    
+    if (record.userId !== status) {
+        res.status(403).send('Forbidden')
+    }
+
+    const deleteStatus = await Record.destroy({
+        where: {id}
+    })
+    if (deleteStatus !== 1) {
+        res.status(404).send({
+            message: `Cannot delete Record with id=${id} for some reason`
+        })
+    }
+
+    res.send({
+        message: 'Record was deleted successfully!'
+    })
+}
