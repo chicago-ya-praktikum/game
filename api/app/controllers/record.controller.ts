@@ -107,7 +107,6 @@ export const remove = async (req: any, res: any) => {
         })
     }
 
-    
     if (record.userId !== status) {
         res.status(403).send('Forbidden')
     }
