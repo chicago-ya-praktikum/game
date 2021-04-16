@@ -1,5 +1,5 @@
 import React, {
-    FC, useCallback, useEffect
+    FC, useCallback, useEffect, useState
 } from 'react'
 import {
     AppBar, Button, Container, Grid, IconButton, Typography, withStyles
@@ -22,14 +22,16 @@ const Layout: FC<Props> = (props: Props) => {
     const userLogin = userInfoPropSelector('login')
     const authStatus = authStatusSelector()
     const init = userInitSelector()
+    const [didMount, setDidMount] = useState(false)
     const title = ''
 
     useEffect(() => {
-        if (!init) return
+        if (!init || !didMount) return
         dispatchStore(getUserData())
     }, [authStatus])
 
     useEffect(() => {
+        if (!didMount) setDidMount(true)
         if (init) return
         dispatchStore(getUserData())
     }, [])
