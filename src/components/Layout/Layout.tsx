@@ -25,14 +25,14 @@ const Layout: FC<Props> = (props: Props) => {
     const title = ''
 
     useEffect(() => {
-        if (init) return
-        dispatchStore(getUserData())
-    }, [])
-
-    useEffect(() => {
         if (!init) return
         dispatchStore(getUserData())
     }, [authStatus])
+
+    useEffect(() => {
+        if (init) return
+        dispatchStore(getUserData())
+    }, [])
 
     const onClick = useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, route: string) => {

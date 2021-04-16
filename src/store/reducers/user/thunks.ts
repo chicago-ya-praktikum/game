@@ -24,12 +24,14 @@ export const getUserData = (
 
 export const putAvatar = (
     file: File
-): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async () => {
+): ThunkAction<Promise<null>, RootState, unknown, Action<string>> => async dispatch => {
     const formData = new FormData()
     formData.append('avatar', file)
     const response = await Users.putAvatar(formData)
-    if (!response.ok) {
-        const message = await response.json()
+    const message = await response.json()
+    if (response.ok) {
+        dispatch(setUserData(message))
+    } else {
         window.alertShow('error', message.reason)
     }
     return null
