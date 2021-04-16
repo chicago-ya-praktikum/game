@@ -9,7 +9,7 @@ export const create = async (req: any, res: any) => {
         res.status(400).send({
             message: 'Wrong API'
         });
-        return;
+        return
     }
 
     const status = await checkUserStatus(req.headers.authorization)
@@ -51,6 +51,7 @@ export const getAll = async (req: any, res: any) => {
         res.status(500).send({
             message: 'Some error occurred while reading list of records.'
         })
+        return
     }
     res.status(200).send(records)
 }
@@ -72,12 +73,14 @@ export const getOne = async (req: any, res: any) => {
         res.status(404).send({
             message: 'Record not found'
         })
+        return
     }
 
     if (!record) {
         res.status(500).send({
             message: 'Some error occurred while reading attributes of record.'
         })
+        return
     }
     res.status(200).send(record)
 };

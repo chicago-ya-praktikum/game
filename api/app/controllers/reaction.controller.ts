@@ -17,6 +17,7 @@ export const getAll = async (req: any, res: any) => {
         res.status(500).send({
             message: 'Some error occurred while reading the list of reactions.'
         })
+        return
     }
 
     res.status(200).send(reactions)
@@ -36,6 +37,7 @@ export const getOne = async (req: any, res: any) => {
         res.status(500).send({
             message: 'Some error occurred while reading attributes of reaction.'
         })
+        return
     }
 
     res.status(200).send(reaction)

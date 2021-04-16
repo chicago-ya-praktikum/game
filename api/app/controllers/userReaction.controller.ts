@@ -4,98 +4,73 @@ import {isUserReactionData} from './utils/requestDataVaidators'
 
 const UserReaction = db.userReactions
 
-export const create = (req: any, res: any) => {
+export const create = async (req: any, res: any) => {
+    const status = await checkUserStatus(req.headers.authorization)
+
+    if (!status) {
+        res.status(401).send('Unauthorized')
+        return
+    }
+
     if (!isUserReactionData(req)) {
         res.status(400).send({
             message: 'Wrong API'
         });
-        return;
+        return
     }
 
-    checkUserStatus(req.headers.authorization)
-        .then(data => {
-            if (!data) {
-                res.status(401).send('Unauthorized')
-            } else {
-                const userId = data
+    const recordId = req.params.id
 
-                const recordId = req.params.id
+    const userReaction = {
+        reactionId: req.body.reactionId,
+        userId: status,
+        recordId
+    }
 
-                const userReaction = {
-                    reactionId: req.body.reactionId,
-                    userId,
-                    recordId
-                }
+    const recordUserReaction = await UserReaction.findOne({
+        where: {
+            reactionId: req.body.reactionId,
+            userId: status,
+            recordId
+        }
+    })
 
-                UserReaction.findOne({
-                    where: {
-                        reactionId: req.body.reactionId,
-                        userId,
-                        recordId
-                    }
-                })
-                    .then((data: any) => {
-                        if (data !== null) {
-                            res.status(409).send('Reaction is already set')
-                        } else {
-                            UserReaction.create(userReaction)
-                                .then((response: any) => {
-                                    res.status(201).send(response);
-                                })
-                                .catch((err: {message: any;}) => {
-                                    res.status(500).send({
-                                        message:
-                                            err.message || 'Some error occurred while creating the reaction.'
-                                    });
-                                });
-                        }
-                    })
-            }
+    if (recordUserReaction !== null) {
+        res.status(409).send('Reaction is already set')
+    }
+
+    const newRecordUserReaction = await UserReaction.create(userReaction)
+
+    if (!newRecordUserReaction) {
+        res.status(500).send({
+            message: 'Some error occurred while creating the reaction.'
         })
-};
+    }
 
-export const getAll = (req: any, res: any) => {
-    checkUserStatus(req.headers.authorization)
-        .then(data => {
-            if (!data) {
-                res.status(401).send('Unauthorized')
-            } else {
-                const {id} = req.params
-                UserReaction.findAll({
-                    where: {
-                        recordId: id
-                    }
-                })
-                    .then((data: any) => {
-                        res.status(200).send(data);
-                    })
-                    .catch((err: {message: any;}) => {
-                        res.status(500).send({
-                            message:
-                                err.message || 'Some error occurred while retrieving tutorials.'
-                        })
-                    })
-            }
-        })
+    res.status(201).send(newRecordUserReaction)
 }
 
-// export const getOne = (req: any, res: any) => {
-//     checkUserStatus(req.headers.authorization)
-//         .then(data => {
-//             if (!data) {
-//                 res.status(401).send('Unauthorized')
-//             } else {
-//                 const id = req.params.id
-//                 User.findOne({ where: { id: id } })
-//                     .then((data: any) => {
-//                         res.status(200).send(data);
-//                     })
-//                     .catch((err: { message: any; }) => {
-//                         res.status(500).send({
-//                             message:
-//                                 err.message || "Some error occurred while retrieving tutorials."
-//                         });
-//                     });
-//             }
-//         })
-// }
+export const getAll = async (req: any, res: any) => {
+    const status = await checkUserStatus(req.headers.authorization)
+
+    if (!status) {
+        res.status(401).send('Unauthorized')
+        return
+    }
+
+    const {id} = req.params
+
+    const recordReactionsList = await UserReaction.findAll({
+        where: {
+            recordId: id
+        }
+    })
+
+    if (!recordReactionsList) {
+        res.status(500).send({
+            message: 'Some error occurred while retrieving tutorials.'
+        })
+        return
+    }
+    res.status(200).send(recordReactionsList)
+}
