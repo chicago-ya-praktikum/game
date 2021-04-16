@@ -1,12 +1,15 @@
+import Validator from 'validatorjs';
 import {checkUserStatus} from './utils/helpers'
 import {db} from '../models/index'
-import {isUserData} from './utils/requestDataVaidators';
+import {userDataRules} from './utils/requestDataVaidators'
 
 const User = db.users;
 const Token = db.tokens
 
 export const create = async (req: any, res: any) => {
-    if (!isUserData(req)) {
+    const validation = new Validator(req, userDataRules)
+
+    if (validation.fails()) {
         res.status(400).send({
             message: 'Wrong API'
         })

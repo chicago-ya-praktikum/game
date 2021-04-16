@@ -1,3 +1,13 @@
+export const userDataRules = {
+    headers: {
+        authorization: 'required'
+    },
+    body: {
+        displayName: 'required',
+        avatar: 'required'
+    }
+}
+
 export const isUserData = (obj: any) => {
     if (!obj.body
         || !obj.body.displayName
