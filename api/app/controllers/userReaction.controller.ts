@@ -1,13 +1,13 @@
-import { checkUserStatus } from './utils/helpers'
-import { db } from '../models/index'
-import { isUserReactionData } from './utils/requestDataVaidators'
+import {checkUserStatus} from './utils/helpers'
+import {db} from '../models/index'
+import {isUserReactionData} from './utils/requestDataVaidators'
 
 const UserReaction = db.userReactions
 
 export const create = (req: any, res: any) => {
     if (!isUserReactionData(req)) {
         res.status(400).send({
-            message: "Wrong API"
+            message: 'Wrong API'
         });
         return;
     }
@@ -23,15 +23,15 @@ export const create = (req: any, res: any) => {
 
                 const userReaction = {
                     reactionId: req.body.reactionId,
-                    userId: userId,
-                    recordId: recordId
+                    userId,
+                    recordId
                 }
 
                 UserReaction.findOne({
                     where: {
                         reactionId: req.body.reactionId,
-                        userId: userId,
-                        recordId: recordId
+                        userId,
+                        recordId
                     }
                 })
                     .then((data: any) => {
@@ -42,17 +42,16 @@ export const create = (req: any, res: any) => {
                                 .then((response: any) => {
                                     res.status(201).send(response);
                                 })
-                                .catch((err: { message: any; }) => {
+                                .catch((err: {message: any;}) => {
                                     res.status(500).send({
                                         message:
-                                            err.message || "Some error occurred while creating the reaction."
+                                            err.message || 'Some error occurred while creating the reaction.'
                                     });
                                 });
                         }
                     })
             }
         })
-
 };
 
 export const getAll = (req: any, res: any) => {
@@ -61,7 +60,7 @@ export const getAll = (req: any, res: any) => {
             if (!data) {
                 res.status(401).send('Unauthorized')
             } else {
-                const id = req.params.id
+                const {id} = req.params
                 UserReaction.findAll({
                     where: {
                         recordId: id
@@ -70,10 +69,10 @@ export const getAll = (req: any, res: any) => {
                     .then((data: any) => {
                         res.status(200).send(data);
                     })
-                    .catch((err: { message: any; }) => {
+                    .catch((err: {message: any;}) => {
                         res.status(500).send({
                             message:
-                                err.message || "Some error occurred while retrieving tutorials."
+                                err.message || 'Some error occurred while retrieving tutorials.'
                         })
                     })
             }
