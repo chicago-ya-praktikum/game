@@ -16,7 +16,7 @@ export const recordTable = (sequelize: any, Sequelize: any) => {
             type: Sequelize.STRING(1234),
             allowNull: false
         }
-    });
+    })
 
     return Record;
-};
+}
