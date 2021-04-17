@@ -3,7 +3,7 @@ import {checkUserStatus, ErrorName, createBadResponse} from './utils/helpers'
 import {db} from '../models/index'
 import {userDataRules} from './utils/requestDataVaidators'
 
-const User = db.users;
+const User = db.users
 const Token = db.tokens
 
 export const create = async (req: any, res: any) => {

@@ -7,7 +7,7 @@ const sequelizeOptions: SequelizeOptions = {
     password: 'password',
     database: 'sokobandb',
 
-    dialect: 'postgres', // 'mysql', 'sqlite', 'mariadb', 'mssql'
+    dialect: 'postgres',
     pool: {
         max: 5,
         min: 0,
