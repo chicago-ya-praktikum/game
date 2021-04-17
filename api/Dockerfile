@@ -1,11 +1,11 @@
 FROM node:15
 
-WORKDIR app
+WORKDIR /app
 
-COPY . . 
+COPY . .
 
-RUN npm install
+RUN npm install && npm run build
 
 EXPOSE 8000
 
-CMD npm run start
+CMD node /app/dist/bundle.js
