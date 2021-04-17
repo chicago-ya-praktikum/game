@@ -1,62 +1,118 @@
-import { checkUserStatus } from './helpers'
-import { db } from '../models/index'
-import { isUserData } from './requestDataVaidators';
-const User = db.users;
+import Validator from 'validatorjs'
+import {checkUserStatus, ErrorName, createBadResponse} from './utils/helpers'
+import {db} from '../models/index'
+import {userDataRules} from './utils/requestDataVaidators'
+
+const User = db.users
 const Token = db.tokens
 
+export const create = async (req: any, res: any) => {
+    try {
+        const status = await checkUserStatus(req.headers.authorization)
 
-export const create = (req: any, res: any) => {
-    if (!isUserData(req)) {
-        res.status(400).send({
-            message: "Wrong API"
-        });
-        return;
+        if (status) {
+            res.status(409).send(
+                createBadResponse(ErrorName.AUTH_CONFLICT)
+            )
+            return
+        }
+        const validation = new Validator(req, userDataRules)
+
+        if (validation.fails()) {
+            res.status(400).send(
+                createBadResponse(ErrorName.WRONG_API)
+            )
+            return
+        }
+
+        const user = {
+            displayName: req.body.displayName,
+            avatar: req.body.avatar
+        }
+        const newUser = await User.create(user)
+
+        if (!newUser) {
+            res.status(500).send(
+                createBadResponse(ErrorName.INTERNAL_ERROR)
+            )
+            return
+        }
+
+        const token = {
+            userId: newUser.id,
+            token: req.headers.authorization
+        }
+
+        const newToken = await Token.create(token)
+
+        if (!newToken) {
+            res.status(500).send(
+                createBadResponse(ErrorName.INTERNAL_ERROR)
+            )
+            return
+        }
+
+        res.status(201).send(newUser)
+    } catch (err) {
+        res.status(500).send(
+            createBadResponse(ErrorName.INTERNAL_ERROR)
+        )
     }
+}
 
-    const user = {
-        displayName: req.body.displayName,
-        avatar: req.body.avatar
-    };
+export const getAll = async (req: any, res: any) => {
+    try {
+        const status = await checkUserStatus(req.headers.authorization)
 
-    checkUserStatus(req.headers.authorization)
-        .then(data => {
-            if (data) {
-                res.status(409).send('User already in system')
-            } else {
-                User.create(user)
-                    .then((data: any) => {
-                        const token = {
-                            userId: data.id,
-                            token: req.headers.authorization
-                        }
-                        Token.create(token)
-                            .then(() => {
-                                res.status(201).send(data);
-                            })
-                    })
-                    .catch((err: { message: any; }) => {
-                        res.status(500).send({
-                            message:
-                                err.message || "Some error occurred while creating the forum user."
-                        });
-                    });
+        if (!status) {
+            res.status(401).send(
+                createBadResponse(ErrorName.UNAUTHORIZED)
+            )
+            return
+        }
 
-            }
-        })
+        const users = await User.findAll()
 
-};
+        if (!users) {
+            res.status(500).send(
+                createBadResponse(ErrorName.INTERNAL_ERROR)
+            )
+            return
+        }
 
-export const getAll = (req: any, res: any) => {
-    console.log(req)
+        res.status(200).send(users)
+    } catch (err) {
+        res.status(500).send(
+            createBadResponse(ErrorName.INTERNAL_ERROR)
+        )
+    }
+}
 
-    User.findAll()
-        .then((data: any) => {
-            res.status(200).send(data);
-        })
-        .catch((err: { message: any; }) => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving tutorials."
-            });
-        });
-};
+export const getOne = async (req: any, res: any) => {
+    try {
+        const status = await checkUserStatus(req.headers.authorization)
+
+        if (!status) {
+            res.status(401).send(
+                createBadResponse(ErrorName.UNAUTHORIZED)
+            )
+            return
+        }
+
+        const {id} = req.params
+
+        const user = await User.findOne({where: {id}})
+
+        if (!user) {
+            res.status(500).send(
+                createBadResponse(ErrorName.INTERNAL_ERROR)
+            )
+            return
+        }
+        res.status(200).send(user)
+    } catch (err) {
+        res.status(500).send(
+            createBadResponse(ErrorName.INTERNAL_ERROR)
+        )
+    }
+}
