@@ -1,4 +1,4 @@
-import {ratingFieldName} from '../../contstants/ratingFieldName'
+import {ratingFieldName} from '../../contstants/ya/ratingFieldName'
 
 export class LeaderboardNewLeaderRequest {
     data: unknown

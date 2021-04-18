@@ -8,7 +8,7 @@ import {useDispatch} from 'react-redux'
 import {styles} from './styles'
 import {Props, AvatarSizeStyle} from './types'
 import {userInfoPropSelector} from '../../../store/selectors'
-import {API_ROOT} from '../../../contstants/index'
+import {API_ROOT} from '../../../contstants/ya/index'
 import {getUserData, putAvatar} from '../../../store/reducers/user/thunks'
 
 const AvatarUI: FC<Props> = (props: Props) => {

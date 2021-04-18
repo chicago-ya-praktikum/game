@@ -1,4 +1,4 @@
-import {API_ROOT, URL_AUTH, URL_USER} from './contstants/index'
+import {API_ROOT, URL_AUTH, URL_USER} from './contstants/ya/index'
 import {LeaderboardNewLeaderRequest} from './models/api/LeaderboardNewLeaderRequest'
 import {LeaderboardRequest} from './models/api/LeaderboardRequest'
 import {LBItem} from './pages/Leaderboard/types'

@@ -20,10 +20,14 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({extended: true}))
 
-db.sequelize.sync({force: true}).then(() => {
-})
+db.sequelize.sync({force: true})
+    // eslint-disable-next-line no-console
+    .then(() => console.log('sequelize.sync OK'))
+    // eslint-disable-next-line no-console
+    .catch((err: any) => console.log('sequelize.sync error', err))
 
 app.get('/', (req: any, res: any) => {
+    // eslint-disable-next-line no-console
     console.log(req)
     res.json({message: 'Welcome to sokoban api'})
 })
@@ -36,5 +40,6 @@ userReactionsRoutes(app)
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
+    // eslint-disable-next-line no-console
     console.log(`Server is running on port ${PORT}.`)
 });

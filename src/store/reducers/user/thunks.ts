@@ -6,7 +6,7 @@ import {actionCreator} from '../../../utils/actionCreator'
 import {Actions as AuthActions} from '../../actions'
 import {RootState} from '../index'
 import {setEmptyUserData, setUserData} from './actions'
-import {apiGetUserData} from '../../../services/API/index'
+import {getUserData as apiGetUserData} from '../../../services/API/ya/index'
 import {YaCookie} from '../../../services/API/types'
 
 export const getUserData = (

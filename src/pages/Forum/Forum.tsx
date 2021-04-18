@@ -1,4 +1,6 @@
-import React, {FC, useCallback, useState} from 'react'
+import React, {
+    FC, useCallback, useEffect, useState
+} from 'react'
 import {
     Box, Button, Container, Grid, withStyles
 } from '@material-ui/core'
@@ -12,6 +14,11 @@ const Forum: FC<Props> = (props: Props) => {
     const [topic, setTopic] = useState(false)
     const [listTopics, setListTopics] = useState(true)
     const [topicRights, setTopicRights] = useState<'edit' | 'view'>('edit')
+
+    useEffect(() => {
+
+    },
+    [])
 
     const onClickNewTopic = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()

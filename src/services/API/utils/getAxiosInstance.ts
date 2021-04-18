@@ -6,12 +6,12 @@ export const stringifyCookies = (cookies: YaCookie) => Object
     .map(([key, value]) => `${key}=${value}`)
     .join(';')
 
-export const getAxiosInstance = (cookies: YaCookie | null = null): AxiosInstance | null => {
-    let axiosInstance: null | AxiosInstance
+export const getAxiosInstance = (cookies: YaCookie | null = null): AxiosInstance => {
+    let axiosInstance: AxiosInstance = axios.create()
     if (IS_CLIENT) {
         axiosInstance = axios.create({withCredentials: true})
     } else {
-        if (!cookies) return JSON.parse('{}')
+        if (!cookies) return axiosInstance
         axiosInstance = axios.create({
             headers: {
                 Cookie: stringifyCookies(cookies)
