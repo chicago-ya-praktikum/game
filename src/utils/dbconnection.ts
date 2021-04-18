@@ -10,4 +10,4 @@ const sequelizeOptions: SequelizeOptions = {
     dialect: 'postgres'
 };
 
-const sequelize = new Sequelize(sequelizeOptions);
+export const sequelize: any = new Sequelize(sequelizeOptions)

@@ -21,20 +21,11 @@ const Layout: FC<Props> = (props: Props) => {
     const dispatchStore = useDispatch()
     const userLogin = userInfoPropSelector('login')
     const authStatus = authStatusSelector()
-    // const init = userInitSelector()
-    // const [didMount, setDidMount] = useState(false)
+    const userInit = userInitSelector()
     const title = ''
 
-    // useEffect(() => {
-    //     if (!init || !didMount) return
-    //     dispatchStore(getUserData())
-    // }, [authStatus])
-
     useEffect(() => {
-        console.log('IS_SSR', IS_SSR)
-        // if (!didMount) setDidMount(true)
-        // if (init) return
-        dispatchStore(getUserData())
+        if (!userInit && authStatus) dispatchStore(getUserData())
     }, [authStatus])
 
     const onClick = useCallback(

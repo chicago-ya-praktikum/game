@@ -9,4 +9,8 @@ app.get('*', (req, res) => {
     res.sendFile(`${__dirname}/dist/index.html`)
 })
 
-app.listen(process.env.PORT || 3000)
+const port = process.env.PORT || 3000
+app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log('Application is started on localhost:', port)
+})
