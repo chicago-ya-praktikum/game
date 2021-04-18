@@ -1,5 +1,5 @@
 import React, {
-    FC, useCallback, useEffect, useState
+    FC, useCallback, useEffect
 } from 'react'
 import {
     AppBar, Button, Container, Grid, IconButton, Typography, withStyles
@@ -21,20 +21,21 @@ const Layout: FC<Props> = (props: Props) => {
     const dispatchStore = useDispatch()
     const userLogin = userInfoPropSelector('login')
     const authStatus = authStatusSelector()
-    const init = userInitSelector()
-    const [didMount, setDidMount] = useState(false)
+    // const init = userInitSelector()
+    // const [didMount, setDidMount] = useState(false)
     const title = ''
 
-    useEffect(() => {
-        if (!init || !didMount) return
-        dispatchStore(getUserData())
-    }, [authStatus])
+    // useEffect(() => {
+    //     if (!init || !didMount) return
+    //     dispatchStore(getUserData())
+    // }, [authStatus])
 
     useEffect(() => {
-        if (!didMount) setDidMount(true)
-        if (init) return
+        console.log('IS_SSR', IS_SSR)
+        // if (!didMount) setDidMount(true)
+        // if (init) return
         dispatchStore(getUserData())
-    }, [])
+    }, [authStatus])
 
     const onClick = useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, route: string) => {
