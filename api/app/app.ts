@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'colors'
 import {db} from './models/index'
 import userRoutes from './routes/user.routes'
 import recordRoutes from './routes/record.routes'
@@ -22,9 +24,9 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 db.sequelize.sync({force: true})
     // eslint-disable-next-line no-console
-    .then(() => console.log('sequelize.sync OK'))
+    .then(() => console.log('Sequelize.sync OK'.rainbow))
     // eslint-disable-next-line no-console
-    .catch((err: any) => console.log('sequelize.sync error', err))
+    .catch((err: any) => console.error('Sequelize.sync error', err))
 
 app.get('/', (req: any, res: any) => {
     // eslint-disable-next-line no-console
