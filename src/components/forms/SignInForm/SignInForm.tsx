@@ -2,7 +2,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, {FC, useState} from 'react'
-import {Button, withStyles} from '@material-ui/core'
+import {Box, Button, withStyles} from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import {useDispatch} from 'react-redux'
 import {validateInput} from '../../../utils/validateInput'
@@ -11,6 +11,7 @@ import {styles} from './styles'
 import {Props} from './types'
 import {Actions} from '../../../store/actions'
 import {actionCreator} from '../../../utils/actionCreator'
+import {OauthButtons} from '../../oauth/OauthButtons/index'
 
 const SignInForm: FC<Props> = (props: Props) => {
     const {classes} = props
@@ -111,7 +112,10 @@ const SignInForm: FC<Props> = (props: Props) => {
                         />
                     ))
                 }
-                <Button variant='contained' color='primary' type='submit' onClick={(e) => submitForm(e)}>SignIn</Button>
+                <Box>
+                    <Button variant='contained' color='primary' type='submit' onClick={(e) => submitForm(e)}>SignIn</Button>
+                    <OauthButtons/>
+                </Box>
             </form>
         </div>
     )
