@@ -8,20 +8,20 @@ import {useDispatch} from 'react-redux'
 import {styles} from './styles'
 import {Props, AvatarSizeStyle} from './types'
 import {userInfoPropSelector} from '../../../store/selectors'
-import {API_ROOT} from '../../../contstants/index'
-import {getUserData, putAvatar} from '../../../store/reducers/user/thunks'
+import {putAvatar} from '../../../store/reducers/user/thunks'
+import {getAvatarPath} from './utils/getAvatarPath'
 
 const AvatarUI: FC<Props> = (props: Props) => {
     const {classes, showBtn, size} = props
     const refAvatar = useRef(null)
     const pathAvatar = String(userInfoPropSelector('avatar'))
-    const [srcAvatar, setSrcAvatar] = useState(pathAvatar ? API_ROOT + pathAvatar : '')
+    const [srcAvatar, setSrcAvatar] = useState(getAvatarPath(pathAvatar))
     const dispatchStore = useDispatch()
 
     const avatarClassName: AvatarSizeStyle = (size ? `${size}Size` : 'smallSize') as AvatarSizeStyle
 
     useEffect(() => {
-        setSrcAvatar(pathAvatar ? API_ROOT + pathAvatar : '')
+        setSrcAvatar(getAvatarPath(pathAvatar))
     }, [pathAvatar])
 
     const onClickAvatar = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -39,8 +39,6 @@ const AvatarUI: FC<Props> = (props: Props) => {
         const reader = new FileReader()
         reader.onload = () => {
             dispatchStore(putAvatar(file))
-                // @ts-ignore
-                .then(() => dispatchStore(getUserData()))
         }
         reader.readAsDataURL(file)
     }, [])

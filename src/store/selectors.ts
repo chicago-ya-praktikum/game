@@ -16,4 +16,4 @@ export const userInfoPropSelector = (prop: keyof UserInfo) => {
     return info[prop] ? info[prop] : ''
 }
 export const userInfoSelector = () => userSelector().info
-export const userInitSelector = () => userSelector().init
+export const userInitSelector = () => !!userSelector().info
