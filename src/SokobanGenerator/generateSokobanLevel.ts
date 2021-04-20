@@ -1,6 +1,7 @@
 import {Grid} from './src/Grid'
 import {GeneratorParameters} from './models/GeneratorParameters'
 import {GeneratorType} from './enums/GeneratorType'
+import {solveSteps} from './contants/solveSteps'
 
 export function generateSokobanLevel(parameters: GeneratorParameters) {
     const {
@@ -9,12 +10,13 @@ export function generateSokobanLevel(parameters: GeneratorParameters) {
         boxes = 3,
         minWalls = 13,
         initialPosition,
-        type = GeneratorType.String
+        type = GeneratorType.String,
+        count = solveSteps
     } = parameters
 
     let {attempts = 5000} = parameters
 
-    const grid = new Grid(width, height, boxes, minWalls, initialPosition)
+    const grid = new Grid(width, height, boxes, minWalls, initialPosition, count)
 
     while (--attempts > 0) {
         if (!grid.applyTemplates()

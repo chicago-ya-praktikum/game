@@ -3,9 +3,10 @@ import {LayerContent} from '../GameCore/enums/LayerContent'
 import {Tile} from './enums/Tile'
 import {generateSokobanLevel} from './generateSokobanLevel'
 
-export function sokobanGenerator() {
+export function sokobanGenerator(count: number) {
     const options = {
-        attempts: 500000
+        attempts: 500000,
+        count
     }
 
     const stringLevel = generateSokobanLevel(options) as string
