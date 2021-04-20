@@ -1,3 +1,3 @@
-import {getUserData} from './API'
+import {getUserData} from './user'
 
 export {getUserData}

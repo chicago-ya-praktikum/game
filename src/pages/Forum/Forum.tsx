@@ -8,17 +8,29 @@ import {styles} from './styles'
 import {Props} from './types'
 import {Topic} from '../../components/forum/Topic/index'
 import {ListTopics} from '../../components/forum/ListTopics/index'
+import {postLogIn} from '../../services/API/db/index'
+import {userInfoSelector} from '../../store/selectors'
 
 const Forum: FC<Props> = (props: Props) => {
     const {classes} = props
     const [topic, setTopic] = useState(false)
     const [listTopics, setListTopics] = useState(true)
     const [topicRights, setTopicRights] = useState<'edit' | 'view'>('edit')
+    const [pageAvailable, setPageAvailable] = useState(false)
+    const userInfo = userInfoSelector()
 
     useEffect(() => {
-
-    },
-    [])
+        if (userInfo) {
+            postLogIn(userInfo)
+                .then((res) => {
+                    const available = res.status === 201 || res.status === 409
+                    if (!available) {
+                        if (res.data.message) window.alertShow('error', res.data.message)
+                    }
+                    setPageAvailable(available)
+                })
+        }
+    }, [])
 
     const onClickNewTopic = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
@@ -37,6 +49,10 @@ const Forum: FC<Props> = (props: Props) => {
         setTopic(true)
         setListTopics(false)
         console.log('topicId', topicId)
+    }
+
+    if (!pageAvailable) {
+        return <></>
     }
 
     return (

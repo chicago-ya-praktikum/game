@@ -1,4 +1,4 @@
-import {Sequelize, SequelizeOptions} from 'sequelize-typescript';
+import {Sequelize, SequelizeOptions} from 'sequelize-typescript'
 
 const sequelizeOptions: SequelizeOptions = {
     host: '127.0.0.1',
@@ -14,6 +14,6 @@ const sequelizeOptions: SequelizeOptions = {
         acquire: 30000,
         idle: 10000
     }
-};
+}
 
-export const sequelize: any = new Sequelize(sequelizeOptions);
+export const sequelize: any = new Sequelize(sequelizeOptions)

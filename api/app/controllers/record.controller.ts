@@ -20,7 +20,7 @@ export const create = async (req: any, res: any) => {
         if (validation.fails()) {
             res.status(400).send(
                 createBadResponse(ErrorName.WRONG_API)
-            );
+            )
             return
         }
 
@@ -109,7 +109,7 @@ export const getOne = async (req: any, res: any) => {
             createBadResponse(ErrorName.INTERNAL_ERROR)
         )
     }
-};
+}
 
 export const remove = async (req: any, res: any) => {
     try {

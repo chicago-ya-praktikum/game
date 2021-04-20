@@ -1,3 +1,3 @@
-// import {getUserData} from './apiUser'
+import {postLogIn} from './user'
 
-// export {getUserData}
+export {postLogIn}

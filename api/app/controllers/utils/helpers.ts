@@ -6,6 +6,7 @@ export const checkUserStatus = async (token: any) => {
     const status = Token.findOne({where: {token}})
         .then((data: any) => (data !== null ? data.id : false))
         .catch((err: {message: any}) => {
+            // eslint-disable-next-line no-console
             console.log(err)
         })
     return await status
