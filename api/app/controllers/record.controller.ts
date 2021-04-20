@@ -5,7 +5,7 @@ import {recordDataRules} from './utils/requestDataVaidators'
 
 const Record = db.records
 
-export const create = async (req: any, res: any) => {
+export const save = async (req: any, res: any) => {
     try {
         const status = await checkUserStatus(req.headers.authorization)
 
@@ -24,6 +24,9 @@ export const create = async (req: any, res: any) => {
             return
         }
 
+        let newRecord = null
+        let resStatus = 500
+
         const record = {
             userId: status,
             parentId: req.body.parentId,
@@ -31,15 +34,27 @@ export const create = async (req: any, res: any) => {
             content: req.body.content
         }
 
-        const newRecord = await Record.create(record)
+        const {id} = req.body
+        if (id) {
+            await Record.update(
+                record,
+                {
+                    where: {id}
+                }
+            )
+            resStatus = 202
+        } else {
+            newRecord = await Record.create(record)
+            resStatus = 201
+        }
 
-        if (!newRecord) {
+        if (resStatus === 500) {
             res.status(500).send(
                 createBadResponse(ErrorName.INTERNAL_ERROR)
             )
             return
         }
-        res.status(201).send(newRecord)
+        res.status(resStatus).send(newRecord)
     } catch (err) {
         res.status(500).send(
             createBadResponse(ErrorName.INTERNAL_ERROR)

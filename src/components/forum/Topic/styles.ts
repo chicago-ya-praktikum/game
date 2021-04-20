@@ -4,6 +4,10 @@ export const styles = () => createStyles({
     root: {
         margin: '20px'
     },
+    topicTitle: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
     buttons: {
         display: 'flex',
         justifyContent: 'flex-end',

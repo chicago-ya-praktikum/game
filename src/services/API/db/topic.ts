@@ -2,11 +2,12 @@ import {AxiosResponse} from 'axios'
 import {UserInfo} from '../../../store/reducers/user/state'
 import {API_ROOT, URL_TOPIC} from '../../../contstants/db/index'
 import {YaCookieNull} from '../types'
-import {getAxiosInstance} from '../utils/index'
-import {getUnknownError} from '../utils/index'
+import {getAxiosInstance, getUnknownError} from '../utils/index'
 
 export const postCreateTipic = async (
-    userInfo: UserInfo, topicInfo: {title: string, content: string}, cookies: YaCookieNull = null
+    userInfo: UserInfo, topicInfo: {
+        title: string, content: string, id: number
+    }, cookies: YaCookieNull = null
 ): Promise<AxiosResponse> => {
     const axios = getAxiosInstance(cookies)
     const {POST_TOPIC_CREATE} = URL_TOPIC
@@ -15,7 +16,8 @@ export const postCreateTipic = async (
         const res = await axios.post(API_ROOT + POST_TOPIC_CREATE,
             {
                 title: topicInfo.title,
-                content: topicInfo.content
+                content: topicInfo.content,
+                id: topicInfo.id
             })
         return res
     } catch (err) {
