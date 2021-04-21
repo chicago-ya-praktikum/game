@@ -338,7 +338,6 @@ export class Grid {
      * @private
      */
     private _pullBoxes(initBoxes: XYCoordinate[], initPos: XYCoordinate, map: BacktrackMap) {
-        let size = 0
         const stack = [{
             boxes: initBoxes.map(b => ({...b})),
             pos: {...initPos},
@@ -347,7 +346,6 @@ export class Grid {
         }]
 
         while (stack.length) {
-            size = Math.max(stack.length, size)
             const top = stack.shift()
 
             if (top === undefined) {
@@ -410,8 +408,6 @@ export class Grid {
     private _pullBoxesCheckIfMapCached(map: BacktrackMap, obj: PullStack) {
         const {step, pos, matrix} = obj
         const {x, y} = pos
-
-        // debugger
 
         if (step === 0) {
             return false
