@@ -48,6 +48,7 @@
         ],
         "react/jsx-closing-bracket-location": "off",
         "react/jsx-one-expression-per-line": "off",
+        "react/prop-types": [0],
         "block-spacing" : [
             "error",
             "never"

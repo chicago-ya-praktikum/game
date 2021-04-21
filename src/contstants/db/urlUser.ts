@@ -1,3 +1,3 @@
 export const URL_USER = {
-    POST_USER_CREATE: '/api/users'
+    POST_CREATE: '/api/users'
 }

@@ -8,10 +8,10 @@ export const postLogIn = async (
     userInfo: UserInfo, cookies: YaCookieNull = null
 ): Promise<AxiosResponse> => {
     const axios = getAxiosInstance(cookies)
-    const {POST_USER_CREATE} = URL_USER
+    const {POST_CREATE} = URL_USER
     try {
         axios.defaults.headers.authorization = userInfo.id
-        const res = await axios.post(API_ROOT + POST_USER_CREATE,
+        const res = await axios.post(API_ROOT + POST_CREATE,
             {
                 displayName: userInfo.display_name,
                 avatar: userInfo.avatar

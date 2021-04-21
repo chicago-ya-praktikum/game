@@ -1,12 +1,23 @@
-import React, {FC, useCallback} from 'react'
+import React, {
+    FC, useCallback, useEffect, useState
+} from 'react'
 import {
     Paper, Table, TableBody, TableCell, TableContainer, TableRow, withStyles
 } from '@material-ui/core'
 import {styles} from './styles'
-import {Props} from './types'
+import {Props, RowTopic} from './types'
+import {getListTopics} from './utils'
+import {userInfoSelector} from '../../../store/selectors'
 
 const ListTopics: FC<Props> = (props: Props) => {
     const {classes, cb} = props
+    const userInfo = userInfoSelector()
+    const [listTopics, setListTopics] = useState([] as RowTopic[])
+
+    useEffect(() => {
+        getListTopics(userInfo)
+            .then((topicsList) => setListTopics(topicsList as RowTopic[]))
+    }, [])
 
     const onClickTitle = useCallback(
         (e: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>) => {
@@ -14,25 +25,16 @@ const ListTopics: FC<Props> = (props: Props) => {
             if (!cb) return
             const {id} = e.target as HTMLElement
             if (id.indexOf('#') < 0) return
-            if (cb) cb(id.substring(id.indexOf('#') + 1))
+            const topicId = Number(id.substring(id.indexOf('#') + 1))
+            if (cb) cb(topicId)
         }, []
     )
-
-    function createData(id: string, title: string, autor: string) {
-        return {id, title, autor}
-    }
-
-    const rows = [
-        createData('1', 'Topic1', 'Stas'),
-        createData('2', 'Topic2', 'Denis'),
-        createData('3', 'Topic3', 'Oleg')
-    ]
 
     return (
         <TableContainer className={classes.table} component={Paper}>
             <Table aria-label='custom pagination table'>
                 <TableBody>
-                    {rows.map((row) => (
+                    {listTopics.map((row) => (
                         <TableRow key={row.id}>
                             <TableCell
                                 onClick={onClickTitle}
@@ -43,7 +45,7 @@ const ListTopics: FC<Props> = (props: Props) => {
                                 {row.title}
                             </TableCell>
                             <TableCell style={{width: 160}} align='right'>
-                                {`autor: ${row.autor}`}
+                                {`id: ${row.id}`}
                             </TableCell>
                         </TableRow>
                     ))}

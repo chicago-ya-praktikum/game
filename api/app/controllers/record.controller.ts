@@ -5,7 +5,7 @@ import {recordDataRules} from './utils/requestDataVaidators'
 
 const Record = db.records
 
-export const save = async (req: any, res: any) => {
+export const create = async (req: any, res: any) => {
     try {
         const status = await checkUserStatus(req.headers.authorization)
 
@@ -24,9 +24,6 @@ export const save = async (req: any, res: any) => {
             return
         }
 
-        let newRecord = null
-        let resStatus = 500
-
         const record = {
             userId: status,
             parentId: req.body.parentId,
@@ -34,27 +31,56 @@ export const save = async (req: any, res: any) => {
             content: req.body.content
         }
 
-        const {id} = req.body
-        if (id) {
-            await Record.update(
-                record,
-                {
-                    where: {id}
-                }
-            )
-            resStatus = 202
-        } else {
-            newRecord = await Record.create(record)
-            resStatus = 201
-        }
+        const newRecord = await Record.create(record)
 
-        if (resStatus === 500) {
+        if (!newRecord) {
             res.status(500).send(
                 createBadResponse(ErrorName.INTERNAL_ERROR)
             )
             return
         }
-        res.status(resStatus).send(newRecord)
+        res.status(201).send(newRecord)
+    } catch (err) {
+        res.status(500).send(
+            createBadResponse(ErrorName.INTERNAL_ERROR)
+        )
+    }
+}
+
+export const update = async (req: any, res: any) => {
+    try {
+        const status = await checkUserStatus(req.headers.authorization)
+
+        if (!status) {
+            res.status(401).send(
+                createBadResponse(ErrorName.UNAUTHORIZED)
+            )
+            return
+        }
+        const validation = new Validator(req, recordDataRules)
+
+        if (validation.fails()) {
+            res.status(400).send(
+                createBadResponse(ErrorName.WRONG_API)
+            )
+            return
+        }
+
+        const {id} = req.body
+        if (id) {
+            const record = await Record.findOne({
+                where: {id}
+            })
+            record.title = req.body.title
+            record.content = req.body.content
+            await record.save()
+            res.status(200).send(record)
+            return
+        }
+
+        res.status(500).send(
+            createBadResponse(ErrorName.INTERNAL_ERROR)
+        )
     } catch (err) {
         res.status(500).send(
             createBadResponse(ErrorName.INTERNAL_ERROR)

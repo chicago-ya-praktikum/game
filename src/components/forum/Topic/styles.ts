@@ -10,11 +10,14 @@ export const styles = () => createStyles({
     },
     buttons: {
         display: 'flex',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         alignItems: 'flex-start'
     },
-    button: {
-        margin: '10px 10px 0px 0px'
+    button_left: {
+        margin: '0px 10px 0px 0px'
+    },
+    button_right: {
+        margin: '0px 0px 0px 10px'
     }
 
 })

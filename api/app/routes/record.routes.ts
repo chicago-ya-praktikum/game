@@ -1,11 +1,13 @@
 import {
-    save, getAll, getOne, remove
+    create, update, getAll, getOne, remove
 } from '../controllers/record.controller'
 
 const recordRoutes = (app: any) => {
     const router = require('express').Router();
 
-    router.post('/', save)
+    router.post('/', create)
+
+    router.post('/update', update)
 
     router.get('/', getAll)
 

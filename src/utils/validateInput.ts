@@ -11,7 +11,7 @@ function minLength(value: string, length: number) {
 }
 
 export function validateInput(inputName: string | number, inputValue: any, required: boolean = false) {
-    if (required && !inputValue) return false
+	if (required && !inputValue) return false
 
     let status = false;
 
