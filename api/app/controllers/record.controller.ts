@@ -195,7 +195,7 @@ export const remove = async (req: any, res: any) => {
             )
         }
 
-        res.send({
+        res.status(200).send({
             message: 'Record was deleted successfully!'
         })
     } catch (err) {

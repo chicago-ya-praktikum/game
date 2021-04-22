@@ -1,17 +1,13 @@
 import {AxiosResponse} from 'axios'
 import {UserInfo} from '../../../store/reducers/user/state'
 import {API_ROOT, URL_USER} from '../../../contstants/db/index'
-import {YaCookieNull} from '../types'
-import {getAxiosInstance, getUnknownError} from '../utils/index'
+import {getAxiosInstance} from './utils/index'
+import {getUnknownError} from '../utils/index'
 
-export const postLogIn = async (
-    userInfo: UserInfo, cookies: YaCookieNull = null
-): Promise<AxiosResponse> => {
-    const axios = getAxiosInstance(cookies)
-    const {POST_CREATE} = URL_USER
+export const postLogIn = async (userInfo: UserInfo): Promise<AxiosResponse> => {
     try {
-        axios.defaults.headers.authorization = userInfo.id
-        const res = await axios.post(API_ROOT + POST_CREATE,
+        const axios = getAxiosInstance(userInfo)
+        const res = await axios.post(API_ROOT + URL_USER.POST_CREATE,
             {
                 displayName: userInfo.display_name,
                 avatar: userInfo.avatar

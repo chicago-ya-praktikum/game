@@ -1,6 +1,8 @@
 import {postLogIn} from './user'
-import {postCreateTopic, postUpdateTopic, getTopics} from './topic'
+import {
+    postCreateTopic, postUpdateTopic, getTopics, getOneTopic, deleteTopic
+} from './topic'
 
 export {
-    postLogIn, postCreateTopic, postUpdateTopic, getTopics
+    postLogIn, postCreateTopic, postUpdateTopic, getTopics, getOneTopic, deleteTopic
 }

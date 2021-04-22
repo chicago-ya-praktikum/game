@@ -1,9 +1,10 @@
 import React, {
-    FC, useCallback, useReducer
+    FC, useCallback, useEffect, useReducer
 } from 'react'
 import {
     Box, Button, TextField, withStyles
 } from '@material-ui/core'
+import _ from 'lodash'
 import {styles} from './styles'
 import {Props, InputOnBlur} from './types'
 // import {CommentsTree} from '../commentsTree/CommentsTree'
@@ -11,31 +12,36 @@ import {Props, InputOnBlur} from './types'
 import {userInfoSelector} from '../../../store/selectors'
 import {initialState} from './reducer/state'
 import {reducer} from './reducer/reducer'
-// import {InputForm} from '../../UI/inputs/InputForm/index'
-import {setField} from './reducer/actions'
-import {formIsValid, saveTopic} from './utils/index'
+import {reset} from './reducer/actions'
+import {
+    fillTopic, formIsValid, saveTopic, deleteTopic
+} from './utils'
+import {preSetField} from './reducer/preActions'
 
 const Topic: FC<Props> = (props: Props) => {
-    const {classes, cb, rights, id} = props
+    const {
+        classes, cb, rights, id
+    } = props
     const readonlyForm = rights ? rights === 'view' : false
 
-    const [state, dispatch] = useReducer(reducer, initialState)
+    const [state, dispatch] = useReducer(reducer, _.cloneDeep(initialState))
     const {fields} = state
     const {topicTitle, topicId, topicContent} = fields
 
     const userInfo = userInfoSelector()
 
     useEffect(() => {
+        if (!userInfo) return
         if (id) {
-            
+            fillTopic({
+                fields, id, userInfo, dispatch
+            })
         }
-        // getListTopics(userInfo)
-        //     .then((topicsList) => setListTopics(topicsList as RowTopic[]))
     }, [])
-    
+
     const inputBlurHandler = useCallback((e: InputOnBlur) => {
         e.preventDefault()
-        dispatch(setField(fields, String(e.target.name), String(e.target.value)))
+        dispatch(preSetField(fields, String(e.target.name), String(e.target.value)))
     }, [fields])
 
     const onClickSave = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -47,7 +53,19 @@ const Topic: FC<Props> = (props: Props) => {
 
     const onClickClose = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
+        dispatch(reset())
         if (cb) cb()
+    }, [])
+
+    const onClickDelete = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault()
+        if (!userInfo) return
+        deleteTopic(fields, userInfo).then((sucess) => {
+            if (sucess) {
+                dispatch(reset())
+                if (cb) cb()
+            }
+        })
     }, [])
 
     const RenderButtons = () => (
@@ -78,7 +96,7 @@ const Topic: FC<Props> = (props: Props) => {
                         className={classes.button_right}
                         color='secondary'
                         variant='contained'
-                        onClick={onClickClose}
+                        onClick={onClickDelete}
                     >
                         Delete
                     </Button>

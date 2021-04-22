@@ -8,9 +8,6 @@ export const fields = {
 
 export const initialState = {
     fields,
-    init: false
+    init: false,
+    readonly: true
 }
-
-export type State = typeof initialState
-export type Fields = typeof fields
-export type FieldsKeys = keyof Fields
