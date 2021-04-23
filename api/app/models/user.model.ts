@@ -8,7 +8,7 @@ export const userTable = (sequelize: any, Sequelize: any) => {
             type: Sequelize.STRING,
             allowNull: true
         }
-    });
+    })
 
-    return User;
+    return User
 };

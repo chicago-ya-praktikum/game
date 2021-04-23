@@ -9,7 +9,7 @@ export const tokenTable = (sequelize: any, Sequelize: any) => {
             type: Sequelize.STRING,
             allowNull: false
         }
-    });
+    })
 
-    return Token;
+    return Token
 };

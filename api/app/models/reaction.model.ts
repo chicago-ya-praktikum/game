@@ -8,7 +8,7 @@ export const reactionTable = (sequelize: any, Sequelize: any) => {
             type: Sequelize.STRING,
             allowNull: false
         }
-    });
+    })
 
-    return Reaction;
+    return Reaction
 };

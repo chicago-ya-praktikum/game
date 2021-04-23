@@ -18,5 +18,5 @@ export const recordTable = (sequelize: any, Sequelize: any) => {
         }
     })
 
-    return Record;
+    return Record
 }
