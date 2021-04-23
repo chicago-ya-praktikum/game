@@ -15,7 +15,7 @@ import {reset, setReadOnly} from './reducer/actions'
 import {
     fillTopic, formIsValid, saveTopic, deleteTopic
 } from './utils'
-import {preSetField} from './reducer/preActions'
+import {preFillFields, preSetField} from './reducer/preActions'
 
 const Topic: FC<Props> = (props: Props) => {
     const {
@@ -30,9 +30,11 @@ const Topic: FC<Props> = (props: Props) => {
 
     useEffect(() => {
         if (id) {
-            fillTopic({
-                fields, id, userInfo, dispatch
-            })
+            fillTopic(userInfo, id)
+                .then((res) => {
+                    dispatch(preFillFields(fields, res))
+                    dispatch(setReadOnly(res.readOnly))
+                })
         } else if (isNew) {
             dispatch(setReadOnly(false))
         }
@@ -58,13 +60,14 @@ const Topic: FC<Props> = (props: Props) => {
 
     const onClickDelete = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        deleteTopic(fields, userInfo).then((sucess) => {
-            if (sucess) {
-                dispatch(reset())
-                window.alertHide()
-                cb()
-            }
-        })
+        deleteTopic(fields, userInfo)
+            .then((sucess) => {
+                if (sucess) {
+                    dispatch(reset())
+                    window.alertHide()
+                    cb()
+                }
+            })
     }, [])
 
     const RenderButtons = () => (

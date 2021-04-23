@@ -1,5 +1,5 @@
 import {validateInput} from '../../../../utils/validateInput'
-import {noActions, setField} from './actions'
+import {noActions, setField, fillFields} from './actions'
 import {Action, Fields, FieldsKeys} from './types'
 
 export const preSetField = (fields: Fields, name: string, val: string): Action => {
@@ -14,4 +14,14 @@ export const preSetField = (fields: Fields, name: string, val: string): Action =
             err
         }
     )
+}
+
+export const preFillFields = (fieldsOld: Fields, res: any): Action => {
+    const fields = {...fieldsOld}
+    const {record} = res
+    fields.topicId.val = record.id
+    fields.topicTitle.val = record.title
+    fields.topicContent.val = record.content
+
+    return fillFields(fields)
 }

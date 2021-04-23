@@ -9,5 +9,6 @@ export const fields = {
 export const initialState = {
     fields,
     init: false,
-    readOnly: true
+    readOnly: true,
+    error: false
 }

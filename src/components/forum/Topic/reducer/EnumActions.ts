@@ -2,6 +2,7 @@ export enum Actions {
     SET_FIELD = 'SET_FIELD',
     SET_INIT = 'SET_INIT',
     SET_READONLY = 'SET_READONLY',
+    SET_ERROR = 'SET_ERROR',
     FILL_FIELDS = 'FILL_FIELDS',
     RESET = 'RESET',
     NO_ACTIONS = 'NO_ACTIONS'

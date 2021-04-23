@@ -24,6 +24,12 @@ export const reducer = (state: State, action: Action): State => {
                 readOnly: Boolean(payload?.readOnly)
             }
         }
+        case Actions.SET_ERROR: {
+            return {
+                ...state,
+                error: Boolean(payload?.error)
+            }
+        }
         case Actions.FILL_FIELDS: {
             if (!payload) return state
             return {

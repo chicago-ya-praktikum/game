@@ -19,6 +19,11 @@ export const setReadOnly = (readOnly: boolean): Action => ({
     payload: {readOnly}
 })
 
+export const setError = (error: boolean): Action => ({
+    type: Actions.SET_ERROR,
+    payload: {error}
+})
+
 export const setField = (name: string, field: FormField): Action => ({
     type: Actions.SET_FIELD,
     payload: {
