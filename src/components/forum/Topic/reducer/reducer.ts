@@ -18,6 +18,12 @@ export const reducer = (state: State, action: Action): State => {
                 }
             }
         }
+        case Actions.SET_READONLY: {
+            return {
+                ...state,
+                readOnly: Boolean(payload?.readOnly)
+            }
+        }
         case Actions.FILL_FIELDS: {
             if (!payload) return state
             return {

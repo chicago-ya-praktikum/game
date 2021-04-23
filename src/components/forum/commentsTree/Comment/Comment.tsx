@@ -4,11 +4,14 @@ import {
 } from '@material-ui/core'
 import {Props} from './types'
 import {styles} from './styles'
+import {saveComment} from './utils'
+import {userInfoSelector} from '../../../../store/selectors'
 
 const Comment: FC<Props> = (props: Props) => {
     const {classes} = props
     const disabledForm = false
     const [show, setShow] = useState(false)
+    const userInfo = userInfoSelector()
 
     const onClickAddComment = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
@@ -18,7 +21,8 @@ const Comment: FC<Props> = (props: Props) => {
 
     const onClickSave = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        setShow(false)
+        saveComment(userInfo)
+        // setShow(false)
         // if (cb) cb()
     }, [])
 
@@ -30,9 +34,11 @@ const Comment: FC<Props> = (props: Props) => {
 
     return (
         <>
-            <Button size='small' color='primary' onClick={onClickAddComment}>
-                Add comment
-            </Button>
+            {!show && (
+                <Button size='small' color='primary' onClick={onClickAddComment}>
+                    Add comment
+                </Button>
+            )}
             {show && (
                 <Box className={classes.root}>
                     <Box>

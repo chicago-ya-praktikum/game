@@ -66,7 +66,7 @@ export const getOneTopic = async (userInfo: UserInfo, id: number): Promise<Axios
 export const deleteTopic = async (userInfo: UserInfo, id: number): Promise<AxiosResponse> => {
     try {
         const axios = getAxiosInstance(userInfo)
-        const res = await axios.get(API_ROOT + URL_TOPIC.DELETE.replace(':id', String(id)))
+        const res = await axios.delete(API_ROOT + URL_TOPIC.DELETE.replace(':id', String(id)))
         return res
     } catch (err) {
         return getUnknownError(err)

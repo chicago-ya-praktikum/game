@@ -144,7 +144,10 @@ export const getOne = async (req: any, res: any) => {
             )
             return
         }
-        res.status(200).send(record)
+        res.status(200).send({
+            record,
+            readOnly: status !== record.userId
+        })
     } catch (err) {
         res.status(500).send(
             createBadResponse(ErrorName.INTERNAL_ERROR)

@@ -7,12 +7,11 @@ import {
 import _ from 'lodash'
 import {styles} from './styles'
 import {Props, InputOnBlur} from './types'
-// import {CommentsTree} from '../commentsTree/CommentsTree'
-// import {postCreateTopic, postUpdateTopic} from '../../../services/API/db/index'
+import {CommentsTree} from '../commentsTree/CommentsTree'
 import {userInfoSelector} from '../../../store/selectors'
 import {initialState} from './reducer/state'
 import {reducer} from './reducer/reducer'
-import {reset} from './reducer/actions'
+import {reset, setReadOnly} from './reducer/actions'
 import {
     fillTopic, formIsValid, saveTopic, deleteTopic
 } from './utils'
@@ -20,22 +19,22 @@ import {preSetField} from './reducer/preActions'
 
 const Topic: FC<Props> = (props: Props) => {
     const {
-        classes, cb, rights, id
+        classes, cb, id, isNew
     } = props
-    const readonlyForm = rights ? rights === 'view' : false
 
     const [state, dispatch] = useReducer(reducer, _.cloneDeep(initialState))
-    const {fields} = state
+    const {fields, readOnly} = state
     const {topicTitle, topicId, topicContent} = fields
 
     const userInfo = userInfoSelector()
 
     useEffect(() => {
-        if (!userInfo) return
         if (id) {
             fillTopic({
                 fields, id, userInfo, dispatch
             })
+        } else if (isNew) {
+            dispatch(setReadOnly(false))
         }
     }, [])
 
@@ -47,23 +46,23 @@ const Topic: FC<Props> = (props: Props) => {
     const onClickSave = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         if (!formIsValid(fields, dispatch)) return
-        if (!userInfo) return
         saveTopic(fields, userInfo, dispatch)
     }, [userInfo, fields])
 
     const onClickClose = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         dispatch(reset())
-        if (cb) cb()
+        window.alertHide()
+        cb()
     }, [])
 
     const onClickDelete = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        if (!userInfo) return
         deleteTopic(fields, userInfo).then((sucess) => {
             if (sucess) {
                 dispatch(reset())
-                if (cb) cb()
+                window.alertHide()
+                cb()
             }
         })
     }, [])
@@ -71,7 +70,7 @@ const Topic: FC<Props> = (props: Props) => {
     const RenderButtons = () => (
         <Box className={classes.buttons}>
             <Box>
-                {!readonlyForm && (
+                {!readOnly && (
                     <Button
                         className={classes.button_left}
                         color='primary'
@@ -91,7 +90,7 @@ const Topic: FC<Props> = (props: Props) => {
                 </Button>
             </Box>
             <Box>
-                {!readonlyForm && (
+                {!readOnly && (
                     <Button
                         className={classes.button_right}
                         color='secondary'
@@ -110,7 +109,7 @@ const Topic: FC<Props> = (props: Props) => {
             <Box className={classes.topicTitle} >
                 <TextField
                     name={topicTitle.id}
-                    inputProps={{readOnly: readonlyForm}}
+                    inputProps={{readOnly}}
                     margin='normal'
                     placeholder={topicTitle.label}
                     fullWidth
@@ -135,7 +134,7 @@ const Topic: FC<Props> = (props: Props) => {
             </Box>
             <TextField
                 name={topicContent.id}
-                inputProps={{readOnly: readonlyForm}}
+                inputProps={{readOnly}}
                 fullWidth
                 variant='outlined'
                 placeholder={topicContent.label}
@@ -155,9 +154,9 @@ const Topic: FC<Props> = (props: Props) => {
                 <RenderButtons/>
                 <RenderFields/>
             </Box>
-            {/* <Box>
-                {!!topicId && <CommentsTree/>}
-            </Box> */}
+            <Box>
+                {!!topicId.val && <CommentsTree/>}
+            </Box>
         </>
     )
 }

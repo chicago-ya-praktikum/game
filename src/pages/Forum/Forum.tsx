@@ -1,5 +1,5 @@
 import React, {
-    FC, useCallback, useEffect, useState
+    FC, useCallback, useEffect, useReducer
 } from 'react'
 import {
     Box, Button, Container, Grid, withStyles
@@ -10,49 +10,40 @@ import {Topic} from '../../components/forum/Topic/index'
 import {ListTopics} from '../../components/forum/ListTopics/index'
 import {userInfoSelector} from '../../store/selectors'
 import {logIn} from './utils'
+import {initialState} from './reducer/state'
+import {reducer} from './reducer/reducer'
+import {setAvailable, setVisibleList, setVisibleTopic} from './reducer/actions'
 
 const Forum: FC<Props> = (props: Props) => {
     const {classes} = props
-    const [topicRights, setTopicRights] = useState<'edit' | 'view'>('edit')
-    const [pageAvailable, setPageAvailable] = useState(false)
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const {
+        visible, available, topicId, newTopic
+    } = state
     const userInfo = userInfoSelector()
-
-    const [visibleTopic, setShowTopic] = useState(false)
-    const [visibleListTopics, setShowListTopics] = useState(true)
-    const [visibleHead, setShowHead] = useState(true)
-
-    const [topicId, setTopicId] = useState(0)
 
     useEffect(() => {
         logIn(userInfo)
-            .then((available) => setPageAvailable(available))
+            .then((res) => {
+                if (res) dispatch(setAvailable())
+            })
     }, [])
 
     const onClickNewTopic = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        setTopicRights('edit')
-        setShowTopic(true)
-        setShowListTopics(false)
-        setShowHead(false)
+        dispatch(setVisibleTopic(0, true))
     }, [])
 
     const cbTopic = () => {
-        setShowTopic(false)
-        setShowListTopics(true)
-        setShowHead(true)
-        setTopicId(0)
+        dispatch(setVisibleList())
     }
 
-    const cbListTopics = (id: number) => {
-        if (!id) return
-        setTopicId(id)
-        setTopicRights('view')
-        setShowTopic(true)
-        setShowListTopics(false)
-        setShowHead(false)
+    const cbListTopics = (selectedId: number) => {
+        if (!selectedId) return
+        dispatch(setVisibleTopic(selectedId))
     }
 
-    if (!pageAvailable) {
+    if (!available) {
         return <></>
     }
 
@@ -73,9 +64,9 @@ const Forum: FC<Props> = (props: Props) => {
     return (
         <Box className={classes.root}>
             <Container fixed>
-                {visibleHead && <RenderHead/>}
-                {visibleTopic && <Topic rights={topicRights} id={topicId} cb={cbTopic}/>}
-                {visibleListTopics && <ListTopics cb={cbListTopics}/>}
+                {visible.head && <RenderHead/>}
+                {visible.topic && <Topic id={topicId} isNew={newTopic} cb={cbTopic}/>}
+                {visible.list && <ListTopics cb={cbListTopics}/>}
             </Container>
         </Box>
     )

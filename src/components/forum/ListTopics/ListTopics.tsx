@@ -16,7 +16,7 @@ const ListTopics: FC<Props> = (props: Props) => {
 
     useEffect(() => {
         getListTopics(userInfo)
-            .then((topicsList) => setListTopics(topicsList as RowTopic[]))
+            .then((res) => setListTopics(res as RowTopic[]))
     }, [])
 
     const onClickTitle = useCallback(

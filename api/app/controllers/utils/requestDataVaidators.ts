@@ -4,7 +4,7 @@ export const userDataRules = {
     },
     body: {
         displayName: 'required',
-        avatar: 'string | null'
+        avatar: 'string'
     }
 }
 

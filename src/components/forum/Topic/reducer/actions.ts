@@ -14,6 +14,11 @@ export const reset = (): Action => ({
     type: Actions.RESET
 })
 
+export const setReadOnly = (readOnly: boolean): Action => ({
+    type: Actions.SET_READONLY,
+    payload: {readOnly}
+})
+
 export const setField = (name: string, field: FormField): Action => ({
     type: Actions.SET_FIELD,
     payload: {

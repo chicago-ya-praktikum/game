@@ -16,8 +16,8 @@ type RenderTree = {
 
 const data: RenderTree = {
     id: 'root',
-    name: 'Parent',
-    text: 'Таким образом, социально-экономическое развитие создаёт предпосылки качественно новых шагов для системы обучения кадров, соответствующей насущным потребностям. Разнообразный и богатый опыт реализация намеченного плана развития требует от нас анализа модели развития. Дорогие друзья, постоянное информационно-техническое обеспечение нашей деятельности позволяет оценить значение дальнейших направлений развития проекта!',
+    name: 'Comments',
+    text: '',
     children: [
         {
             id: '1',
@@ -44,16 +44,13 @@ const CommentsTree: FC<Props> = (props: Props) => {
 
     const renderTree = (nodes: RenderTree) => (
         <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
-            <Typography variant='subtitle2'>{nodes.text}</Typography>
+            {nodes.text && <Typography variant='subtitle2'>{nodes.text}</Typography>}
             {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
         </TreeItem>
     )
 
     return (
         <>
-            <Typography variant='h6'>
-                Comments
-            </Typography>
             <TreeView
                 className={classes.root}
                 defaultCollapseIcon={<ExpandMoreIcon/>}

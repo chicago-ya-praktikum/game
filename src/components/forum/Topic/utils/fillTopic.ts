@@ -1,13 +1,13 @@
 import {getOneTopic} from '../../../../services/API/db/index'
-import {UserInfo} from '../../../../store/reducers/user/state'
-import {fillFields} from '../reducer/actions'
+import {UserInfoEmpty} from '../../../../store/reducers/user/state'
+import {fillFields, setReadOnly} from '../reducer/actions'
 import {Fields} from '../reducer/types'
 
 export const fillTopic = async (
     data: {
         fields: Fields,
         id: number,
-        userInfo: UserInfo,
+        userInfo: UserInfoEmpty,
         dispatch: any
     }
 ) => {
@@ -15,14 +15,16 @@ export const fillTopic = async (
         fields, id, userInfo, dispatch
     } = data
 
-    if (!id) return
+    if (!id || !userInfo) return
 
     const res = await getOneTopic(userInfo, id)
 
     if (res.status === 200) {
-        fields.topicId.val = res.data.id
-        fields.topicTitle.val = res.data.title
-        fields.topicContent.val = res.data.content
+        const {record, readOnly} = res.data
+        fields.topicId.val = record.id
+        fields.topicTitle.val = record.title
+        fields.topicContent.val = record.content
         dispatch(fillFields(fields))
+        dispatch(setReadOnly(readOnly))
     } else window.alertShow('error', res.statusText)
 }

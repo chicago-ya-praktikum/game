@@ -6,7 +6,10 @@ export type Props = {
 } & WithStyles<typeof styles>
 
 export type RowTopic = {
-    id: number,
     userId: number,
+    id: number,
     title: string
+    content: string,
+    createdAt: string,
+    updatedAt: string
 }

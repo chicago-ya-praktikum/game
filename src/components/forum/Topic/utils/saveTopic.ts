@@ -1,9 +1,10 @@
 import {postCreateTopic, postUpdateTopic} from '../../../../services/API/db/index'
-import {UserInfo} from '../../../../store/reducers/user/state'
+import {UserInfoEmpty} from '../../../../store/reducers/user/state'
 import {preSetField} from '../reducer/preActions'
 import {Fields} from '../reducer/types'
 
-export const saveTopic = async (fields: Fields, userInfo: UserInfo, dispatch: any) => {
+export const saveTopic = async (fields: Fields, userInfo: UserInfoEmpty, dispatch: any) => {
+    if (!userInfo) return
     const id = Number(fields.topicId.val)
     const title = fields.topicTitle.val
     const content = fields.topicContent.val

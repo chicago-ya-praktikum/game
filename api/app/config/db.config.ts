@@ -16,4 +16,4 @@ const sequelizeOptions: SequelizeOptions = {
     }
 }
 
-export const sequelize: any = new Sequelize(sequelizeOptions)
+export const sequelize: Sequelize = new Sequelize(sequelizeOptions)
