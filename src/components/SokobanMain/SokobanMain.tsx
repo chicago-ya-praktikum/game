@@ -1,4 +1,3 @@
-/* eslint-disable no-alert */
 import React, {
     memo, useCallback, useEffect, useRef, useState
 } from 'react'
@@ -11,8 +10,9 @@ import {themeSelector, userInfoSelector} from '../../store/selectors'
 import {actionCreator} from '../../utils/actionCreator'
 import {Actions} from '../../store/actions'
 import {useTouches} from '../../hooks/useTouches'
-import {Users} from '../../API'
+import {solveSteps} from '../../SokobanGenerator/contants/solveSteps'
 import {LeaderboardNewLeaderRequest} from '../../models/api/LeaderboardNewLeaderRequest'
+import {Users} from '../../API'
 
 interface NextButtonProps {
     levels: LevelStore[]
@@ -81,8 +81,15 @@ export const SokobanMain = memo(() => {
         const fn = ({key}: KeyboardEvent) => gameCore.move(key)
         window.addEventListener('keydown', fn)
 
-        levelGenerator.postMessage(true)
+        levelGenerator.postMessage(solveSteps)
         const generatorCallback = ({data}: MessageEvent<LevelStore>) => {
+            const steps = solveSteps + levels.length
+
+            if (data === null) {
+                levelGenerator.postMessage(steps)
+                return
+            }
+
             if (levels.length < 1) {
                 gameCore.drawLevel(data, theme)
             }
@@ -91,7 +98,7 @@ export const SokobanMain = memo(() => {
             setLevels([...levels])
 
             if (levels.length < 11) {
-                levelGenerator.postMessage(true)
+                levelGenerator.postMessage(steps)
             }
         }
         levelGenerator.addEventListener('message', generatorCallback)
@@ -125,7 +132,7 @@ export const SokobanMain = memo(() => {
         levels.shift()
         setLevels([...levels])
 
-        levelGenerator.postMessage(true)
+        levelGenerator.postMessage(solveSteps + levels.length)
         gameCoreRef.current?.drawLevel(levels[0], theme)
     }, [theme])
 

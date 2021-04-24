@@ -1,11 +1,12 @@
 /* eslint-disable no-continue */
+/* eslint-disable no-param-reassign */
 import {
     addMovableTile, extractMovableTile, isMovableTile, isWalkableTile, removeMovableTile
 } from './tiles'
 import {emptyMatrix} from '../helpers/emptyMatrix'
 import {Tile} from '../enums/Tile'
 import {GeneratorDirection} from '../enums/GeneratorDirection'
-import {ObjectKeys} from '../types/ObjectKeys'
+import {ObjectKeys} from '../models/ObjectKeys'
 import {moveToDirection} from '../helpers/moveToDirection'
 
 export class Matrix {
@@ -271,7 +272,7 @@ export class Matrix {
             if (visited[y][x]) {
                 return false
             }
-            // eslint-disable-next-line no-param-reassign
+
             visited[y][x] = true
 
             if (x === x2 && y === y2) {

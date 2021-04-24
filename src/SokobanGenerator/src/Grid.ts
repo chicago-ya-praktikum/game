@@ -1,14 +1,22 @@
 /* eslint-disable no-continue */
+/* eslint-disable no-param-reassign */
 import {Matrix} from './Matrix'
 import {emptyMatrix} from '../helpers/emptyMatrix'
 import {XYCoordinate} from '../../GameCore/models/XYCoordinate'
 import {Tile} from '../enums/Tile'
 import {GeneratorDirection} from '../enums/GeneratorDirection'
-import {ObjectKeys} from '../types/ObjectKeys'
 import {templates} from '../contants/templates'
 import {templateSize} from '../contants/templateSize'
 import {directions} from '../contants/directions'
 import {moveToDirection} from '../helpers/moveToDirection'
+import {BacktrackMap} from '../models/BacktrackMap'
+import {solveSteps} from '../contants/solveSteps'
+
+interface PullStack {
+    step: number
+    pos: XYCoordinate
+    matrix: Matrix
+}
 
 export class Grid {
     private readonly _width: number
@@ -19,12 +27,16 @@ export class Grid {
     private readonly _minWall: number
     private readonly _playerFixedPos: XYCoordinate
     private _solutionStep: number
+    private count: number
 
-    constructor(width = 0,
+    constructor(
+        width = 0,
         height = 0,
         box = 3,
         minWall = 0,
-        playerPos: XYCoordinate = {x: 0, y: 0}) {
+        playerPos: XYCoordinate = {x: 0, y: 0},
+        count = solveSteps
+    ) {
         this._width = width
         this._height = height
         this._box = box
@@ -33,6 +45,8 @@ export class Grid {
         this._minWall = minWall
         this._playerFixedPos = playerPos
         this._solutionStep = -1
+
+        this.count = count
     }
 
     get(x: number, y: number) {
@@ -67,7 +81,8 @@ export class Grid {
             this._height,
             this._box,
             this._minWall,
-            this._playerFixedPos)
+            this._playerFixedPos,
+            this.count)
         newGrid._data = this._data.clone()
         newGrid._solutionStep = this._solutionStep
 
@@ -208,7 +223,7 @@ export class Grid {
         const boxes = this._data.resetBoxesToGoals()
 
         // Backtrack maps
-        const map = {}
+        const map: BacktrackMap = {}
         const playerPos = this._data.findAvailablePlayerPositions()
 
         // Generate all possible maps
@@ -223,8 +238,6 @@ export class Grid {
         let max = -1
 
         for (const key of keys) {
-            // TODO: remove ignore
-            // @ts-ignore
             const matrix = map[key]
 
             for (let x = 0; x < this._width; ++x) {
@@ -238,10 +251,15 @@ export class Grid {
                         // position is accessible by the player (to move the player
                         // position later)
                         this.applyStringGrid(key)
-                        if (!this._data.isAccessible(this._playerFixedPos.x,
+
+                        const isAccessible = this._data.isAccessible(
+                            this._playerFixedPos.x,
                             this._playerFixedPos.y,
                             x,
-                            y)) {
+                            y
+                        )
+
+                        if (!isAccessible) {
                             continue
                         }
                     }
@@ -254,6 +272,10 @@ export class Grid {
         }
 
         if (maxPos === null) {
+            return false
+        }
+
+        if (max < this.count) {
             return false
         }
 
@@ -315,8 +337,7 @@ export class Grid {
      *   to keep track of the steps when the player is at that specific location
      * @private
      */
-    private _pullBoxes(initBoxes: XYCoordinate[], initPos: XYCoordinate, map: {}) {
-        let size = 0
+    private _pullBoxes(initBoxes: XYCoordinate[], initPos: XYCoordinate, map: BacktrackMap) {
         const stack = [{
             boxes: initBoxes.map(b => ({...b})),
             pos: {...initPos},
@@ -325,7 +346,6 @@ export class Grid {
         }]
 
         while (stack.length) {
-            size = Math.max(stack.length, size)
             const top = stack.shift()
 
             if (top === undefined) {
@@ -385,8 +405,7 @@ export class Grid {
      *   the stack of _pullBoxes when doing bfs
      * @private
      */
-    _pullBoxesCheckIfMapCached(map: ObjectKeys<number[][]>,
-        obj: {step: number, pos: XYCoordinate, matrix: Matrix}) {
+    private _pullBoxesCheckIfMapCached(map: BacktrackMap, obj: PullStack) {
         const {step, pos, matrix} = obj
         const {x, y} = pos
 
@@ -408,16 +427,16 @@ export class Grid {
         }
 
         if (!map[str]) {
-            // eslint-disable-next-line no-param-reassign
             map[str] = this._emptyMatrix(Tile.FLOOR)
         }
 
-        this._pullBoxesPropagateMapStepValue(matrix,
+        this._pullBoxesPropagateMapStepValue(
+            matrix,
             map[str],
             x,
             y,
-            step,
-            true)
+            step
+        )
 
         return false
     }
@@ -430,52 +449,59 @@ export class Grid {
      * @param x
      * @param y
      * @param step
-     * @param {boolean} setValue - true if the propagation should set the value
-     *   and reference the actual map. Otherwise it will just propagate depending
-     *   on if the neighbor has a value
      * @private
      */
-    _pullBoxesPropagateMapStepValue(matrix: Matrix,
+    private _pullBoxesPropagateMapStepValue(
+        matrix: Matrix,
         playerMatrix: number[][],
         x: number,
         y: number,
-        step: number,
-        setValue = false) {
-        // if (setValue ?
-        //     (matrix[y][x] === step || !this._isWalkable(x, y)) : !matrix[y][x]) {
+        step: number
+    ) {
         if (playerMatrix[y][x] === step || !matrix.isWalkable(x, y)) {
             return
         }
 
-        // eslint-disable-next-line no-param-reassign
         playerMatrix[y][x] = step
 
         if (x > 0) {
-            this._pullBoxesPropagateMapStepValue(matrix, playerMatrix, x - 1,
+            this._pullBoxesPropagateMapStepValue(
+                matrix,
+                playerMatrix,
+                x - 1,
                 y,
-                step,
-                setValue)
+                step
+            )
         }
 
         if (x < this._width - 1) {
-            this._pullBoxesPropagateMapStepValue(matrix, playerMatrix, x + 1,
+            this._pullBoxesPropagateMapStepValue(
+                matrix,
+                playerMatrix,
+                x + 1,
                 y,
-                step,
-                setValue)
+                step
+            )
         }
 
         if (y > 0) {
-            this._pullBoxesPropagateMapStepValue(matrix, playerMatrix,
-                x, y - 1,
-                step,
-                setValue)
+            this._pullBoxesPropagateMapStepValue(
+                matrix,
+                playerMatrix,
+                x,
+                y - 1,
+                step
+            )
         }
 
         if (y < this._height - 1) {
-            this._pullBoxesPropagateMapStepValue(matrix, playerMatrix,
-                x, y + 1,
-                step,
-                setValue)
+            this._pullBoxesPropagateMapStepValue(
+                matrix,
+                playerMatrix,
+                x,
+                y + 1,
+                step
+            )
         }
     }
 
