@@ -1,8 +1,10 @@
 import {FC} from 'react'
 import {useDispatch} from 'react-redux'
+import {withStyles} from '@material-ui/core'
 import {Props} from './types'
 import {apiPostYandexOauth} from '../../../services/API/index'
 import {getUserData} from '../../../store/reducers/user/thunks'
+import {styles} from '../OauthButtons/styles'
 
 const OauthRedirect: FC<Props> = () => {
     const dispatchStore = useDispatch()
@@ -23,4 +25,4 @@ const OauthRedirect: FC<Props> = () => {
     return (null)
 }
 
-export const OauthRedirectTSX = OauthRedirect
+export const OauthRedirectTSX = withStyles(styles)(OauthRedirect)
