@@ -1,6 +1,5 @@
 import webpack, {Configuration} from 'webpack'
-import path from 'path'
-import {SRC_DIR} from './env'
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
 
 export const getCommonConfig  = (side: 'client' | 'server'): Configuration => {
     let IS_SERVER = side === 'server'
@@ -8,12 +7,9 @@ export const getCommonConfig  = (side: 'client' | 'server'): Configuration => {
 
     return {
         name: side,
-        // resolve: {
-        //     alias: {
-        //         utils: path.resolve(SRC_DIR, 'utils'),
-        //         types1: path.resolve(SRC_DIR, 'types')
-        //     }
-        // },
+        resolve: {
+            plugins: [new TsconfigPathsPlugin({configFile: 'tsconfig.json'})]
+        },        
         plugins: [
             new webpack.DefinePlugin({
                 IS_CLIENT: JSON.stringify(IS_CLIENT),

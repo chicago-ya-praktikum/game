@@ -6,6 +6,7 @@ import userRoutes from './routes/user.routes'
 import recordRoutes from './routes/record.routes'
 import reactionRoutes from './routes/reaction.routes'
 import userReactionsRoutes from './routes/userReaction.routes'
+import {commentRoutes} from './routes/comment.routes'
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -38,6 +39,7 @@ app.get('/', (req: any, res: any) => {
 
 userRoutes(app)
 recordRoutes(app)
+commentRoutes(app)
 reactionRoutes(app)
 userReactionsRoutes(app)
 

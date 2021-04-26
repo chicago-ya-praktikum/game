@@ -23,7 +23,7 @@ export const postCreateTopic = async (userInfo: UserInfo,
     }
 }
 
-export const postUpdateTopic = async (userInfo: UserInfo,
+export const putUpdateTopic = async (userInfo: UserInfo,
     topicInfo: {
         id: number,
         title: string,
@@ -31,7 +31,7 @@ export const postUpdateTopic = async (userInfo: UserInfo,
     }): Promise<AxiosResponse> => {
     try {
         const axios = getAxiosInstance(userInfo)
-        const res = await axios.post(API_ROOT + URL_TOPIC.POST_UPDATE,
+        const res = await axios.post(API_ROOT + URL_TOPIC.PUT,
             {
                 id: topicInfo.id,
                 title: topicInfo.title,

@@ -4,11 +4,11 @@ import React, {
 import {
     Box, Button, TextField, withStyles
 } from '@material-ui/core'
-import _ from 'lodash'
+import {userInfoSelector} from '@state/selectors'
+import {deepClone} from '@utils'
 import {styles} from './styles'
 import {Props, InputOnBlur} from './types'
 import {CommentsTree} from '../commentsTree/CommentsTree'
-import {userInfoSelector} from '../../../store/selectors'
 import {initialState} from './reducer/state'
 import {reducer} from './reducer/reducer'
 import {reset, setReadOnly} from './reducer/actions'
@@ -22,7 +22,7 @@ const Topic: FC<Props> = (props: Props) => {
         classes, cb, id, isNew
     } = props
 
-    const [state, dispatch] = useReducer(reducer, _.cloneDeep(initialState))
+    const [state, dispatch] = useReducer(reducer, deepClone(initialState))
     const {fields, readOnly} = state
     const {topicTitle, topicId, topicContent} = fields
 
@@ -45,7 +45,7 @@ const Topic: FC<Props> = (props: Props) => {
         dispatch(preSetField(fields, String(e.target.name), String(e.target.value)))
     }, [fields])
 
-    const onClickSave = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const onSubmitForm = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         if (!formIsValid(fields, dispatch)) return
         saveTopic(fields, userInfo, dispatch)
@@ -76,9 +76,10 @@ const Topic: FC<Props> = (props: Props) => {
                 {!readOnly && (
                     <Button
                         className={classes.button_left}
+                        type='submit'
                         color='primary'
                         variant='contained'
-                        onClick={onClickSave}
+                        onClick={onSubmitForm}
                     >
                         Save
                     </Button>
@@ -108,9 +109,10 @@ const Topic: FC<Props> = (props: Props) => {
     )
 
     const RenderFields = () => (
-        <Box>
+        <>
             <Box className={classes.topicTitle} >
                 <TextField
+                    id={topicTitle.id}
                     name={topicTitle.id}
                     inputProps={{readOnly}}
                     margin='normal'
@@ -121,6 +123,7 @@ const Topic: FC<Props> = (props: Props) => {
                     onBlur={inputBlurHandler}
                 />
                 <TextField
+                    id={topicId.id}
                     name={topicId.id}
                     inputProps={{
                         readOnly: true,
@@ -136,6 +139,7 @@ const Topic: FC<Props> = (props: Props) => {
                 />
             </Box>
             <TextField
+                id={topicContent.id}
                 name={topicContent.id}
                 inputProps={{readOnly}}
                 fullWidth
@@ -148,17 +152,54 @@ const Topic: FC<Props> = (props: Props) => {
                 error={topicContent.err}
                 onBlur={inputBlurHandler}
             />
-        </Box>
+        </>
     )
 
     return (
         <>
-            <Box className={classes.root}>
-                <RenderButtons/>
+            <form className={classes.root}>
+                {/* <RenderButtons/> */}
+
+                <Box className={classes.buttons}>
+                    <Box>
+                        {!readOnly && (
+                            <Button
+                                className={classes.button_left}
+                                type='submit'
+                                color='primary'
+                                variant='contained'
+                                onClick={onSubmitForm}
+                            >
+                                Save
+                            </Button>
+                        )}
+                        <Button
+                            className={classes.button_left}
+                            color='default'
+                            variant='outlined'
+                            onClick={onClickClose}
+                        >
+                            Close
+                        </Button>
+                    </Box>
+                    <Box>
+                        {!readOnly && (
+                            <Button
+                                className={classes.button_right}
+                                color='secondary'
+                                variant='contained'
+                                onClick={onClickDelete}
+                            >
+                                Delete
+                            </Button>
+                        )}
+                    </Box>
+                </Box>
+
                 <RenderFields/>
-            </Box>
+            </form>
             <Box>
-                {!!topicId.val && <CommentsTree/>}
+                {!!topicId.val && <CommentsTree topicId={Number(topicId.val)}/>}
             </Box>
         </>
     )

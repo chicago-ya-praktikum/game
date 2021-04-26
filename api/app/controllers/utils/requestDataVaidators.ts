@@ -26,3 +26,13 @@ export const userReactionDataRules = {
         reactionId: 'required'
     }
 }
+
+export const commentDataRules = {
+    headers: {
+        authorization: 'required'
+    },
+    body: {
+        recordId: 'required',
+        content: 'required'
+    }
+}

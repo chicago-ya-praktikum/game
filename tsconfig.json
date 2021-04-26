@@ -29,7 +29,13 @@
         "typeRoots": [
             "typings/**/*.d.ts",
             "node_modules/@types"
-        ]
+        ],
+        "paths": {
+            "@types": ["src/types/index"],
+            "@state/*": ["src/store/*"],
+            "@utils": ["src/utils/index"],
+            "@apiDb": ["src/services/API/db/index"]
+        }       
     },
     "include": [
         "src",

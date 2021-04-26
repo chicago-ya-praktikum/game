@@ -2,5 +2,17 @@ import {WithStyles} from '@material-ui/core'
 import {styles} from './styles'
 
 export type Props = {
-    cb?: (topicId: string) => void
+    topicId: number
 } & WithStyles<typeof styles>
+
+export type Tree = {
+    id: string
+    name: string
+    content: string
+    children?: Tree[]
+}
+
+export type TreeObj = {
+    root: Tree,
+    nodes: string[]
+}

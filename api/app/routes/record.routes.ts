@@ -7,7 +7,7 @@ const recordRoutes = (app: any) => {
 
     router.post('/', create)
 
-    router.post('/update', update)
+    router.put('/', update)
 
     router.get('/:id', getOne)
 

@@ -1,4 +1,4 @@
-import {validateInput} from '../../../../utils/validateInput'
+import {validateInput} from '@utils'
 import {noActions, setField, fillFields} from './actions'
 import {Action, Fields, FieldsKeys} from './types'
 

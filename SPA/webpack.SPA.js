@@ -1,4 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
+
 const path = require('path')
 const CopyPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
@@ -17,7 +19,8 @@ module.exports = {
     entry: './SPA/index.tsx',
     output: {
         path: path.join(__dirname, '../dist'),
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        plugins: [new TsconfigPathsPlugin({configFile: 'tsconfig.json'})]
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.png']

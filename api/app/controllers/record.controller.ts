@@ -26,7 +26,6 @@ export const create = async (req: any, res: any) => {
 
         const record = {
             userId: status,
-            parentId: req.body.parentId,
             title: req.body.title,
             content: req.body.content
         }
@@ -66,14 +65,17 @@ export const update = async (req: any, res: any) => {
             return
         }
 
-        const {id} = req.body
+        const {id, title, content} = req.body
         if (id) {
-            const record = await Record.findOne({
-                where: {id}
-            })
-            record.title = req.body.title
-            record.content = req.body.content
-            await record.save()
+            const record = await Record.update(
+                {
+                    title,
+                    content
+                },
+                {
+                    where: {id}
+                }
+            )
             res.status(200).send(record)
             return
         }

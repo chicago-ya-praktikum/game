@@ -1,3 +1,1 @@
-export const formIsValid = () => {
-    return true
-}
+export const formIsValid = (content: string) => !!content

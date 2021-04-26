@@ -1,50 +1,64 @@
-import React, {FC} from 'react'
+import React, {
+    FC, useCallback, useEffect, useState
+} from 'react'
 import {Typography, withStyles} from '@material-ui/core'
 import {TreeItem, TreeView} from '@material-ui/lab'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import {Props} from './types'
+import {userInfoSelector} from '@state/selectors'
+import {Props, Tree, TreeObj} from './types'
 import {styles} from './styles'
 import {Comment} from '../Comment/index'
-
-type RenderTree = {
-    id: string
-    name: string
-    text: string
-    children?: RenderTree[]
-}
-
-const data: RenderTree = {
-    id: 'root',
-    name: 'Comments',
-    text: '',
-    children: [
-        {
-            id: '1',
-            name: 'Child - 1',
-            text: 'Child - 1'
-        },
-        {
-            id: '3',
-            name: 'Child - 3',
-            text: 'Child - 3',
-            children: [
-                {
-                    id: '4',
-                    name: 'Child - 4',
-                    text: 'Child - 4'
-                }
-            ]
-        }
-    ]
-};
+import {saveComment, getComments, getTree} from './utils'
 
 const CommentsTree: FC<Props> = (props: Props) => {
-    const {classes} = props
+    const {classes, topicId} = props
+    const userInfo = userInfoSelector()
+    const [tree, setTree] = useState<TreeObj>()
+    const [curCommentId, setCurCommentId] = useState(0)
 
-    const renderTree = (nodes: RenderTree) => (
-        <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
-            {nodes.text && <Typography variant='subtitle2'>{nodes.text}</Typography>}
+    console.log('render currentCommentId', curCommentId)
+
+    useEffect(() => {
+        getComments(userInfo, topicId)
+            .then((res) => setTree(getTree(res)))
+    }, [topicId])
+
+    const onNodeSelect = useCallback((_e: object, value: string[] | string) => {
+        setCurCommentId(value === 'root' ? 0 : Number(value))
+    }, [curCommentId])
+
+    const onLabelClick = useCallback((e: React.MouseEvent<Element, MouseEvent>) => {
+        e.preventDefault()
+    }, [])
+
+    const commentCb = (content?: string) => {
+        console.log('commentCb currentCommentId', curCommentId)
+        if (content) {
+            saveComment(
+                userInfo,
+                {
+                    recordId: topicId,
+                    content,
+                    parentId: curCommentId
+                }
+            ).then((saved) => {
+                if (saved) {
+                    getComments(userInfo, topicId)
+                        .then((res) => setTree(getTree(res)))
+                }
+            })
+        }
+    } // , [curCommentId, topicId])
+
+    const renderTree = (nodes: Tree) => (
+        <TreeItem
+            key={nodes.id}
+            nodeId={nodes.id}
+            label={nodes.name}
+            onLabelClick={onLabelClick}
+        >
+            {nodes.content && <Typography variant='subtitle2'>{nodes.content}</Typography>}
             {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
         </TreeItem>
     )
@@ -55,10 +69,12 @@ const CommentsTree: FC<Props> = (props: Props) => {
                 className={classes.root}
                 defaultCollapseIcon={<ExpandMoreIcon/>}
                 defaultExpandIcon={<ChevronRightIcon/>}
+                // expanded={tree ? tree.nodes : undefined}
+                onNodeSelect={onNodeSelect}
             >
-                {renderTree(data)}
+                {tree && renderTree(tree.root)}
             </TreeView>
-            <Comment/>
+            <Comment cb={commentCb}/>
         </>
     )
 }

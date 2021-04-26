@@ -1,4 +1,4 @@
-import {postCreateTopic, postUpdateTopic} from '../../../../services/API/db/index'
+import {postCreateTopic, putUpdateTopic} from '@apiDb'
 import {UserInfoEmpty} from '../../../../store/reducers/user/state'
 import {preSetField} from '../reducer/preActions'
 import {Fields} from '../reducer/types'
@@ -10,7 +10,7 @@ export const saveTopic = async (fields: Fields, userInfo: UserInfoEmpty, dispatc
     const content = fields.topicContent.val
 
     if (id) {
-        const res = await postUpdateTopic(userInfo, {title, content, id})
+        const res = await putUpdateTopic(userInfo, {title, content, id})
         if (res.status === 200) window.alertShow('success', 'Topic updated')
         else window.alertShow('error', res.statusText)
     } else {

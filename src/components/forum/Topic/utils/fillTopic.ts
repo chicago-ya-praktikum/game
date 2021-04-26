@@ -12,10 +12,4 @@ export const fillTopic = async (userInfo: UserInfoEmpty, id: number) => {
     }
 
     return res.data
-    // const {record, readOnly} = res.data
-    // fields.topicId.val = record.id
-    // fields.topicTitle.val = record.title
-    // fields.topicContent.val = record.content
-    // dispatch(fillFields(fields))
-    // dispatch(setReadOnly(readOnly))
 }

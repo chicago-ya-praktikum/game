@@ -1,5 +1,5 @@
-import _ from 'lodash'
-import {FormFieldPayload} from '../../../../types/actionTypes'
+import {deepClone} from '@utils'
+import {FormFieldPayload} from '@types'
 import {Actions} from './EnumActions'
 import {State, Fields, Action} from './types'
 import {initialState} from './state'
@@ -38,7 +38,7 @@ export const reducer = (state: State, action: Action): State => {
             }
         }
         case Actions.RESET: {
-            return _.cloneDeep(initialState)
+            return deepClone(initialState)
         }
         case Actions.SET_INIT: {
             return {
