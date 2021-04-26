@@ -17,8 +17,8 @@ jobs:
                   script: |
                       cd game
                       git pull
-                      docker-compose up --detach
+                      sudo docker-compose up --detach
                       npm i
                       npm run spa-build
-                      rm -rf /var/www/html/*
-                      cp -r dist/* /var/www/html/
+                      sudo rm -rf /var/www/html/*
+                      sudo cp -r dist/* /var/www/html/
