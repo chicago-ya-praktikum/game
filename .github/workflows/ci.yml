@@ -14,4 +14,11 @@ jobs:
                   host: ${{ secrets.HOST }}
                   username: ${{ secrets.USERNAME }}
                   key: ${{ secrets.KEY }}
-                  script: whoami && pwd
+                  script: |
+                      cd game
+                      git pull
+                      docker-compose up --detach
+                      npm i
+                      npm run spa-build
+                      rm -rf /var/www/html/*
+                      cp -r dist/* /var/www/html/
