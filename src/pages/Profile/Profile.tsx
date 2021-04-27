@@ -2,27 +2,28 @@ import React, {
     FC, useCallback, useEffect, useReducer
 } from 'react'
 import {
-    Box, Button, withStyles
+    Box, Button, Switch, withStyles
 } from '@material-ui/core'
 import {useDispatch} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import {styles} from './styles'
-import {
-    InputOnBlur, Props
-} from './types'
+import {InputOnBlur, Props} from './types'
 import {AvatarUI} from '../../components/UI/AvatarUI/index'
 import {ChangePasswordForm} from '../../components/forms/ChangePasswordForm/index'
 import {reducer} from './reducer/reducer'
 import {initialState} from './reducer/state'
 import {
-    setField, fillFields, setFieldErr, setInit
+    fillFields, setField, setFieldErr, setInit
 } from './reducer/actions'
 import {checkFields} from '../../utils/checkFields'
 import {postLogout, putProfile} from '../../store/reducers/user/thunks'
 import {InputForm} from '../../components/UI/inputs/InputForm/index'
-import {userInfoSelector} from '../../store/selectors'
+import {appThemeSelector, userInfoSelector} from '../../store/selectors'
 // eslint-disable-next-line import/no-cycle
 import {routeHome} from '../../components/routers/MainRouter/constants'
+import {AppTheme} from '../../enums/AppTheme'
+import {actionCreator} from '../../utils/actionCreator'
+import {Actions} from '../../store/actions'
 
 const Profile: FC<Props> = (props: Props) => {
     const [state, dispatch] = useReducer(reducer, initialState)
@@ -30,6 +31,15 @@ const Profile: FC<Props> = (props: Props) => {
     const {classes, history} = props
     const dispatchStore = useDispatch()
     const info = userInfoSelector()
+    const theme = appThemeSelector()
+
+    const handleChange = useCallback(() => {
+        dispatchStore(
+            actionCreator(
+                theme === AppTheme.Dark ? Actions.APP_THEME_LIGHT : Actions.APP_THEME_DARK
+            )
+        )
+    }, [theme])
 
     useEffect(() => {
         if (!info || init) return
@@ -86,8 +96,14 @@ const Profile: FC<Props> = (props: Props) => {
                 >
                     Save
                 </Button>
-
             </form>
+
+            <Switch
+                checked={theme === AppTheme.Dark}
+                onChange={handleChange}
+                color='primary'
+            />
+
             <Box className={classes.changePasswordForm}>
                 <ChangePasswordForm/>
             </Box>
