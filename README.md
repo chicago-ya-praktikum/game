@@ -27,10 +27,9 @@ The Sokoban game is interesting in terms of computational complexity. The diffic
 
 ## Start
 
-# npm install
-
-# docker-compose build
-# docker-compose up
+```
+docker-compose up
+```
 
 ## Credits
 
