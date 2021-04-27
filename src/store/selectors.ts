@@ -7,6 +7,7 @@ export const typedState: TypedUseSelectorHook<RootState> = useSelector
 export const userSelector = () => typedState(s => s).user
 export const authSelector = () => typedState(s => s).auth
 export const themeSelector = () => typedState(s => s).theme
+export const appThemeSelector = () => typedState(s => s).appTheme
 
 export const authStatusSelector = () => authSelector().authStatus
 

@@ -5,7 +5,7 @@ import {reducers} from './reducers'
 import {State} from '../types/index'
 import {initialState as user} from './reducers/user/state'
 import {defaultReducer as auth} from './reducers/authReducer'
-import {defaultState as theme} from './reducers/themeReducer'
+import {defaultState as theme} from './reducers/gameThemeReducer'
 
 export const getInitialState = (): State => ({
     user,
