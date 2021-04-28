@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 import {Tile} from '../enums/Tile'
-import {ObjectKeys} from '../types/ObjectKeys'
+import {ObjectKeys} from '../models/ObjectKeys'
 
 const BOX_NO = 1
 const PLAYER_NO = 2

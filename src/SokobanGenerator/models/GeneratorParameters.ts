@@ -9,4 +9,5 @@ export interface GeneratorParameters {
     attempts?: number
     initialPosition?: XYCoordinate
     type?: GeneratorType
+    count?: number
 }

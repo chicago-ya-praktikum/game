@@ -68,7 +68,8 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             IS_CLIENT: JSON.stringify(true),
-            IS_SERVER: JSON.stringify(false)
+            IS_SERVER: JSON.stringify(false),
+            IS_SSR: JSON.stringify(false)
         })
     ]
 }

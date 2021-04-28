@@ -5,10 +5,10 @@ import {Request, Response} from 'express'
 import {StaticRouter} from 'react-router-dom'
 import {StaticRouterContext} from 'react-router'
 import {Provider as ReduxProvider} from 'react-redux'
-import {App} from './components/App/App'
-import {getInitialState, configureStore} from './store/store'
-import {CookiesProvider, ServerCookiesManager} from './services/cookie'
-import {getUserData} from './store/reducers/user/thunks'
+import {App} from '../components/App/App'
+import {getInitialState, configureStore} from '../store/store'
+import {CookiesProvider, ServerCookiesManager} from '../services/cookie'
+import {getUserData} from '../store/reducers/user/thunks'
 
 const getHtml = (reactHtml: string, reduxState = {}) => `
         <!DOCTYPE html>
@@ -29,7 +29,7 @@ const getHtml = (reactHtml: string, reduxState = {}) => `
         </html>
     `
 
-export const serverRenderMiddleware = async (req: Request, res: Response) => {
+export const render = async (req: Request, res: Response) => {
     const location = req.url
     const context: StaticRouterContext = {}
     const cookieManager = new ServerCookiesManager(req, res);
@@ -47,8 +47,6 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
             </CookiesProvider>
         </ReduxProvider>
     )
-
-    // console.log('store', context.url) // Почему два раза?
 
     const reactHtml = renderToString(jsx)
 

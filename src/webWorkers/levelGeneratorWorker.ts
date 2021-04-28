@@ -5,7 +5,7 @@ import {sokobanGenerator} from '../SokobanGenerator/sokobanGenerator'
 // eslint-disable-next-line no-restricted-globals
 const ctx = self
 
-ctx.addEventListener('message', () => {
-    const level = sokobanGenerator()
+ctx.addEventListener('message', (data) => {
+    const level = sokobanGenerator(data.data)
     ctx.postMessage(level)
 })

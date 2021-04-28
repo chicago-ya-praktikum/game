@@ -21,17 +21,11 @@ const Layout: FC<Props> = (props: Props) => {
     const dispatchStore = useDispatch()
     const userLogin = userInfoPropSelector('login')
     const authStatus = authStatusSelector()
-    const init = userInitSelector()
+    const userInit = userInitSelector()
     const title = ''
 
     useEffect(() => {
-        if (init) return
-        dispatchStore(getUserData())
-    }, [])
-
-    useEffect(() => {
-        if (!init) return
-        dispatchStore(getUserData())
+        if (!userInit && authStatus) dispatchStore(getUserData())
     }, [authStatus])
 
     const onClick = useCallback(

@@ -14,6 +14,7 @@ export const getCommonConfig  = (side: 'client' | 'server'): Configuration => {
             new webpack.DefinePlugin({
                 IS_CLIENT: JSON.stringify(IS_CLIENT),
                 IS_SERVER: JSON.stringify(IS_SERVER),
+                IS_SSR: JSON.stringify(true),
                 'typeof window': JSON.stringify(IS_CLIENT ? 'object' : 'undefined')
             })
         ],

@@ -1,19 +1,18 @@
 import {Actions} from '../actions'
-import {GameTheme} from '../../GameCore/enums/GameTheme'
+import {AppTheme} from '../../enums/AppTheme'
 
 interface ActionToTheme {
-    [_: string]: GameTheme
+    [_: string]: AppTheme
 }
 
 const actionToTheme: ActionToTheme = {
-    [Actions.SAND_THEME]: GameTheme.Sand,
-    [Actions.BASIC_THEME]: GameTheme.Basic,
-    [Actions.STONE_THEME]: GameTheme.Stone
+    [Actions.APP_THEME_LIGHT]: AppTheme.Light,
+    [Actions.APP_THEME_DARK]: AppTheme.Dark
 }
 
-export const defaultState: GameTheme = GameTheme.Stone
-
-export function themeReducer(state: GameTheme = defaultState,
-    action: {type: Actions, payload: any}): GameTheme {
+export function themeReducer(
+    state: AppTheme = AppTheme.Dark,
+    action: {type: Actions, payload: any}
+) {
     return actionToTheme[action.type] ?? state
 }

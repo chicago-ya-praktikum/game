@@ -12,6 +12,7 @@
         "lint-fix": "node_modules/.bin/eslint . --fix",
         "spa": "npm run clear-dist && webpack serve --config SPA/webpack.SPA.js",
         "spa-without-clean": "webpack serve --config SPA/webpack.SPA.js",
+        "spa-build": "npm run clear-dist && webpack --config SPA/webpack.SPA.js",
         "build": "webpack --mode production",
         "build-run": "node server.js",
         "prod": "webpack --mode production && node SSR/index.js",
