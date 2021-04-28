@@ -22,12 +22,11 @@ const ListTopics: FC<Props> = (props: Props) => {
     const onClickTitle = useCallback(
         (e: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>) => {
             e.preventDefault()
-            if (!cb) return
             const {id} = e.target as HTMLElement
             if (id.indexOf('#') < 0) return
             const topicId = Number(id.substring(id.indexOf('#') + 1))
-            if (cb) cb(topicId)
-        }, []
+            cb(topicId)
+        }, [cb]
     )
 
     return (

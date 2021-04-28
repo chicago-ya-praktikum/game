@@ -2,7 +2,6 @@ import {Actions} from './EnumActions'
 import {State, Action} from './types'
 
 export const reducer = (state: State, action: Action): State => {
-    // const {payload} = action
     switch (action.type) {
         case Actions.SET_VISIBLE_LIST: {
             return {

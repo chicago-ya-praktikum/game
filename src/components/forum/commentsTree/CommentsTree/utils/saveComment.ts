@@ -7,11 +7,10 @@ export const saveComment = async (userInfo: UserInfoEmpty,
         parentId: number
         content: string
     }): Promise<boolean> => {
-    if (!userInfo) return false
-    console.log('comment', comment)
+    if (!userInfo) throw Error('User is undefined')
     const res = await postCreateComment(userInfo, comment)
     if (res.status === 201) {
         return true
     }
-    return false
+    throw Error('Something went wrong')
 }

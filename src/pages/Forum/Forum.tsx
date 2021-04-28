@@ -24,9 +24,7 @@ const Forum: FC<Props> = (props: Props) => {
 
     useEffect(() => {
         logIn(userInfo)
-            .then((res) => {
-                if (res) dispatch(setAvailable())
-            })
+            .then(() => dispatch(setAvailable()))
     }, [])
 
     const onClickNewTopic = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

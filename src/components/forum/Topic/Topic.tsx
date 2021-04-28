@@ -61,52 +61,50 @@ const Topic: FC<Props> = (props: Props) => {
     const onClickDelete = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         deleteTopic(fields, userInfo)
-            .then((sucess) => {
-                if (sucess) {
-                    dispatch(reset())
-                    window.alertHide()
-                    cb()
-                }
+            .then(() => {
+                dispatch(reset())
+                window.alertHide()
+                cb()
             })
     }, [])
 
-    const RenderButtons = () => (
-        <Box className={classes.buttons}>
-            <Box>
-                {!readOnly && (
-                    <Button
-                        className={classes.button_left}
-                        type='submit'
-                        color='primary'
-                        variant='contained'
-                        onClick={onSubmitForm}
-                    >
-                        Save
-                    </Button>
-                )}
-                <Button
-                    className={classes.button_left}
-                    color='default'
-                    variant='outlined'
-                    onClick={onClickClose}
-                >
-                    Close
-                </Button>
-            </Box>
-            <Box>
-                {!readOnly && (
-                    <Button
-                        className={classes.button_right}
-                        color='secondary'
-                        variant='contained'
-                        onClick={onClickDelete}
-                    >
-                        Delete
-                    </Button>
-                )}
-            </Box>
-        </Box>
-    )
+    // const RenderButtons: JSX.Element = (
+    //     <Box className={classes.buttons}>
+    //         <Box>
+    //             {!readOnly && (
+    //                 <Button
+    //                     className={classes.button_left}
+    //                     type='submit'
+    //                     color='primary'
+    //                     variant='contained'
+    //                     onClick={onSubmitForm}
+    //                 >
+    //                     Save
+    //                 </Button>
+    //             )}
+    //             <Button
+    //                 className={classes.button_left}
+    //                 color='default'
+    //                 variant='outlined'
+    //                 onClick={onClickClose}
+    //             >
+    //                 Close
+    //             </Button>
+    //         </Box>
+    //         <Box>
+    //             {!readOnly && (
+    //                 <Button
+    //                     className={classes.button_right}
+    //                     color='secondary'
+    //                     variant='contained'
+    //                     onClick={onClickDelete}
+    //                 >
+    //                     Delete
+    //                 </Button>
+    //             )}
+    //         </Box>
+    //     </Box>
+    // )
 
     const RenderFields = () => (
         <>

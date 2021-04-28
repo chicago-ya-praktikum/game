@@ -1,12 +1,11 @@
-import {UserInfo} from '../../../../store/reducers/user/state'
-import {getTopics} from '../../../../services/API/db/index'
+import {UserInfoEmpty} from '@state/reducers/user/state'
+import {getTopics} from '@apiDb'
 
-export const getListTopics = async (userInfo: UserInfo | undefined) => {
-    if (!userInfo) return []
+export const getListTopics = async (userInfo: UserInfoEmpty) => {
+    if (!userInfo) throw Error('User is undefined')
     const res = await getTopics(userInfo)
     if (res.status === 200) {
         return res.data
     }
-    window.alertShow('error', res.data.message)
-    return []
+    throw Error('Something went wrong')
 }

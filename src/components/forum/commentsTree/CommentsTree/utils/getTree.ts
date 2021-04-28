@@ -1,3 +1,4 @@
+import {LooseObject} from '@types'
 import {Tree, TreeObj} from '../types'
 
 export const getTree = (data: any): TreeObj => {
@@ -7,17 +8,22 @@ export const getTree = (data: any): TreeObj => {
         content: '',
         children: []
     }
-    const nodesStr: string[] = ['root']
+    const nodes: string[] = ['root']
+    const parents: LooseObject = ['root']
+    parents[0] = root
 
     data.forEach((element: any) => {
-        root.children?.push({
+        const leaf = {
             id: String(element.id),
             name: String(element.userId),
             content: element.content,
             children: []
-        })
-        nodesStr.push(String(element.id))
-    })
+        }
+        const parent = parents[element.parentId]
+        parent.children?.push(leaf)
 
-    return {root, nodes: nodesStr}
+        parents[element.id] = leaf
+        nodes.push(String(element.id))
+    })
+    return {root, nodes}
 }

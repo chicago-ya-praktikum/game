@@ -1,5 +1,5 @@
 import React, {
-    FC, useCallback, useEffect, useState
+    FC, useCallback, useEffect, useMemo, useState
 } from 'react'
 import {Typography, withStyles} from '@material-ui/core'
 import {TreeItem, TreeView} from '@material-ui/lab'
@@ -17,8 +17,6 @@ const CommentsTree: FC<Props> = (props: Props) => {
     const [tree, setTree] = useState<TreeObj>()
     const [curCommentId, setCurCommentId] = useState(0)
 
-    console.log('render currentCommentId', curCommentId)
-
     useEffect(() => {
         getComments(userInfo, topicId)
             .then((res) => setTree(getTree(res)))
@@ -32,8 +30,7 @@ const CommentsTree: FC<Props> = (props: Props) => {
         e.preventDefault()
     }, [])
 
-    const commentCb = (content?: string) => {
-        console.log('commentCb currentCommentId', curCommentId)
+    const commentCb = useCallback((content?: string) => {
         if (content) {
             saveComment(
                 userInfo,
@@ -42,14 +39,12 @@ const CommentsTree: FC<Props> = (props: Props) => {
                     content,
                     parentId: curCommentId
                 }
-            ).then((saved) => {
-                if (saved) {
-                    getComments(userInfo, topicId)
-                        .then((res) => setTree(getTree(res)))
-                }
+            ).then(() => {
+                getComments(userInfo, topicId)
+                    .then((res) => setTree(getTree(res)))
             })
         }
-    } // , [curCommentId, topicId])
+    }, [curCommentId, topicId])
 
     const renderTree = (nodes: Tree) => (
         <TreeItem
@@ -58,10 +53,12 @@ const CommentsTree: FC<Props> = (props: Props) => {
             label={nodes.name}
             onLabelClick={onLabelClick}
         >
-            {nodes.content && <Typography variant='subtitle2'>{nodes.content}</Typography>}
+            {nodes.content && <Typography variant='body2'>{nodes.content}</Typography>}
             {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
         </TreeItem>
     )
+
+    const expanded = useMemo(() => (tree ? tree.nodes : []), [tree])
 
     return (
         <>
@@ -69,7 +66,7 @@ const CommentsTree: FC<Props> = (props: Props) => {
                 className={classes.root}
                 defaultCollapseIcon={<ExpandMoreIcon/>}
                 defaultExpandIcon={<ChevronRightIcon/>}
-                // expanded={tree ? tree.nodes : undefined}
+                expanded={expanded}
                 onNodeSelect={onNodeSelect}
             >
                 {tree && renderTree(tree.root)}

@@ -31,7 +31,7 @@ export const putUpdateTopic = async (userInfo: UserInfo,
     }): Promise<AxiosResponse> => {
     try {
         const axios = getAxiosInstance(userInfo)
-        const res = await axios.post(API_ROOT + URL_TOPIC.PUT,
+        const res = await axios.put(API_ROOT + URL_TOPIC.PUT,
             {
                 id: topicInfo.id,
                 title: topicInfo.title,

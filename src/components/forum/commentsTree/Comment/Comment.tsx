@@ -33,7 +33,7 @@ const Comment: FC<Props> = (props: Props) => {
         setContentErr(false)
         setShow(false)
         cb(content)
-    }, [])
+    }, [cb])
 
     const onClickClose = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
