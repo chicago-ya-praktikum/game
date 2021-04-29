@@ -3,7 +3,7 @@ FROM node:15
 WORKDIR app
 COPY . .
 
-RUN npm install && npm run prod
+RUN npm install && npm run build-prod
 
 EXPOSE 5000
 
