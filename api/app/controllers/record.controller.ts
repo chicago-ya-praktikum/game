@@ -4,6 +4,7 @@ import {checkUserStatus, createBadResponse, ErrorName} from './utils/helpers'
 import {recordDataRules} from './utils/requestDataVaidators'
 
 const Record = db.records
+const Users = db.users
 
 export const create = async (req: any, res: any) => {
     try {
@@ -30,7 +31,7 @@ export const create = async (req: any, res: any) => {
             content: req.body.content
         }
 
-        const newRecord = await Record.create(record)
+        const newRecord = await Record.create(record, {include: Users})
 
         if (!newRecord) {
             res.status(500).send(
@@ -101,7 +102,7 @@ export const getAll = async (req: any, res: any) => {
             return
         }
 
-        const records = await Record.findAll()
+        const records = await Record.findAll({include: Users})
 
         if (!records) {
             res.status(500).send(
@@ -130,7 +131,8 @@ export const getOne = async (req: any, res: any) => {
         const {id} = req.params
 
         const record = await Record.findOne({
-            where: {id}
+            where: {id},
+            include: Users
         })
 
         if (record === null) {

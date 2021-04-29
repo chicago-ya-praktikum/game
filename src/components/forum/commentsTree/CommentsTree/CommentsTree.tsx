@@ -1,7 +1,7 @@
 import React, {
     FC, useCallback, useEffect, useMemo, useState
 } from 'react'
-import {Typography, withStyles} from '@material-ui/core'
+import {Box, Typography, withStyles} from '@material-ui/core'
 import {TreeItem, TreeView} from '@material-ui/lab'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
@@ -14,7 +14,7 @@ import {saveComment, getComments, getTree} from './utils'
 const CommentsTree: FC<Props> = (props: Props) => {
     const {classes, topicId} = props
     const userInfo = userInfoSelector()
-    const [tree, setTree] = useState<TreeObj>()
+    const [tree, setTree] = useState<TreeObj>(getTree())
     const [curCommentId, setCurCommentId] = useState(0)
 
     useEffect(() => {
@@ -50,7 +50,17 @@ const CommentsTree: FC<Props> = (props: Props) => {
         <TreeItem
             key={nodes.id}
             nodeId={nodes.id}
-            label={nodes.name}
+            label={(
+                <Box style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'flex-end'
+                }}>
+                    <Typography>{nodes.name}</Typography>
+                    &nbsp;
+                    <Typography variant='subtitle2' color='textSecondary'>{nodes.date}</Typography>
+                </Box>
+            )}
             onLabelClick={onLabelClick}
         >
             {nodes.content && <Typography variant='body2'>{nodes.content}</Typography>}
@@ -58,7 +68,7 @@ const CommentsTree: FC<Props> = (props: Props) => {
         </TreeItem>
     )
 
-    const expanded = useMemo(() => (tree ? tree.nodes : []), [tree])
+    const expanded = useMemo(() => (tree ? tree.nodes : []), [tree.nodes])
 
     return (
         <>

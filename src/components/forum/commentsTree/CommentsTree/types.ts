@@ -9,6 +9,7 @@ export type Tree = {
     id: string
     name: string
     content: string
+    date: string
     children?: Tree[]
 }
 

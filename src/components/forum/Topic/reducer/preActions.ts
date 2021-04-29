@@ -22,6 +22,7 @@ export const preFillFields = (fieldsOld: Fields, res: any): Action => {
     fields.topicId.val = record.id
     fields.topicTitle.val = record.title
     fields.topicContent.val = record.content
+    fields.topicAuthor.val = record.user.displayName
 
     return fillFields(fields)
 }
