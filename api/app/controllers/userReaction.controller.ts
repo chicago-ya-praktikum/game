@@ -1,11 +1,12 @@
 import Validator from 'validatorjs'
+import Sequelize from 'sequelize'
 import {checkUserStatus, createBadResponse, ErrorName} from './utils/helpers'
 import {db} from '../models/index'
 import {userReactionDataRules} from './utils/requestDataVaidators'
 
 const UserReaction = db.userReactions
 
-export const create = async (req: any, res: any) => {
+export const createOrRemove = async (req: any, res: any) => {
     try {
         const status = await checkUserStatus(req.headers.authorization)
 
@@ -25,37 +26,34 @@ export const create = async (req: any, res: any) => {
             return
         }
 
-        const recordId = req.params.id
-
-        const userReaction = {
-            reactionId: req.body.reactionId,
-            userId: status,
-            recordId
-        }
-
-        const recordUserReaction = await UserReaction.findOne({
+        const foundItem = await UserReaction.findOne({
             where: {
                 reactionId: req.body.reactionId,
                 userId: status,
-                recordId
+                recordId: req.body.recordId
             }
         })
 
-        if (recordUserReaction !== null) {
-            res.status(409).send(
-                createBadResponse(ErrorName.RECORD_REACTION_CONFLICT)
-            )
+        if (foundItem) {
+            await UserReaction.destroy({
+                where: {
+                    reactionId: req.body.reactionId,
+                    userId: status,
+                    recordId: req.body.recordId
+                }
+            })
+            res.status(200).send({
+                message: 'User emotion was deleted successfully!',
+                item: foundItem
+            })
+        } else {
+            const newItem = await UserReaction.create({
+                reactionId: req.body.reactionId,
+                userId: status,
+                recordId: req.body.recordId
+            })
+            res.status(201).send(newItem)
         }
-
-        const newRecordUserReaction = await UserReaction.create(userReaction)
-
-        if (!newRecordUserReaction) {
-            res.status(500).send(
-                createBadResponse(ErrorName.INTERNAL_ERROR)
-            )
-        }
-
-        res.status(201).send(newRecordUserReaction)
     } catch (err) {
         res.status(500).send(
             createBadResponse(ErrorName.INTERNAL_ERROR)
@@ -63,7 +61,7 @@ export const create = async (req: any, res: any) => {
     }
 }
 
-export const getAll = async (req: any, res: any) => {
+export const getOne = async (req: any, res: any) => {
     try {
         const status = await checkUserStatus(req.headers.authorization)
 
@@ -74,21 +72,41 @@ export const getAll = async (req: any, res: any) => {
             return
         }
 
-        const {id} = req.params
+        const {recordId} = req.params
 
-        const recordReactionsList = await UserReaction.findAll({
+        const itemsActive = await UserReaction.findAll({
             where: {
-                recordId: id
-            }
+                recordId
+            },
+            group: ['reactionId'],
+            attributes: [
+                'reactionId',
+                [Sequelize.fn('COUNT', Sequelize.col('userId')), 'count_userId']
+            ]
         })
 
-        if (!recordReactionsList) {
+        const itemsUser = await UserReaction.findAll({
+            where: {
+                recordId,
+                userId: status
+            },
+            attributes: [
+                'reactionId'
+            ]
+        })
+
+        const user = itemsUser.map((item: {reactionId: number}) => item.reactionId)
+
+        if (!itemsActive) {
             res.status(500).send(
                 createBadResponse(ErrorName.INTERNAL_ERROR)
             )
             return
         }
-        res.status(200).send(recordReactionsList)
+        res.status(200).send({
+            common: itemsActive,
+            user
+        })
     } catch (err) {
         res.status(500).send(
             createBadResponse(ErrorName.INTERNAL_ERROR)

@@ -14,26 +14,49 @@ import {userInfoSelector} from '@state/selectors'
 import {LooseObject} from '@types'
 import {Props} from './types'
 import {styles} from './styles'
-import {getReactions} from './utils'
+import {getReactions, postUserReactions, getTopicReactions} from './utils'
 
-const iconsСomp: LooseObject = {
-    ThumbUpIcon: <ThumbUpIcon/>,
-    ThumbDownIcon: <ThumbDownIcon/>,
-    ThumbsUpDownIcon: <ThumbsUpDownIcon/>,
-    SentimentSatisfiedAltIcon: <SentimentSatisfiedAltIcon/>,
-    SentimentVeryDissatisfiedIcon: <SentimentVeryDissatisfiedIcon/>
+const getIcon = (id: number, iconsUser: number[]) => {
+    const color = iconsUser.includes(id) ? 'disabled' : 'inherit'
+    const iconsСomp: LooseObject = {
+        1: <ThumbUpIcon color={color}/>,
+        2: <ThumbDownIcon color={color}/>,
+        3: <ThumbsUpDownIcon color={color}/>,
+        4: <SentimentSatisfiedAltIcon color={color}/>,
+        5: <SentimentVeryDissatisfiedIcon color={color}/>
+    }
+
+    return iconsСomp[id]
 }
 
 const ReactionsPanel: FC<Props> = (props: Props) => {
-    const {classes} = props
+    const {classes, topicId} = props
     const [anchorEl, setAnchorEl] = useState(null)
     const [icons, setIcons] = useState([])
+
+    const [iconsActive, setIconsActive] = useState({iconsUser: [], iconsCommon: []})
+    const {iconsUser, iconsCommon} = iconsActive
+
     const userInfo = userInfoSelector()
+
+    const getActveIcons = useCallback(() => {
+        getTopicReactions(userInfo, topicId)
+            .then((res) => {
+                setIconsActive({
+                    iconsUser: res.user,
+                    iconsCommon: res.common
+                })
+            })
+    }, [iconsCommon])
 
     useEffect(() => {
         getReactions(userInfo)
             .then((res) => setIcons(res))
     }, [])
+
+    useEffect(() => {
+        getActveIcons()
+    }, [topicId])
 
     const handleClick = useCallback((e: any) => {
         setAnchorEl(e.currentTarget)
@@ -43,8 +66,13 @@ const ReactionsPanel: FC<Props> = (props: Props) => {
         setAnchorEl(null)
     }, [])
 
-    const addIcon = useCallback((key: string) => {
-        console.log('key', key)
+    const addRemoveIcon = useCallback((key: string) => {
+        postUserReactions(userInfo, {
+            recordId: topicId,
+            reactionId: Number(key)
+        }).then(() => {
+            getActveIcons()
+        })
         handleClose()
     }, [])
 
@@ -59,19 +87,18 @@ const ReactionsPanel: FC<Props> = (props: Props) => {
             >
                 <AddIcon/>
             </Button>
-            <Box className={classes.icon}>
-                <ThumbUpIcon/>
-                1
-            </Box>
-            <Box className={classes.icon}>
-                <ThumbUpIcon/>
-                1
-            </Box>
-            <Box className={classes.icon}>
-                <ThumbUpIcon/>
-                1
-            </Box>
-
+            {iconsCommon.map((item: any) => (
+                getIcon(item.reactionId, iconsUser) && (
+                    <Box
+                        className={classes.icon}
+                        key={item.reactionId}
+                        onClick={() => addRemoveIcon(item.reactionId)}
+                    >
+                        {getIcon(item.reactionId, iconsUser)}
+                        {item.count_userId}
+                    </Box>
+                )
+            ))}
             <Menu
                 id='reactions-menu'
                 anchorEl={anchorEl}
@@ -79,11 +106,11 @@ const ReactionsPanel: FC<Props> = (props: Props) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}>
                 {icons.map((item: any) => (
-                    iconsСomp[item.iconName] && (
+                    getIcon(item.id, iconsUser) && (
                         <MenuItem
-                            key={item.iconName}
-                            onClick={() => addIcon(item.iconName)}>{
-                                iconsСomp[item.iconName]
+                            key={item.id}
+                            onClick={() => addRemoveIcon(item.id)}>{
+                                getIcon(item.id, iconsUser)
                             }
                         </MenuItem>
                     )

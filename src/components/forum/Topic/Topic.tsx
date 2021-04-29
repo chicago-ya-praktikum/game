@@ -71,43 +71,43 @@ const Topic: FC<Props> = (props: Props) => {
             })
     }, [])
 
-    // const RenderButtons: JSX.Element = (
-    //     <Box className={classes.buttons}>
-    //         <Box>
-    //             {!readOnly && (
-    //                 <Button
-    //                     className={classes.button_left}
-    //                     type='submit'
-    //                     color='primary'
-    //                     variant='contained'
-    //                     onClick={onSubmitForm}
-    //                 >
-    //                     Save
-    //                 </Button>
-    //             )}
-    //             <Button
-    //                 className={classes.button_left}
-    //                 color='default'
-    //                 variant='outlined'
-    //                 onClick={onClickClose}
-    //             >
-    //                 Close
-    //             </Button>
-    //         </Box>
-    //         <Box>
-    //             {!readOnly && (
-    //                 <Button
-    //                     className={classes.button_right}
-    //                     color='secondary'
-    //                     variant='contained'
-    //                     onClick={onClickDelete}
-    //                 >
-    //                     Delete
-    //                 </Button>
-    //             )}
-    //         </Box>
-    //     </Box>
-    // )
+    const Header: JSX.Element = (
+        <Box className={classes.header}>
+            <Box>
+                {!readOnly && (
+                    <Button
+                        className={classes.header_left}
+                        type='submit'
+                        color='primary'
+                        variant='contained'
+                        onClick={onSubmitForm}
+                    >
+                        Save
+                    </Button>
+                )}
+                <Button
+                    className={classes.header_left}
+                    color='default'
+                    variant='outlined'
+                    onClick={onClickClose}
+                >
+                    Close
+                </Button>
+            </Box>
+            <Box>
+                {!readOnly && (
+                    <Button
+                        className={classes.header_right}
+                        color='secondary'
+                        variant='contained'
+                        onClick={onClickDelete}
+                    >
+                        Delete
+                    </Button>
+                )}
+            </Box>
+        </Box>
+    )
 
     const RenderFields = () => (
         <>
@@ -159,52 +159,19 @@ const Topic: FC<Props> = (props: Props) => {
     return (
         <>
             <Box className={classes.root}>
-                {/* <RenderButtons/> */}
-
-                <Box className={classes.header}>
-                    <Box>
-                        {!readOnly && (
-                            <Button
-                                className={classes.header_left}
-                                type='submit'
-                                color='primary'
-                                variant='contained'
-                                onClick={onSubmitForm}
-                            >
-                                Save
-                            </Button>
-                        )}
-                        <Button
-                            className={classes.header_left}
-                            color='default'
-                            variant='outlined'
-                            onClick={onClickClose}
-                        >
-                            Close
-                        </Button>
-                    </Box>
-                    <Box>
-                        {!readOnly && (
-                            <Button
-                                className={classes.header_right}
-                                color='secondary'
-                                variant='contained'
-                                onClick={onClickDelete}
-                            >
-                                Delete
-                            </Button>
-                        )}
-                    </Box>
-                </Box>
-
+                {Header}
                 <RenderFields/>
-
                 <Box className={classes.footer}>
-                    <Typography variant='subtitle2' color='textSecondary'>{`author: ${topicAuthor.val}`}</Typography>
-                    {!!id && <ReactionsPanel/>}
+                    <Typography
+                        variant='subtitle2'
+                        color='textSecondary'
+                    >
+                        {`author: ${topicAuthor.val}`}
+                    </Typography>
+                    {topicId.val && <ReactionsPanel topicId={Number(topicId.val)}/>}
                 </Box>
                 <Box>
-                    {!!topicId.val && <CommentsTree topicId={Number(topicId.val)}/>}
+                    {topicId.val && <CommentsTree topicId={Number(topicId.val)}/>}
                 </Box>
             </Box>
         </>

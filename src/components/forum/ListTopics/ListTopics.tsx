@@ -46,7 +46,7 @@ const ListTopics: FC<Props> = (props: Props) => {
                             >
                                 {row.title}
                             </TableCell>
-                            <TableCell style={{width: 160}} align='right'>
+                            <TableCell style={{width: 300}} align='right'>
                                 {`author: ${row.user.displayName}`}
                             </TableCell>
                         </TableRow>

@@ -31,7 +31,7 @@ export const create = async (req: any, res: any) => {
             content: req.body.content
         }
 
-        const newRecord = await Record.create(record, {include: Users})
+        const newRecord = await Record.create(record)
 
         if (!newRecord) {
             res.status(500).send(
