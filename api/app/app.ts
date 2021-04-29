@@ -1,12 +1,12 @@
 import 'colors'
 import cors, {CorsOptions} from 'cors'
 import {db} from './models/index'
-import userRoutes from './routes/user.routes'
 import recordRoutes from './routes/record.routes'
 import reactionRoutes from './routes/reaction.routes'
 import userReactionsRoutes from './routes/userReaction.routes'
 import {commentRoutes} from './routes/comment.routes'
 import {fillInByDefault} from './controllers/utils/fillInByDefault'
+import {userRoutes} from './routes/user.routes'
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -14,14 +14,12 @@ const bodyParser = require('body-parser')
 export const app = express()
 
 const corsOptions: CorsOptions = {
-    origin: '*',
+    origin: process.env.NODE_ENV !== 'production' ? 'https://local.ya-praktikum.tech:5000' : '*',
     credentials: true
 }
 
 app.use(cors(corsOptions))
-
 app.use(bodyParser.json())
-
 app.use(bodyParser.urlencoded({extended: true}))
 
 db.sequelize.sync({force: true})

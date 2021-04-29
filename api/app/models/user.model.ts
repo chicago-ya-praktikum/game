@@ -1,14 +1,13 @@
-export const userTable = (sequelize: any, Sequelize: any) => {
-    const User = sequelize.define('users', {
-        displayName: {
-            type: Sequelize.STRING,
-            allowNull: true
-        },
-        avatar: {
-            type: Sequelize.STRING,
-            allowNull: true
-        }
-    });
+import {DataTypes} from 'sequelize'
+import {sequelize} from '../config/db.config'
 
-    return User
-}
+export const userModel = sequelize.define('users', {
+    displayName: {
+        type: new DataTypes.STRING(32),
+        allowNull: true
+    },
+    avatar: {
+        type: new DataTypes.STRING(128),
+        allowNull: true
+    }
+})
