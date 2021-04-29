@@ -15,7 +15,7 @@
         "spa-build": "npm run clear-dist && webpack --config SPA/webpack.SPA.js",
         "build": "webpack --mode production",
         "build-run": "node server.js",
-        "prod": "webpack --mode production && node SSR/index.js",
+        "prod": "NODE_ENV=production webpack --mode production && node SSR/index.js",
         "clear-dist": "rm -rf dist",
         "ssr:webpack": "webpack --mode=development --watch",
         "ssr:server": "nodemon SSR/index.js --watch dist/server.js",
