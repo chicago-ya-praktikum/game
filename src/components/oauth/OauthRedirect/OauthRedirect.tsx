@@ -16,8 +16,6 @@ const OauthRedirect: FC<Props> = () => {
                 .then((res) => {
                     if (res.data === 'OK') {
                         dispatchStore(getUserData())
-                    } else {
-                        window.alertShow('error', 'Something went wrong')
                     }
                 })
         }

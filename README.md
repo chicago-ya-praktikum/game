@@ -28,6 +28,7 @@ The Sokoban game is interesting in terms of computational complexity. The diffic
 ## Start
 
 ```
+docker-compose build
 docker-compose up
 ```
 

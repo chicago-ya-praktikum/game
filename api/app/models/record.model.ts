@@ -1,9 +1,5 @@
 export const recordTable = (sequelize: any, Sequelize: any) => {
     const Record = sequelize.define('records', {
-        parentId: {
-            type: Sequelize.INTEGER,
-            allowNull: true
-        },
         userId: {
             type: Sequelize.INTEGER,
             allowNull: false
@@ -18,5 +14,5 @@ export const recordTable = (sequelize: any, Sequelize: any) => {
         }
     })
 
-    return Record;
+    return Record
 }

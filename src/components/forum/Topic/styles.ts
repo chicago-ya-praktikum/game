@@ -4,13 +4,25 @@ export const styles = () => createStyles({
     root: {
         margin: '20px'
     },
-    buttons: {
+    topicTitle: {
         display: 'flex',
-        justifyContent: 'flex-end',
+        flexDirection: 'row'
+    },
+    header: {
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'flex-start'
     },
-    button: {
-        margin: '10px 10px 0px 0px'
+    header_left: {
+        margin: '0px 10px 0px 0px'
+    },
+    header_right: {
+        margin: '0px 0px 0px 10px'
+    },
+    footer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
     }
 
 })

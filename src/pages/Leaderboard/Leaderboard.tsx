@@ -12,7 +12,7 @@ import {
 import React, {FC, useEffect, useState} from 'react'
 import {LBItem, Props} from './types'
 import {styles} from './styles'
-import {ratingFieldName} from '../../contstants/ratingFieldName'
+import {ratingFieldName} from '../../contstants/ya/ratingFieldName'
 import {getTable} from './utils/getTable'
 import {LeaderboardRequest} from '../../models/api/LeaderboardRequest'
 import {Users} from '../../API'

@@ -1,7 +1,7 @@
 import {AxiosResponse} from 'axios'
-import {URL_OAUTH, API_ROOT} from '../../contstants/index'
+import {API_ROOT, URL_OAUTH} from '../../contstants/ya/index'
 import {YaCookie} from './types'
-import {getAxios} from './utils/getAxios'
+import {getAxiosInstance as getAxios} from './utils/getAxiosInstance'
 
 export const apiGetYandexServiceId = async (
     cookies: YaCookie | null = null

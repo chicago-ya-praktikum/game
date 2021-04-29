@@ -10,5 +10,5 @@ export const userTable = (sequelize: any, Sequelize: any) => {
         }
     });
 
-    return User;
-};
+    return User
+}

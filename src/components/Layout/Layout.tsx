@@ -1,5 +1,5 @@
 import React, {
-    FC, useCallback, useEffect
+    FC, useCallback, useEffect, memo
 } from 'react'
 import {
     AppBar, Button, Container, Grid, IconButton, Typography, withStyles
@@ -16,7 +16,7 @@ import {authStatusSelector, userInfoPropSelector, userInitSelector} from '../../
 import {getUserData} from '../../store/reducers/user/thunks'
 import {AvatarUI} from '../UI/AvatarUI/index'
 
-const Layout: FC<Props> = (props: Props) => {
+const LocalLayout: FC<Props> = (props: Props) => {
     const {children, classes, history} = props
     const dispatchStore = useDispatch()
     const userLogin = userInfoPropSelector('login')
@@ -80,4 +80,4 @@ const Layout: FC<Props> = (props: Props) => {
         </>
     )
 }
-export const LayoutTSX = withStyles(styles)(withRouter(Layout))
+export const Layout = memo(withStyles(styles)(withRouter(LocalLayout)))

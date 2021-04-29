@@ -1,4 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
+
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const path = require('path')
 const CopyPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
@@ -12,7 +14,8 @@ module.exports = {
         writeToDisk: true,
         hot: true,
         overlay: true,
-        open: true
+        open: true,
+        disableHostCheck: true
     },
     entry: './SPA/index.tsx',
     output: {
@@ -20,7 +23,8 @@ module.exports = {
         filename: 'bundle.js'
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js', '.png']
+        extensions: ['.tsx', '.ts', '.js', '.png'],
+        plugins: [new TsconfigPathsPlugin({configFile: 'tsconfig.json'})]
     },
     devtool: 'inline-source-map',
     module: {

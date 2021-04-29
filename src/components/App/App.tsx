@@ -5,10 +5,10 @@ import {MainRouter} from '../routers/MainRouter/MainRouter'
 import {ErrorBoundary} from '../ErrorBoundary/ErrorBoundary'
 import {AlertProvider} from '../UI/Alert/AlertProvider/AlertProvider'
 import {AlertUI} from '../UI/Alert/AlertUI'
-import {Layout} from '../Layout/index'
 import {OauthRedirect} from '../oauth/OauthRedirect/index'
 import {appThemeSelector} from '../../store/selectors'
 import {AppTheme} from '../../enums/AppTheme'
+import {Layout} from '../Layout/Layout'
 
 export function App() {
     const getTheme = (type: AppTheme) => createMuiTheme({

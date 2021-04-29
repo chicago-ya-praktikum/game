@@ -1,38 +1,53 @@
-import React, {FC, useCallback, useState} from 'react'
+import React, {
+    FC, useCallback, useRef, useState
+} from 'react'
 import {
     Box, Button, TextField, withStyles
 } from '@material-ui/core'
 import {Props} from './types'
 import {styles} from './styles'
+import {formIsValid} from './utils'
 
 const Comment: FC<Props> = (props: Props) => {
-    const {classes} = props
+    const {classes, cb} = props
     const disabledForm = false
+
     const [show, setShow] = useState(false)
+    const [contentErr, setContentErr] = useState(false)
+
+    const refContent = useRef('')
 
     const onClickAddComment = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         setShow(true)
-        // if (cb) cb()
     }, [])
 
     const onClickSave = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
+        const input = refContent.current as unknown as HTMLInputElement
+        const content = input.value
+        if (!formIsValid(content)) {
+            setContentErr(true)
+            return
+        }
+        setContentErr(false)
         setShow(false)
-        // if (cb) cb()
-    }, [])
+        cb(content)
+    }, [cb])
 
     const onClickClose = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         setShow(false)
-        // if (cb) cb()
+        cb()
     }, [])
 
     return (
         <>
-            <Button size='small' color='primary' onClick={onClickAddComment}>
-                Add comment
-            </Button>
+            {!show && (
+                <Button size='small' color='primary' onClick={onClickAddComment}>
+                    Add comment
+                </Button>
+            )}
             {show && (
                 <Box className={classes.root}>
                     <Box>
@@ -43,7 +58,10 @@ const Comment: FC<Props> = (props: Props) => {
                             placeholder='Your comment'
                             multiline
                             rows={5}
-                            rowsMax={10}/>
+                            rowsMax={10}
+                            inputRef={refContent}
+                            error={contentErr}
+                        />
                     </Box>
                     <Box className={classes.buttons}>
                         <Button

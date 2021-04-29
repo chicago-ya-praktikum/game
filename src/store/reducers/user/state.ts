@@ -9,6 +9,8 @@ export type UserInfo = {
     avatar: string
 }
 
+export type UserInfoEmpty = UserInfo | undefined
+
 export const info: UserInfo = {
     id: 0,
     first_name: '',

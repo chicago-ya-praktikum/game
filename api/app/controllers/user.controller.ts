@@ -1,7 +1,5 @@
-import Validator from 'validatorjs'
-import {checkUserStatus, ErrorName, createBadResponse} from './utils/helpers'
+import {checkUserStatus, createBadResponse, ErrorName} from './utils/helpers'
 import {db} from '../models/index'
-import {userDataRules} from './utils/requestDataVaidators'
 
 const User = db.users
 const Token = db.tokens
@@ -16,24 +14,26 @@ export const create = async (req: any, res: any) => {
             )
             return
         }
-        const validation = new Validator(req, userDataRules)
 
-        if (validation.fails()) {
-            res.status(400).send(
-                createBadResponse(ErrorName.WRONG_API)
-            )
-            return
+        const {displayName} = req.body
+        if (typeof displayName !== 'string') {
+            res.status(400).send(createBadResponse(ErrorName.DISPLAY_NAME_MUST_BE_STRING))
+        }
+
+        let {avatar} = req.body
+        if (typeof avatar !== 'string') {
+            avatar = null
         }
 
         const user = {
-            displayName: req.body.displayName,
-            avatar: req.body.avatar
+            displayName,
+            avatar
         }
         const newUser = await User.create(user)
 
         if (!newUser) {
             res.status(500).send(
-                createBadResponse(ErrorName.INTERNAL_ERROR)
+                createBadResponse(ErrorName.USER_NOT_CREATED)
             )
             return
         }
@@ -47,7 +47,7 @@ export const create = async (req: any, res: any) => {
 
         if (!newToken) {
             res.status(500).send(
-                createBadResponse(ErrorName.INTERNAL_ERROR)
+                createBadResponse(ErrorName.TOKEN_NOT_CREATED)
             )
             return
         }
@@ -55,7 +55,7 @@ export const create = async (req: any, res: any) => {
         res.status(201).send(newUser)
     } catch (err) {
         res.status(500).send(
-            createBadResponse(ErrorName.INTERNAL_ERROR)
+            createBadResponse(ErrorName.CATCH_ERROR)
         )
     }
 }
@@ -83,7 +83,7 @@ export const getAll = async (req: any, res: any) => {
         res.status(200).send(users)
     } catch (err) {
         res.status(500).send(
-            createBadResponse(ErrorName.INTERNAL_ERROR)
+            createBadResponse(ErrorName.CATCH_ERROR)
         )
     }
 }

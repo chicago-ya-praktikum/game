@@ -10,7 +10,7 @@ export const getDefaultFormField = (
     let tip = ''
     if (auxProps) {
         type = auxProps.type || type
-        required = auxProps.required || required
+        required = typeof auxProps.required === 'undefined' ? true : auxProps.required
         err = auxProps.err || err
         val = auxProps.val || val
         tip = auxProps.tip || tip

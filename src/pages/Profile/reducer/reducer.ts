@@ -1,4 +1,4 @@
-import {FormFieldPayload} from '../../../types/actionTypes'
+import {FormFieldPayload} from '@types'
 import {Actions, Action} from './actions'
 import {State, Fields} from './state'
 

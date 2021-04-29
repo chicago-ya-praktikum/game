@@ -4,6 +4,7 @@ import {checkUserStatus, createBadResponse, ErrorName} from './utils/helpers'
 import {recordDataRules} from './utils/requestDataVaidators'
 
 const Record = db.records
+const Users = db.users
 
 export const create = async (req: any, res: any) => {
     try {
@@ -20,13 +21,12 @@ export const create = async (req: any, res: any) => {
         if (validation.fails()) {
             res.status(400).send(
                 createBadResponse(ErrorName.WRONG_API)
-            );
+            )
             return
         }
 
         const record = {
             userId: status,
-            parentId: req.body.parentId,
             title: req.body.title,
             content: req.body.content
         }
@@ -47,6 +47,50 @@ export const create = async (req: any, res: any) => {
     }
 }
 
+export const update = async (req: any, res: any) => {
+    try {
+        const status = await checkUserStatus(req.headers.authorization)
+
+        if (!status) {
+            res.status(401).send(
+                createBadResponse(ErrorName.UNAUTHORIZED)
+            )
+            return
+        }
+        const validation = new Validator(req, recordDataRules)
+
+        if (validation.fails()) {
+            res.status(400).send(
+                createBadResponse(ErrorName.WRONG_API)
+            )
+            return
+        }
+
+        const {id, title, content} = req.body
+        if (id) {
+            const record = await Record.update(
+                {
+                    title,
+                    content
+                },
+                {
+                    where: {id}
+                }
+            )
+            res.status(200).send(record)
+            return
+        }
+
+        res.status(500).send(
+            createBadResponse(ErrorName.INTERNAL_ERROR)
+        )
+    } catch (err) {
+        res.status(500).send(
+            createBadResponse(ErrorName.INTERNAL_ERROR)
+        )
+    }
+}
+
 export const getAll = async (req: any, res: any) => {
     try {
         const status = await checkUserStatus(req.headers.authorization)
@@ -58,7 +102,7 @@ export const getAll = async (req: any, res: any) => {
             return
         }
 
-        const records = await Record.findAll()
+        const records = await Record.findAll({include: Users})
 
         if (!records) {
             res.status(500).send(
@@ -87,7 +131,8 @@ export const getOne = async (req: any, res: any) => {
         const {id} = req.params
 
         const record = await Record.findOne({
-            where: {id}
+            where: {id},
+            include: Users
         })
 
         if (record === null) {
@@ -103,13 +148,16 @@ export const getOne = async (req: any, res: any) => {
             )
             return
         }
-        res.status(200).send(record)
+        res.status(200).send({
+            record,
+            readOnly: status !== record.userId
+        })
     } catch (err) {
         res.status(500).send(
             createBadResponse(ErrorName.INTERNAL_ERROR)
         )
     }
-};
+}
 
 export const remove = async (req: any, res: any) => {
     try {
@@ -154,7 +202,7 @@ export const remove = async (req: any, res: any) => {
             )
         }
 
-        res.send({
+        res.status(200).send({
             message: 'Record was deleted successfully!'
         })
     } catch (err) {
