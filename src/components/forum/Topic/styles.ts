@@ -8,16 +8,21 @@ export const styles = () => createStyles({
         display: 'flex',
         flexDirection: 'row'
     },
-    buttons: {
+    header: {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-start'
     },
-    button_left: {
+    header_left: {
         margin: '0px 10px 0px 0px'
     },
-    button_right: {
+    header_right: {
         margin: '0px 0px 0px 10px'
+    },
+    footer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
     }
 
 })

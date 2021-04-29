@@ -2,7 +2,7 @@ import React, {
     FC, useCallback, useEffect, useReducer
 } from 'react'
 import {
-    Box, Button, TextField, withStyles
+    Box, Button, TextField, Typography, withStyles
 } from '@material-ui/core'
 import {userInfoSelector} from '@state/selectors'
 import {deepClone} from '@utils'
@@ -16,6 +16,7 @@ import {
     fillTopic, formIsValid, saveTopic, deleteTopic
 } from './utils'
 import {preFillFields, preSetField} from './reducer/preActions'
+import {ReactionsPanel} from '../ReactionsPanel/index'
 
 const Topic: FC<Props> = (props: Props) => {
     const {
@@ -24,7 +25,9 @@ const Topic: FC<Props> = (props: Props) => {
 
     const [state, dispatch] = useReducer(reducer, deepClone(initialState))
     const {fields, readOnly} = state
-    const {topicTitle, topicId, topicContent} = fields
+    const {
+        topicTitle, topicId, topicContent, topicAuthor
+    } = fields
 
     const userInfo = userInfoSelector()
 
@@ -155,14 +158,14 @@ const Topic: FC<Props> = (props: Props) => {
 
     return (
         <>
-            <form className={classes.root}>
+            <Box className={classes.root}>
                 {/* <RenderButtons/> */}
 
-                <Box className={classes.buttons}>
+                <Box className={classes.header}>
                     <Box>
                         {!readOnly && (
                             <Button
-                                className={classes.button_left}
+                                className={classes.header_left}
                                 type='submit'
                                 color='primary'
                                 variant='contained'
@@ -172,7 +175,7 @@ const Topic: FC<Props> = (props: Props) => {
                             </Button>
                         )}
                         <Button
-                            className={classes.button_left}
+                            className={classes.header_left}
                             color='default'
                             variant='outlined'
                             onClick={onClickClose}
@@ -183,7 +186,7 @@ const Topic: FC<Props> = (props: Props) => {
                     <Box>
                         {!readOnly && (
                             <Button
-                                className={classes.button_right}
+                                className={classes.header_right}
                                 color='secondary'
                                 variant='contained'
                                 onClick={onClickDelete}
@@ -195,9 +198,14 @@ const Topic: FC<Props> = (props: Props) => {
                 </Box>
 
                 <RenderFields/>
-            </form>
-            <Box>
-                {!!topicId.val && <CommentsTree topicId={Number(topicId.val)}/>}
+
+                <Box className={classes.footer}>
+                    <Typography variant='subtitle2' color='textSecondary'>{`author: ${topicAuthor.val}`}</Typography>
+                    {!!id && <ReactionsPanel/>}
+                </Box>
+                <Box>
+                    {!!topicId.val && <CommentsTree topicId={Number(topicId.val)}/>}
+                </Box>
             </Box>
         </>
     )

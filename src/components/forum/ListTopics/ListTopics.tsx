@@ -35,6 +35,9 @@ const ListTopics: FC<Props> = (props: Props) => {
                 <TableBody>
                     {listTopics.map((row) => (
                         <TableRow key={row.id}>
+                            <TableCell style={{width: 20}} align='left'>
+                                {`#${row.id}`}
+                            </TableCell>
                             <TableCell
                                 onClick={onClickTitle}
                                 component='th'
@@ -44,7 +47,7 @@ const ListTopics: FC<Props> = (props: Props) => {
                                 {row.title}
                             </TableCell>
                             <TableCell style={{width: 160}} align='right'>
-                                {`id: ${row.id}`}
+                                {`author: ${row.user.displayName}`}
                             </TableCell>
                         </TableRow>
                     ))}

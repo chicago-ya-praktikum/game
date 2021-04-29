@@ -20,6 +20,7 @@ export const saveTopic = async (fields: Fields, userInfo: UserInfoEmpty, dispatc
         const res = await postCreateTopic(userInfo, {title, content})
         if (res.status === 201) {
             dispatch(preSetField(fields, fields.topicId.id, res.data.id))
+            dispatch(preSetField(fields, fields.topicAuthor.id, userInfo.display_name))
             window.alertShow('success', 'Topic created')
         } else {
             window.alertShow('error', res.statusText)

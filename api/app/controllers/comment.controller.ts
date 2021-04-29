@@ -5,6 +5,7 @@ import {commentDataRules} from './utils/requestDataVaidators'
 import {Model} from '../models/comment.model'
 
 const Comments = db.comments
+const Users = db.users
 
 export const create = async (req: any, res: any) => {
     try {
@@ -64,8 +65,8 @@ export const getComments = async (req: any, res: any) => {
         const comments = await Comments.findAll({
             where: {
                 recordId
-            }
-            // attributes: ['id', 'name']
+            },
+            include: Users
         })
 
         if (!comments) {

@@ -11,5 +11,9 @@ export type RowTopic = {
     title: string
     content: string,
     createdAt: string,
-    updatedAt: string
+    updatedAt: string,
+    user: {
+        displayName: string,
+        avatar: string | null
+    }
 }
