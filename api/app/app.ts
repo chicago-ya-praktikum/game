@@ -14,8 +14,7 @@ const bodyParser = require('body-parser')
 export const app = express()
 
 const corsOptions: CorsOptions = {
-    // origin: 'https://localhost:5000'
-    origin: 'https://local.ya-praktikum.tech:5000',
+    origin: '*',
     credentials: true
 }
 
