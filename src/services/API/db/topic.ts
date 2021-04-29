@@ -11,7 +11,6 @@ export const postCreateTopic = async (userInfo: UserInfo,
     }): Promise<AxiosResponse> => {
     try {
         const axios = getAxiosInstance(userInfo)
-        axios.defaults.headers.authorization = userInfo.id
         const res = await axios.post(API_ROOT + URL_TOPIC.POST_CREATE,
             {
                 title: topicInfo.title,

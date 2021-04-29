@@ -4,10 +4,12 @@ import {
 } from './topic'
 import {postCreateComment, getComments} from './comment'
 import {getAllReactions} from './reaction'
+import {postUserReactions, getTopicReactions} from './userReaction'
 
 export {
     postLogIn,
     postCreateTopic, putUpdateTopic, getTopics, getOneTopic, deleteTopic,
     postCreateComment, getComments,
-    getAllReactions
+    getAllReactions,
+    postUserReactions, getTopicReactions
 }

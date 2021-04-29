@@ -4,7 +4,6 @@ import {API_ROOT, URL_REACTIONS} from '../../../contstants/db/index'
 import {getAxiosInstance} from './utils/index'
 import {getUnknownError} from '../utils/index'
 
-
 export const getAllReactions = async (userInfo: UserInfo): Promise<AxiosResponse> => {
     try {
         const axios = getAxiosInstance(userInfo)

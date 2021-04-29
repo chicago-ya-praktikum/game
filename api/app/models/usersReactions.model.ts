@@ -12,7 +12,7 @@ export const userReactionTable = (sequelize: any, Sequelize: any) => {
             type: Sequelize.INTEGER,
             allowNull: false
         }
-    });
+    })
 
-    return UserReaction;
-};
+    return UserReaction
+}

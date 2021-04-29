@@ -1,13 +1,13 @@
-import {create, getAll} from '../controllers/userReaction.controller'
+import {createOrRemove, getOne} from '../controllers/userReaction.controller'
 
 const userReactionsRoutes = (app: any) => {
     const router = require('express').Router()
 
-    router.post('/:id/reactions/', create);
+    router.post('/', createOrRemove)
 
-    router.get('/:id/reactions/', getAll)
+    router.get('/:recordId', getOne)
 
-    app.use('/api/records', router)
+    app.use('/api/userReactions', router)
 };
 
 export default userReactionsRoutes
