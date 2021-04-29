@@ -16,7 +16,7 @@ services:
         depends_on:
             - postgres
         environment:
-            DATABASE_URL: postgres://chicago:password@postgres:5436/sokobandb
+            DATABASE_URL: postgres://chicago:password@postgres:5432/sokobandb
             NODE_ENV: development
             PORT: 8000
         ports:
@@ -30,7 +30,7 @@ services:
         container_name: postgres
         image: postgres:9.6.5-alpine
         ports:
-            ['5436:5432']
+            ['5432:5432']
         volumes:
             - ./postgres-initdb.sh:/docker-entrypoint-initdb.d/init.sh
         restart: always
@@ -50,14 +50,14 @@ services:
                 PGADMIN_DEFAULT_PASSWORD: secret
                 PGADMIN_LISTEN_PORT: 80
             ports:
-                ["8080:80"]
+                ["8088:80"]
             volumes:
                 - pgadmin-data:/var/lib/pgadmin
             depends_on:
                 - postgres
             networks:
                 [awesome]
-            
+
 volumes:
     pgadmin-data:
 
