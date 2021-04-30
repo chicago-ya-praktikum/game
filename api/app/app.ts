@@ -14,7 +14,7 @@ const bodyParser = require('body-parser')
 export const app = express()
 
 const corsOptions: CorsOptions = {
-    origin: process.env.NODE_ENV !== 'production' ? 'https://local.ya-praktikum.tech:5000' : '*',
+    origin: IS_DEVELOPMENT ? 'https://local.ya-praktikum.tech:5000' : '*',
     credentials: true
 }
 

@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 
@@ -30,5 +31,10 @@ module.exports = {
     },
     externals: [
         nodeExternals()
+    ],
+    plugins: [
+        new webpack.DefinePlugin({
+            IS_DEVELOPMENT: process.env.NODE_ENV !== 'production'
+        })
     ]
 }
