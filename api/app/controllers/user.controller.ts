@@ -21,6 +21,7 @@ export const create = async (req: any, res: any) => {
         const {displayName} = req.body
         if (typeof displayName !== 'string') {
             res.status(400).send(createBadResponse(ErrorName.DISPLAY_NAME_MUST_BE_STRING))
+            return
         }
 
         let {avatar} = req.body
@@ -138,8 +139,13 @@ const getUser = async (req: Request) => {
 export const theme = async (req: Request, res: Response) => {
     const user = await getUser(req)
 
+    if (!user) {
+        res.status(400).send({message: 'User not found'})
+        return
+    }
+
     res.status(200).send({
-        themeName: user?.theme?.name
+        themeName: user.theme?.name
     })
 }
 
@@ -148,6 +154,7 @@ export const setTheme = async (req: Request, res: Response) => {
 
     if (!themeName) {
         res.status(400).send({message: 'themeName must be set'})
+        return
     }
 
     const user = await getUser(req)
@@ -167,6 +174,7 @@ export const setTheme = async (req: Request, res: Response) => {
         user.themeId = themeResult.id
         await user.save()
         res.status(200).send({themeName})
+        return
     }
 
     res.status(400).send({message: 'Theme not found'})
