@@ -61,7 +61,7 @@ const withUrl = <T>(
     }
 
     return fetch(
-        new URL(path, apiPath).toString(),
+        path + apiPath,
         {method, body: JSON.stringify(body), ...clone}
     // eslint-disable-next-line no-console
     ).then(response => response.json()).catch(error => console.log(error))
