@@ -1,5 +1,8 @@
+import {Request, Response} from 'express'
 import {checkUserStatus, createBadResponse, ErrorName} from './utils/helpers'
 import {db} from '../models/index'
+import {userModel} from '../models/user.model'
+import {themeModel} from '../models/theme.model'
 
 const User = db.users
 const Token = db.tokens
@@ -18,6 +21,7 @@ export const create = async (req: any, res: any) => {
         const {displayName} = req.body
         if (typeof displayName !== 'string') {
             res.status(400).send(createBadResponse(ErrorName.DISPLAY_NAME_MUST_BE_STRING))
+            return
         }
 
         let {avatar} = req.body
@@ -115,4 +119,63 @@ export const getOne = async (req: any, res: any) => {
             createBadResponse(ErrorName.INTERNAL_ERROR)
         )
     }
+}
+
+const getUser = async (req: Request) => {
+    const token = await Token.findOne({
+        where: {
+            token: req.headers.authorization
+        }
+    })
+
+    return userModel.findOne({
+        where: {
+            id: token.userId
+        },
+        include: themeModel
+    })
+}
+
+export const theme = async (req: Request, res: Response) => {
+    const user = await getUser(req)
+
+    if (!user) {
+        res.status(400).send({message: 'User not found'})
+        return
+    }
+
+    res.status(200).send({
+        themeName: user.theme?.name
+    })
+}
+
+export const setTheme = async (req: Request, res: Response) => {
+    const {themeName} = req.body
+
+    if (!themeName) {
+        res.status(400).send({message: 'themeName must be set'})
+        return
+    }
+
+    const user = await getUser(req)
+
+    if (!user) {
+        res.status(400).send({message: 'User not found'})
+        return
+    }
+
+    const themeResult = await themeModel.findOne({
+        where: {
+            name: themeName
+        }
+    })
+
+    if (themeResult && themeResult.id) {
+        user.themeId = themeResult.id
+        await user.save()
+        res.status(200).send({themeName})
+        return
+    }
+
+    res.status(400).send({message: 'Theme not found'})
 }

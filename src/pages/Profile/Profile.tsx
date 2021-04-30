@@ -24,6 +24,8 @@ import {routeHome} from '../../components/routers/MainRouter/constants'
 import {AppTheme} from '../../enums/AppTheme'
 import {actionCreator} from '../../utils/actionCreator'
 import {Actions} from '../../store/actions'
+import {logIn} from '../Forum/utils'
+import {OurApi} from '../../API'
 
 const Profile: FC<Props> = (props: Props) => {
     const [state, dispatch] = useReducer(reducer, initialState)
@@ -34,11 +36,16 @@ const Profile: FC<Props> = (props: Props) => {
     const theme = appThemeSelector()
 
     const handleChange = useCallback(() => {
-        dispatchStore(
-            actionCreator(
-                theme === AppTheme.Dark ? Actions.APP_THEME_LIGHT : Actions.APP_THEME_DARK
-            )
-        )
+        const actionTheme = theme === AppTheme.Dark ? Actions.APP_THEME_LIGHT : Actions.APP_THEME_DARK
+        const newTheme = theme === AppTheme.Dark ? AppTheme.Light : AppTheme.Dark
+
+        dispatchStore(actionCreator(actionTheme))
+
+        if (info) {
+            logIn(info)
+                .then(() => OurApi.setTheme(info.id, newTheme)
+                    .then(() => window.alertShow('success', 'Saved')))
+        }
     }, [theme])
 
     useEffect(() => {

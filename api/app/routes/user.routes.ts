@@ -1,15 +1,16 @@
-import {create, getAll, getOne} from '../controllers/user.controller'
+import {Express, Router} from 'express'
+import {
+    create, getAll, getOne, setTheme, theme
+} from '../controllers/user.controller'
 
-const userRoutes = (app: any) => {
-    const router = require('express').Router()
+export const userRoutes = (app: Express) => {
+    const router = Router()
 
-    router.post('/', create);
-
+    router.post('/', create)
     router.get('/', getAll)
-
     router.get('/:id', getOne)
 
+    app.get('/api/users/theme', theme)
+    app.post('/api/users/theme', setTheme)
     app.use('/api/users', router)
-};
-
-export default userRoutes
+}
