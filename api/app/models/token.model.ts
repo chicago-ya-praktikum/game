@@ -1,15 +1,14 @@
-export const tokenTable = (sequelize: any, Sequelize: any) => {
-    const Token = sequelize.define('tokens', {
-        userId: {
-            type: Sequelize.INTEGER,
-            unique: true,
-            allowNull: false
-        },
-        token: {
-            type: Sequelize.STRING,
-            allowNull: false
-        }
-    });
+import {DataTypes} from 'sequelize'
+import {sequelize} from '../config/db.config'
 
-    return Token;
-};
+export const Token = sequelize.define('tokens', {
+    userId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        unique: true,
+        allowNull: false
+    },
+    token: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false
+    }
+})

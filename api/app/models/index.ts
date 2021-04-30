@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize'
 import {sequelize} from '../config/db.config'
 import {userModel} from './user.model'
-import {tokenTable} from './token.model'
+import {Token} from './token.model'
 import {recordTable} from './record.model'
 import {reactionTable} from './reaction.model'
 import {userReactionTable} from './usersReactions.model'
@@ -13,7 +13,7 @@ db.Sequelize = Sequelize
 db.sequelize = sequelize
 
 db.users = userModel
-db.tokens = tokenTable(sequelize, Sequelize)
+db.tokens = Token
 db.reactions = reactionTable(sequelize, Sequelize)
 db.records = recordTable(sequelize, Sequelize)
 db.userReactions = userReactionTable(sequelize, Sequelize)

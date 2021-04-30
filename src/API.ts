@@ -2,6 +2,10 @@ import {API_ROOT, URL_AUTH, URL_USER} from './contstants/ya/index'
 import {LeaderboardNewLeaderRequest} from './models/api/LeaderboardNewLeaderRequest'
 import {LeaderboardRequest} from './models/api/LeaderboardRequest'
 import {LBItem} from './pages/Leaderboard/types'
+import {URL_USER as API_URL_USER, API_ROOT as API_API_ROOT} from './contstants/db'
+import {ThemeResponse} from './models/api/ThemeResponse'
+import {deepClone} from '@utils'
+import {AppTheme} from './enums/AppTheme'
 
 type SignUpObj = {
     first_name: string,
@@ -46,11 +50,22 @@ const fetchInit: RequestInit = {
 const responseBody = (res: {json: () => any}) => res.json()
 const onResponse = (response: Response) => response
 
-const withUrl = <T>(path: string, method: string, body?: unknown): Promise<T> => fetch(
-    new URL(path, API_ROOT).toString(),
-    {method, body: JSON.stringify(body), ...fetchInit}
-// eslint-disable-next-line no-console
-).then(response => response.json()).catch(error => console.log(error))
+const withUrl = <T>(
+    path: string, method: string, body?: unknown, apiPath = API_ROOT, userId?: number
+): Promise<T> => {
+    const clone = deepClone(fetchInit)
+
+    if (userId !== undefined) {
+        // @ts-ignore
+        clone.headers.authorization = userId
+    }
+
+    return fetch(
+        new URL(path, apiPath).toString(),
+        {method, body: JSON.stringify(body), ...clone}
+    // eslint-disable-next-line no-console
+    ).then(response => response.json()).catch(error => console.log(error))
+}
 
 const requests = {
     del: (path: string) => {
@@ -73,10 +88,21 @@ const requests = {
             })
             .then(onResponse)
     },
-    alternativePost: <T>(path: string, body: unknown) => withUrl<T>(
+    alternativePost: <T>(
+        path: string, body: unknown, apiPath = API_ROOT, userId?: number
+    ) => withUrl<T>(
         path,
         'POST',
-        body
+        body,
+        apiPath,
+        userId
+    ),
+    alternativeGet: <T>(path: string, apiPath: string, userId?: number) => withUrl<T>(
+        path,
+        'GET',
+        undefined,
+        apiPath,
+        userId
     ),
     patch: (path: string, body?: RequestObject) => {
         const url = new URL(path, API_ROOT)
@@ -144,4 +170,17 @@ export const Users = {
         URL_USER.LEADERBOARD_ALL, body
     ).then(result => result
         .map((item, key) => Object.assign(item.data, {key})))
+}
+
+export class OurApi {
+    static theme(userId: number) {
+        return requests.alternativeGet<ThemeResponse>(API_URL_USER.THEME, API_API_ROOT, userId)
+    }
+
+    static setTheme(userId: number, themeName: AppTheme) {
+        return requests
+            .alternativePost<ThemeResponse>(
+                API_URL_USER.THEME, {themeName}, API_API_ROOT, userId
+            )
+    }
 }
